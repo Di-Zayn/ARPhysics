@@ -1,0 +1,72 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/user/user",
+    "pages/course/course",
+    "pages/exam/exam",
+    "pages/course-guide/course-guide",
+    "pages/video/video",
+    "pages/video1/video1",
+    "pages/article/article",
+    "pages/article1/article1",
+    "pages/wuhuaqi/wuhuaqi",
+    "pages/fuya/fuya",
+    "pages/login/login",
+    "pages/info/info",
+    "pages/answer/answer",
+    "pages/exam-result/exam-result",
+    "pages/review/review",
+    "pages/model/model",
+    "pages/exam-record/exam-record"
+  ],
+  "entryPagePath": "pages/index/index",
+  "window": {
+    "backgroundColor": "#EEF4FD",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "ARPhysics",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#D3D1D2",
+    "selectedColor": "#5081B8",
+    "backgroundColor": "#FEFEFE",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "AR",
+        "iconPath": "./images/icon-scan.png",
+        "selectedIconPath": "./images/icon-scan-selected.png"
+      },
+      {
+        "pagePath": "pages/course/course",
+        "text": "学习",
+        "iconPath": "./images/icon-course.png",
+        "selectedIconPath": "./images/icon-course-selected.png"
+      },
+      {
+        "pagePath": "pages/exam/exam",
+        "text": "测试",
+        "iconPath": "./images/icon-study.png",
+        "selectedIconPath": "./images/icon-study-selected.png"
+      },
+      {
+        "pagePath": "pages/user/user",
+        "text": "我的",
+        "iconPath": "./images/icon-mine.png",
+        "selectedIconPath": "./images/icon-mine-selected.png"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2",
+  "subpackages": [
+    {
+      "root": "ar_package",
+      "pages": [
+        "pages/ar/ar",
+        "pages/index/index"
+      ]
+    }
+  ]
+}

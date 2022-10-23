@@ -1,0 +1,53 @@
+.banner{
+  position: relative;
+}
+.banner image{
+  width: 100%;
+}
+.banner .banner2{
+  position: absolute;
+  left: 0;
+  top: -60rpx;
+}
+.banner text{
+  position: absolute;
+  font-size: 36rpx;
+  color: #fff;
+  top: 20%;
+  left: 12%;
+  max-width: 8em;
+}
+.list{
+  width: 90%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.item{
+  background-color: #fff;
+  width: 46%;
+  margin-left: 8%;
+  border-radius: 20rpx;
+  padding: 20rpx 0;
+  text-align: center;
+  margin-bottom: 40rpx;
+}
+.item:nth-child(odd){
+  margin-left: 0;
+}
+.item .icon{
+  display: block;
+  width: 44%;
+  height: 18.216vw;
+  margin: 0 auto 6rpx;
+}
+.item .name{
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  max-width: 6em;
+  margin: 0 auto;
+}

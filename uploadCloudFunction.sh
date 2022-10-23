@@ -1,0 +1,1 @@
+"/Applications/wechatwebdevtools.app/Contents/MacOS/cli" cloud functions deploy --e cloud1-0gwuxkfae8d5a879 --n quickstartFunctions --r --project "/Users/enkechan/dev/Outsourcing/ARPhysics" --report_start --report

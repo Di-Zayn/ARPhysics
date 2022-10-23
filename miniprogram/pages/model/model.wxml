@@ -1,0 +1,58 @@
+<view class="entry">
+  <button data-model="{{1}}" hover-class="ui-hover" bindtap="setModel">文丘里流量计</button>
+  <button data-model="{{2}}" hover-class="ui-hover" bindtap="setModel">小孔流速</button>
+  <button data-model="{{3}}" hover-class="ui-hover" bindtap="setModel">水银压强计</button>
+</view>
+<view wx:if="{{model}}" class="content">
+  <icon type="cancel" color="#666" bindtap="setModel" data-model="{{0}}" />
+  <canvas type="2d" id="main"></canvas>
+  <view class="bar">
+    <block wx:if="{{model == 1}}">
+      <view class="slider-item">
+        <text>h(cm)</text>
+        <slider value="{{venturiData.h}}" block-size="{{16}}" activeColor="#4592e2" min="{{10}}" max="{{30}}" show-value
+          bindchange="handleVenturiDataChange" data-key="h" />
+      </view>
+      <view class="slider-item">
+        <text>s1(cm^2)</text>
+        <slider value="{{venturiData.s1_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{2.5}}"
+          max="{{5}}" show-value bindchange="handleVenturiDataChange" data-key="s1_cm" />
+      </view>
+      <view class="slider-item">
+        <text>s2(cm^2)</text>
+        <slider value="{{venturiData.s2_cm}}" block-size="{{16}}" activeColor="#4592e2" step="{{0.5}}" min="{{2}}"
+          max="{{4.5}}" show-value bindchange="handleVenturiDataChange" data-key="s2_cm" />
+      </view>
+    </block>
+    <block wx:if="{{model == 2}}">
+      <view class="slider-item">
+        <text>Ha(/cm)</text>
+        <slider value="{{orificeData.ha_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{1}}"
+          max="{{10}}" show-value bindchange="handleOrificeDataChange" data-key="ha_cm" />
+      </view>
+      <view class="slider-item">
+        <text>Hb(/cm)</text>
+        <slider value="{{orificeData.hb_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{0.5}}"
+          max="{{9.5}}" show-value bindchange="handleOrificeDataChange" data-key="hb_cm" />
+      </view>
+    </block>
+    <block wx:if="{{model == 3}}">
+      <view class="slider-item">
+        <text>P(/10</text>
+        <rich-text nodes="{{[{name: 'sup', attrs: {class:'sup-text'},children: [{type:'text',text: '5'}]}]}}">
+        </rich-text>
+        <text class="lastText">Pa)</text>
+        <slider value="{{mercuryData.p_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{0.5}}"
+          max="{{3}}" show-value bindchange="handleMercuryDataChange" data-key="p_cm" />
+      </view>
+      <view class="slider-item">
+        <text>P0(/10</text>
+        <rich-text nodes="{{[{name: 'sup', attrs: {class:'sup-text'},children: [{type:'text',text: '5'}]}]}}">
+        </rich-text>
+        <text class="lastText">Pa)</text>
+        <slider value="{{mercuryData.p0_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{0.5}}"
+          max="{{3}}" show-value bindchange="handleMercuryDataChange" data-key="p0_cm" />
+      </view>
+    </block>
+  </view>
+</view>

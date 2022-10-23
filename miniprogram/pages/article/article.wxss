@@ -1,0 +1,33 @@
+/* pages/article/article.wxss */
+page {
+  background-color: #fff;
+  height: 100%;
+}
+.list {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.list > view {
+  text-align: center;
+  width: 60%;
+  padding: 30rpx 0;
+  border: 1px solid #ccc;
+  margin-top: 80rpx;
+}
+
+.single,
+.muti-container {
+  /* padding-bottom: 80rpx; */
+  padding: 10px 10px 80rpx;
+}
+.back {
+  position: fixed;
+  width: 92% !important;
+  left: 4%;
+  bottom: 10rpx;
+  background-color: #4592e2 !important;
+  color: #fff !important;
+}

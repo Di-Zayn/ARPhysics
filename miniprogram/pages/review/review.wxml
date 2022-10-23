@@ -1,0 +1,23 @@
+<wxs module="filter" src='./review.wxs'></wxs>
+<import src="./review.skeleton.wxml" />
+<template is="skeleton" wx:if="{{loading}}" />
+<block wx:else>
+  <view class="header">
+    <text class="tit">{{exam.name}}</text>
+    <text class="score">总分：{{record.total_score}} 您的得分：{{record.score}}</text>
+  </view>
+  <view class="list">
+    <view class="item" wx:for="{{list}}" wx:key="_id">
+      <view class="q">
+        <text>{{index*1 + 1}}. {{item.name}}({{item.score}}分)</text>
+      </view>
+      <view class="answer" wx:for="{{item.option}}" wx:key="index" wx:for-item="option">
+        <text
+          class="{{ option == item.your_answer ? 'incorrect' : filter.isCorrect(item.answer, option) ? 'correct' : '' }}">{{option}}</text>
+      </view>
+    </view>
+  </view>
+  <view class="footer">
+    <button bindtap="toExam">更多测试</button>
+  </view>
+</block>

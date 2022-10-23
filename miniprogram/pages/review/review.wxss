@@ -1,0 +1,81 @@
+@import "./review.skeleton.wxss";
+page {
+  background-color: #fff;
+  min-height: calc(100% -100rpx);
+  padding-bottom: 100rpx;
+}
+.header {
+  padding: 30rpx 2%;
+  border-bottom: 1px solid #ddd;
+}
+.header text {
+  display: block;
+}
+.header .tit {
+  font-size: 32rpx;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 10rpx;
+}
+.header .score {
+  font-size: 24rpx;
+  color: #666;
+}
+.list {
+  padding: 40rpx 2%;
+}
+.list .item {
+  margin-bottom: 40rpx;
+  border-bottom: 1px dashed #ddd;
+}
+.list .item .q {
+  margin-bottom: 20rpx;
+}
+.list .item .q text {
+  font-size: 28rpx;
+  color: #333;
+}
+.list .item .answer {
+  font-size: 26rpx;
+  color: #4b4b4b;
+  line-height: 1.4;
+  padding-bottom: 40rpx;
+}
+.list .item .answer text {
+  display: block;
+  border: 1px solid #ccc;
+  padding: 14rpx 20rpx;
+  margin-top: 10rpx;
+  border-radius: 10rpx;
+}
+.list .item .answer text:first-child {
+  margin-top: 0;
+}
+.list .item .answer text.correct {
+  color: #fff;
+  background-color: #4592e2;
+  border-color: #4592e2;
+}
+.list .item .answer text.incorrect {
+  color: #fff;
+  background-color: #c13d13;
+  border-color: #c13d13;
+}
+.footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 99;
+  padding: 20rpx 0;
+}
+.footer button {
+  display: block;
+  width: 80% !important;
+  border-radius: 20rpx;
+  background-color: #4592e2;
+  color: #fff;
+  height: 72rpx;
+  font-size: 26rpx;
+  margin: 0 auto;
+}

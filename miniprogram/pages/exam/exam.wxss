@@ -1,0 +1,114 @@
+@keyframes skeleton{
+  form {
+    left: 0;
+  }
+  to {
+    left: 100%;
+  }
+}
+page{
+  padding: 40rpx 4%;
+}
+.module_title{
+  font-size: 28rpx;
+  color: #464646;
+  margin-bottom: 1em;
+  text-indent: 1em;
+}
+.module1{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  width: 92%;
+  margin-bottom: 40rpx;
+}
+.module1_item{
+  width: 30%;
+  height: 27.6vw;
+  background: #fff;
+  border-radius: 20rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 20rpx;
+  box-shadow: 0px 3px 1px #EAF2FD, 3px 0px 1px #EAF2FD, -3px 0px 1px #EAF2FD, 0px -3px 1px #EAF2FD;
+}
+.module1_item image{
+  display: block;
+  width: 40%;
+  height: 11.04vw;
+  margin-bottom: 20rpx;
+}
+.module1_item text{
+  display: block;
+  text-align: center;
+  font-size: 24rpx;
+  color: #4b4b4b;
+  max-width: 80%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.module_loading{
+  background-color: #f5f5f5;
+  box-shadow: none;
+  display: block;
+  overflow: hidden;
+  position: relative;
+}
+.module_loading view{
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80%;
+  height: 100%;
+  transform: skewX(-10deg);
+  background: linear-gradient(to right, #f5f5f5, #f8f8f8);
+  animation: skeleton .5s linear;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+.module2{
+  width: 92%;
+}
+.module2_item{
+  background: #fff;
+  padding: 40rpx 5%;
+  border-radius: 30rpx;
+  box-shadow: 0px 5px 1px #EAF2FD, 2px 0px 1px #EAF2FD;
+  /* box-shadow: 0px 5px 1px #f00; */
+  margin-bottom: 40rpx;
+  width: 90%;
+  display: flex;
+  align-items: center;
+}
+.module2_item .icon{
+  width: 15%;
+  height: 12.15vw;
+  margin: 0 5% 0 3.5%;
+}
+.module2_item .label{
+  width: 75%;
+}
+.module2_item text{
+  display: block;
+  max-width: 70%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.module2_item .name{
+  font-size: 24rpx;
+  margin-bottom: 12rpx;
+  color: #464646;
+}
+.module2_item .topic{
+  font-size: 30rpx;
+  color: #333;
+}
+.module2 .module_loading view{
+  transform: skewX(-30deg);
+  box-shadow: -10px 0px 20px #f8f8f8;
+}

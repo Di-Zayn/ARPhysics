@@ -1,0 +1,40 @@
+.list {
+  width: 96%;
+  padding: 0 2% 20rpx;
+  background-color: #fff;
+}
+.list .item {
+  padding: 20rpx 0;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.list .item .left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.list .item .left .title {
+  display: block;
+  margin-bottom: 30rpx;
+  font-size: 28rpx;
+  color: #333;
+  max-width: 400rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.list .item .left .time {
+  display: block;
+  font-size: 24rpx;
+  color: #666;
+  max-width: 400rpx;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.list .item image {
+  width: 60rpx;
+  height: auto;
+}

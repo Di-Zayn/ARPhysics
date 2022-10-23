@@ -1,0 +1,44 @@
+<block wx:if="{{isLoading}}">
+  <text class="module_title">概念辨析</text>
+  <view class="module1">
+    <view class="module1_item module_loading">
+      <view></view>
+    </view>
+    <view class="module1_item module_loading">
+      <view></view>
+    </view>
+    <view class="module1_item module_loading">
+      <view></view>
+    </view>
+  </view>
+  <text class="module_title">分知识点测试题</text>
+  <view class="module2">
+    <view class="module2_item module_loading">
+      <view></view>
+    </view>
+    <view class="module2_item module_loading">
+      <view></view>
+    </view>
+  </view>
+</block>
+<block wx:else>
+  <text class="module_title">概念辨析</text>
+  <view class="module1">
+    <view bindtap="toanswer" data-exam="{{item}}" wx:for="{{exam_group1}}" wx:key="_id" hover-class="ui-hover"
+      class="module1_item">
+      <image mode="widthFix" src="{{item.icon}}"></image>
+      <text>{{item.name}}</text>
+    </view>
+  </view>
+  <text class="module_title">分知识点测试题</text>
+  <view class="module2">
+    <view bindtap="toanswer" data-exam="{{item}}" wx:for="{{exam_group2}}" wx:key="_id" hover-class="ui-hover"
+      class="module2_item">
+      <image class="icon" mode="widthFix" src="../../images/test.png"></image>
+      <view class="label">
+        <text class="name">{{item.name}}</text>
+        <text class="topic">{{item.topic}}</text>
+      </view>
+    </view>
+  </view>
+</block>

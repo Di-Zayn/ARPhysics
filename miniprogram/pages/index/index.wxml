@@ -1,0 +1,7 @@
+<!--pages/index/index.wxml-->
+<text class="page-title">欢迎来到AR Physics！</text>
+<text class="sub-page-title" bindtap="toAR">一起学习物理吧！</text>
+<text class="min-page-title" bindtap="toAR">（点击进入）</text>
+<view class="min-page"><text class="min-page-title">本教学资源包括AR增强现实功能，点击进入后，识别《医用物理学》教材中特定图片，即可使用。识别成功后，将显示模型，点击模型可以看大图哦。</text></view>
+<image class="info" src="../../images/min-info.png" mode="widthFix"></image>
+

@@ -1,0 +1,36 @@
+const {
+  USERINFO_STORAGE_KEY,
+  USER_LOGIN_EXPIRE_DURATION
+} = require('./data/constants');
+
+//app.js
+App({
+  onLaunch: function () {
+    if (!wx.cloud) {
+      console.error('请使用 2.2.3 或以上的基础库以使用云能力')
+    } else {
+      wx.cloud.init({
+        // env 参数说明：
+        //   env 参数决定接下来小程序发起的云开发调用（wx.cloud.xxx）会默认请求到哪个云环境的资源
+        //   此处请填入环境 ID, 环境 ID 可打开云控制台查看
+        //   如不填则使用默认环境（第一个创建的环境）
+        //   后续可使用cloud.DYNAMIC_CURRENT_ENV调用该env对应的字段
+        //   环境在全局中只需初始化一次，后续init不会变化
+        // env: 'cloud1-0gwuxkfae8d5a879',
+        traceUser: true,
+      })
+    }
+    const globalData = {};
+    try{
+      const user = wx.getStorageSync(USERINFO_STORAGE_KEY);
+      if(user){
+        if(Date.now() >= user.savedTime + USER_LOGIN_EXPIRE_DURATION){
+          wx.removeStorageSync(USERINFO_STORAGE_KEY)
+        }else{
+          globalData.userInfo = user;
+        }
+      }
+    }catch(err){}
+    this.globalData = globalData;
+  }
+})

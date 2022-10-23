@@ -1,0 +1,11 @@
+<!--pages/wuhuaqi/wuhuaqi.wxml-->
+<view class="title"><text>医用雾化器</text></view>
+<video class="video" src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/course/yiyongwuhuaqi.mp4"></video>
+<view class="description"><text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;医用雾化器是伯努利方程在医学应用中的典型医疗设备。医用雾化器在临床上主要用于治疗各种上下呼吸系统疾病，如感冒、发烧、咳嗽、哮喘、咽喉肿痛、咽炎、鼻炎、支气管炎、尘肺等。使用医用雾化器的治疗方法为雾化吸入法。医用雾化器有一细管，利用压缩 氧气经过细小管口形成高速气流，使细小管口处形成负压，从而带动药液一起喷射到阻挡物上，药液在高速撞击下形成雾状，再从医用雾化器中喷出。</text></view>
+<image class="image" src='/images/wuhuaqi.png' mode="widthFix"></image>
+<view class="description"><text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;医用雾化器的优点在于将药液雾化成微小颗粒，使得药物通过呼吸进入呼吸道和肺部沉积，从而达到无痛、起效迅速的治疗目的。</text></view>
+<view class="description"><text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;使用医用雾化器的雾化吸入疗法与口服法和注射法相比，优点在于: </text></view>
+<view class="advantages"><text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1.医用雾化器将药液雾化成微小颗粒，使得药物通过呼吸直达呼吸道和肺部，确保患处药物浓度高，起效迅速，疗效确切，可缩短住院时间，节省费用。并且可通过医用雾化器调节雾化快慢。</text></view>
+<view class="advantages"><text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.与肌肉注射和静脉注射给药，药物先进入血循环再到达肺部不同，药液不经过血液循环，可有效避免胃肠道和全身不良反应，最大限度减少各种毒副作用，减缓病人疼痛。 </text></view>
+<view class="advantages"><text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.使用方便，安全性好，不完全需要病人的配合。避免患儿因对打针恐惧而产生抗拒，不配合治疗的情况。  </text></view>
+<view class="advantages"><text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.药物以液体形式进入肺部，可帮助患者稀释痰液，促进排痰。在此次抗击新型冠状病毒疫情战中，医生针对呼吸道及肺部感染患者试用α-干扰素雾化治疗。通过雾化给药可以将药物有效送达还出，使得局部药物浓度高，从而能有助于缓解病情，帮助治疗。需要注意的是，雾化治疗虽好，但仍需对症治疗，不可过度和盲目使用。</text></view>

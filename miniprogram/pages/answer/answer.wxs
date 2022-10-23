@@ -1,0 +1,20 @@
+var isSelected = function (currentAnswer, option) {
+  return currentAnswer.indexOf(option) > -1;
+};
+var isArray = function (target) {
+  // return target instanceof Array;
+  return typeof target == "object";
+};
+var isMultiSelect = function (target) {
+  return target.length > 1
+}
+var imgExists = function (img) {
+  if (img) {
+    return true
+  }
+  return false
+}
+module.exports.isSelected = isSelected;
+module.exports.isArray = isArray;
+module.exports.isMultiSelect = isMultiSelect
+module.exports.imgExists = imgExists

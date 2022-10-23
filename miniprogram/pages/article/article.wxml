@@ -1,0 +1,16 @@
+<wxs module="filter" src='../answer/answer.wxs'></wxs>
+<view class="single" wx:if="{{!filter.isArray(html)}}">
+  <rich-text nodes="{{html}}"></rich-text>
+</view>
+<view wx:if="{{!isMuti && filter.isArray(html)}}" class="list">
+  <view hover-class="ui-hover" data-index='0' bindtap="showQuestion">
+    <text>题一</text>
+  </view>
+  <view hover-class="ui-hover" data-index='1' bindtap="showQuestion">
+    <text>题二</text>
+  </view>
+</view>
+<view class="muti-container" wx:if="{{isMuti}}">
+  <rich-text nodes="{{currentHtml}}"></rich-text>
+  <button bindtap="back" class="back">返回</button>
+</view>

@@ -1,0 +1,13 @@
+/* pages/fuya/fuya.wxss */
+
+.title{
+  margin:20rpx auto 0;
+  font-size: 48rpx;
+}
+.fuya{
+  width:100%;
+  margin:10rpx auto 0;
+}
+.click{
+  margin:20rpx auto 0;
+}

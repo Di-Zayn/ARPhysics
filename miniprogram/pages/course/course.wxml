@@ -1,0 +1,14 @@
+<view class="container banner">
+  <image src="../../images/coursebanner2.png" mode="widthFix"></image>
+  <image src="../../images/coursebanner.png" class="banner2" mode="widthFix"></image>
+  <text>课程中心</text>
+</view>
+<text class="title">选择课程进行学习</text>
+<view class="list">
+  <view wx:for="{{courses}}" wx:key="_id" class="item">
+    <navigator url="{{'/pages/course-guide/course-guide?course_id=' + item._id  + '&content_id=' + item.content}}">
+      <image class="icon" src="{{item.icon}}" mode="aspectFit"></image>
+      <text class="name">{{item.name}}</text>
+    </navigator>
+  </view>
+</view>

@@ -1,0 +1,4 @@
+var isCorrect = function (answer, option) {
+  return option == answer || (typeof answer == 'object' && answer.indexOf(option) > -1)
+};
+module.exports.isCorrect = isCorrect;

@@ -1,0 +1,1 @@
+<video wx:for="{{contents}}" wx:key="index" class="video" src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/course/bonuliyingyong.mp4"></video>

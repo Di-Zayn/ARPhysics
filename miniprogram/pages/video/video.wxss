@@ -1,0 +1,7 @@
+.video{
+  width: 96%;
+  margin: 20rpx auto 0;
+}
+.video:first-child{
+  margin-top: 10%;
+}

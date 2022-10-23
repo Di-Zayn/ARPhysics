@@ -1,0 +1,49 @@
+<!--
+此文件为开发者工具生成，生成时间: 2021/9/8 上午11:47:36
+使用方法：
+在 /Users/enkechan/dev/Outsourcing/ARPhysics/miniprogram/pages/review/review.wxml 引入模板
+
+```
+<import src="review.skeleton.wxml"/>
+<template is="skeleton" wx-if="{{loading}}" />
+```
+
+在 /Users/enkechan/dev/Outsourcing/ARPhysics/miniprogram/pages/review/review.wxss 中引入样式
+```
+@import "./review.skeleton.wxss";
+```
+
+更多详细信息可以参考文档：https://developers.weixin.qq.com/miniprogram/dev/devtools/skeleton.html
+-->
+<template name="skeleton">
+  <view class="sk-container">
+    <view class="header" style="border: none;">
+      <text class="tit sk-transparent sk-text-18-7500-245 sk-text">呆街道口得看看看到快递可抵扣</text>
+      <text class="score sk-transparent sk-text-14-2857-359 sk-text">总分：100 您的得分：20</text>
+    </view>
+    <view class="list">
+      <view class="item" style="border: none;">
+        <view class="q">
+          <text class="sk-transparent sk-text-14-2857-453 sk-text">1. 明朝开国皇帝明太祖叫什么名字？(5分)</text>
+        </view>
+        <view class="answer">
+          <text class="correct sk-transparent sk-text-14-2857-766 sk-text" style="border: none;">朱元璋</text>
+          <text class="sk-transparent sk-text-14-2857-648 sk-text" style="border: none;">朱茵</text>
+          <text class="incorrect sk-transparent sk-text-14-2857-623 sk-text" style="border: none;">朱头皮</text>
+          <text class="sk-transparent sk-text-14-2857-940 sk-text" style="border: none;">朱油糕</text>
+        </view>
+      </view>
+      <view class="item" style="border: none;">
+        <view class="q">
+          <text class="sk-transparent sk-text-14-2857-26 sk-text">1. 明朝开国皇帝明太祖叫什么名字？(5分)</text>
+        </view>
+        <view class="answer">
+          <text class="sk-transparent sk-text-14-2857-741 sk-text" style="border: none;">朱元璋</text>
+          <text class="sk-transparent sk-text-14-2857-337 sk-text" style="border: none;">朱茵</text>
+          <text class="sk-transparent sk-text-14-2857-85 sk-text" style="border: none;">朱头皮</text>
+          <text class="sk-transparent sk-text-14-2857-580 sk-text" style="border: none;">朱油糕</text>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>

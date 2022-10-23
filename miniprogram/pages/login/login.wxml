@@ -1,0 +1,6 @@
+<image src="../../images/logo.png" class="logo" mode="widthFix"></image>
+  <form bindsubmit="handleSubmit">
+    <input type="number" class="account" placeholder="请输入您的学号" bindinput="handleAccountChange" />
+    <input type="text" class="password" password placeholder="请输入密码" bindinput="handlePasswordChange" />
+    <button form-type="submit" class="{{!password || !account || isLogin ? 'btn disabled' : 'btn'}}" disabled="{{!password || !account || isLogin}}">{{!isLogin ? '登录' : '登录中...'}}</button>
+  </form>

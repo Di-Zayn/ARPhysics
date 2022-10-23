@@ -1,0 +1,10 @@
+<!--pages/article1/article1.wxml-->
+
+<view class="list">
+  <view hover-class="ui-hover" data-index='0' bindtap="showWuhuaqi">
+    <text>医用雾化器</text>
+  </view>
+  <view hover-class="ui-hover" data-index='1' bindtap="showFuya">
+    <text>负压封闭引流技术</text>
+  </view>
+</view>

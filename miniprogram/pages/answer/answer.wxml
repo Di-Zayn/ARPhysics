@@ -1,0 +1,42 @@
+<wxs module="filter" src='./answer.wxs'></wxs>
+<block wx:if="{{!loadingExams}}">
+  <view class="header">
+    <progress percent="{{progress}}" activeColor="#4492E2"></progress>
+    <text class="examname">{{exam.name}}</text>
+    <view class="tools">
+      <button class="end" bindtap="quitConfirm">结束答题</button>
+    </view>
+  </view>
+  <view class="content">
+    <view class="q">
+      <text>{{currentQIndex + 1}}. {{currentQuestion.question}}({{currentQuestion.score}}分)</text>
+    </view>
+    <view class="pannel">
+      <checkbox-group wx:if="{{filter.isMultiSelect(currentQuestion.answer)}}">
+        <image wx:if="{{filter.imgExists(currentQuestion.img)}}" 
+        src="{{currentQuestion.img}}"></image>
+        <label bindtap="handleMultiOptionSelected" data-value="{{item}}"
+          data-checked="{{filter.isSelected(currentAnswer, item)}}" data-index="{{index}}" wx:for="{{currentQuestion.option}}" wx:key="index">
+          <checkbox color="#4492E2" id="{{currentQuestion._id + index}}" checked="{{filter.isSelected(currentAnswer, item)}}" value="{{item}}" />
+          <text>{{item}}</text>
+        </label>
+      </checkbox-group>
+      <radio-group wx:else>
+        <image wx:if="{{filter.imgExists(currentQuestion.img)}}" 
+        src="{{currentQuestion.img}}"></image>
+        <label bindtap="handleSingleOptionSelected" data-value="{{item}}"
+          data-checked="{{filter.isSelected(currentAnswer, item)}}"  data-index="{{index}}" wx:for="{{currentQuestion.option}}" wx:key="index">
+          <radio color="#4492E2" id="{{currentQuestion._id + index}}" 
+          checked="{{filter.isSelected(currentAnswer, item)}}"    
+            value="{{item}}"/>
+          <text>{{item}}</text>
+        </label>
+      </radio-group>
+    </view>
+  </view>
+  <div class="btnrow">
+    <button wx:if="{{currentQIndex < questions.length - 1}}" disabled="{{submitDisabled}}" bindtap="handleForward" class="submit">下一题</button>
+    <button wx:else disabled="{{submitDisabled || submitToServering}}" loading="{{submitToServering}}"
+      bindtap="handleQuestionSubmit" class="submit">完成</button>
+  </div>
+</block>

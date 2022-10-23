@@ -1,0 +1,27 @@
+<text class="ui-h3">基本信息</text>
+<view class="infobar">
+  <view class="ui-info-row">
+    <text class="label">学号：</text>
+    <view class="value">
+      <text>{{userInfo.number}}</text>
+    </view>
+  </view>
+  <view class="ui-info-row">
+    <text class="label">姓名：</text>
+    <view class="value">
+      <text>{{userInfo.name}}</text>
+    </view>
+  </view>
+  <view class="ui-info-row">
+    <text class="label">专业：</text>
+    <view class="value">
+      <text>{{userInfo.major}}</text>
+    </view>
+  </view>
+  <view class="ui-info-row">
+    <text class="label">班级：</text>
+    <view class="value">
+      <text>{{userInfo.class}}</text>
+    </view>
+  </view>
+</view>

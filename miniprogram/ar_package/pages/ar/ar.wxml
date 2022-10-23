@@ -1,0 +1,130 @@
+<!-- <view class="page-loading full-page" wx:if="{{isPageLoading}}">
+  <loading text="{{showLoadingText}}"></loading>
+</view> -->
+<!-- 相机组件，放在UI最底层显示相机内容 -->
+<camera frame-size="medium" bindinitdone="onCameraInit" mode="normal" device-position="back" resolution="high"
+  flash="off" />
+<!-- canvas组件，用于进行图片压缩，位置在屏幕外，不可见 -->
+<canvas type="2d" id="capture" style="width:1px; height: 1px;" />
+
+<view id="overlay" wx:if="{{showOverlay}}">
+  <!-- <view id="overlay-top">
+                <view id="title">微信小程序AR</view>
+                <image id="logo" src="/images/logo@2x.png"></image>
+                <view id="desc">帮助您迅速在微信小程序中实现扫描识别图呈现3D动画模型、视频、图片、文字、UI按钮等效果，并且支持3D模型交互。区别于原生 AR 应用，具有模式轻、部署快、传播性强等特点。
+                </view>
+        </view> -->
+  <view id="overlay-bottom">
+    <!-- <image id="experience" class="primary-button" src="/images/experience@2x.png" bind:tap="experience">
+                </image> -->
+    <image wx:if="{{!showContent}}" id="scan" class="primary-button" src="/images/scan@2x.png" bind:tap="scan">
+    </image>
+    <!-- <view id="download" class="primary-button" bind:tap="download">保存识别图</view>
+                <view id="email" class="secondary-button">support@sightp.com</view> -->
+  </view>
+</view>
+<!-- <image wx:if="{{false}}" src="/images/arrow_left.png" bind:tap="back"
+  style="position: absolute; width: 60rpx; height: 60rpx; top: 30rpx; left: 30rpx; z-index: 30;"></image> -->
+
+<view id="loading" wx:if="{{showLoading}}">
+  <view class="full-page scan_loading">
+    <image src="../../../images/ar/scan-1ccc12.png"></image>
+  </view>
+</view>
+
+<!-- <view id="content" wx:if="{{showContent}}">
+        <view wx:if="{{SELECT_TYPE.IMAGE === selectType}}">
+                <image src="/images/namecard.jpg" style="width: 500rpx; height: 300rpx;"></image>
+        </view>
+        <view wx:if="{{SELECT_TYPE.VIDEO === selectType}}">
+                <video src="https://mp.easyar.cn/video/yuyuan1.mp4" autoplay="{{true}}" controls="{{false}}"
+                        loop="{{true}}" style="width: 714rpx; height: 400rpx;"></video>
+        </view>
+</view> -->
+
+<!-- <view id="select" wx:if="{{showContent}}">
+        <view class="select {{SELECT_TYPE.IMAGE === selectType ? 'selected': ''}}"
+                data-contentType="{{SELECT_TYPE.IMAGE}}" bind:tap="selectContent">图片</view>
+        <view class="select {{SELECT_TYPE.VIDEO === selectType ? 'selected': ''}}"
+                data-contentType="{{SELECT_TYPE.VIDEO}}" bind:tap="selectContent">视频</view>
+</view> -->
+<view class="contents" wx:if="{{showContent}}">
+  <view class="ar_entry" wx:if="{{showStep == 0}}">
+    <text>血压<br />血液在流动时对血管壁产生的压力</text>
+    <text>正常血压下，血管状态畅通</text>
+    <video autoplay="{{true}}" loop="{{true}}" controls="{{false}}"
+      src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/ar1.mp4"></video>
+    <text>血压增高，不断冲击血管<br />长期冲击，会导致其变形异常</text>
+    <video autoplay="true" loop="true" controls="{{false}}"
+      src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/ar2.mp4"></video>
+    <text>如果是低血压的患者，<br />脑血管的灌注压达不到需要的数值，<br />长期下来，脑血管就处于一种慢性缺血<br />的状态，继而出现脑梗塞的现象</text>
+    <image src="../../../images/ar/ar_entry.png" mode="widthFix" bindtap="changeStep" data-value="1">
+    </image>
+  </view>
+  
+  <view class="ar_main" wx:else>
+    <view class="{{showStep!= 3 ? 'model' : 'model both'}}"  bindtap="{{showStep==3 ? 'playAnimate' : showStep==1 || showStep == 2 ? 'playPicture' : ''}}">
+      <canvas type="webgl" wx:if="{{showStep == 1 || showStep == 3}}"
+        style="{{showStep==1 ? 'width: 300px;height: 300px;' : 'width: 300px;height: 300px;'}}" id="lie"
+        class="model_vanvas"></canvas>
+      <canvas type="webgl" wx:if="{{showStep == 2 || showStep == 3}}"
+        style="{{showStep==2 ? 'width: 300px;height: 300px;' : 'width: 300px;height: 300px;'}}" id="stand"
+        class="model_vanvas"></canvas>
+    </view>
+    <image id="model1" src="../../../images/zhanli-model.png" wx:if="{{showStep==2}}" bindtap="playPicture"></image>
+    <image id="models" src="../../../images/tangxia-model.png" wx:if="{{showStep==1}}" bindtap="playPicture"></image>
+    <view class="video4" wx:if="{{showStep == 3 }}" >
+      <image id="models" src="../../../images/both-model.png" bindtap="playAnimate"></image>
+      <text bindtap="playAudio">点击文字，听血压与体位的关系讲解</text>
+      <view class="video4-main">
+        <video bindended="handleVideo4End" id="video4" controls="{{false}}" show-center-play-btn="{{true}}"
+          src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/video4.mp4"></video>
+        <!-- <audio id="audio" style="height: 0; width: 0;"
+                                src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/audio.mp3"></audio> -->
+        <text>对均匀流管S1=S2，各处流速v1=v2。此时伯努利方程为 p+ρgh</text>
+      </view>
+    </view>
+ 
+    <view class="btns">
+      <image src="../../../images/ar/lie.png" mode="widthFix" wx:if="{{showStep == 2}}" bindtap="changeStep"
+        data-value="1">
+      </image>
+      <image src="../../../images/ar/stand.png" mode="widthFix" wx:if="{{showStep == 1}}" bindtap="changeStep"
+        data-value="2"></image>
+      <image src="../../../images/ar/both.png" mode="widthFix" wx:if="{{showStep != 3}}" bindtap="changeStep"
+        data-value="3">
+      </image>
+      <image src="../../../images/ar/video.png" mode="widthFix" wx:if="{{showStep != 3}}" bindtap="playVideo5"
+        data-value="4">
+      </image>
+      <image src="../../../images/ar/back.png" mode="widthFix" bindtap="goback"></image>
+    </view>
+    <video src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/video5.mp4"
+      style="height: 0;width: 0;" id="video5"></video>
+  </view>
+    <!-- 浮层 -->
+    <!-- <view class="b1" wx:if="{{showAnimate}}" bindtap="playAnimate">
+    <view class="b2">
+        <video id="video6" src="http://www.yunrusoft.top:8001/file/fefd4a9e3e8a4daab96a34f3fc5df4a8/6341755a148714e29da545729604696c5a7155fd/2022-10-08-20-28-50.mp4" controls="false" autoplay="true" ></video>
+        </view>
+    </view>
+    <view class="b1" wx:if="{{showPicture}}" bindtap="playPicture">
+    <view class="b2">
+        <image id="image6" src="../../../images/ar/pingtang.png" ></image>
+        </view>
+    </view> -->
+    
+    <view id="content2" wx:if="{{showPicture || showAnimate}}">
+        <view wx:if="{{showPicture}}" bindtap="playPicture">
+            <image src="{{showStep==1 ? '../../../images/ar/pingtang.png' : '../../../images/ar/zhanli.png'}}" style="width:80%;" mode="widthFix"></image>
+        </view>
+        <view wx:if="{{showAnimate}}" bindtap="playAnimate">
+            <image src="http://yunrusoft.top/2022-10-08-20-28-50.gif" style="width:80%;" mode="widthFix"></image>
+        </view>
+    </view>
+  
+      <!--<image id="models" src="../../../images/tangxia-model.png" mode="widthFix" wx:if="{{showStep == 1}}"
+        data-value="2"></image>-->
+      
+</view>
+<canvas type="2d" id="loaderNeed"></canvas>

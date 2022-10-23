@@ -1,0 +1,25 @@
+/* pages/wuhuaqi/wuhuaqi.wxss */
+.title{
+  margin:20rpx auto 0;
+  font-size: 48rpx;
+}
+.video{
+  width: 96%;
+  margin: 20rpx auto 0;
+}
+.video:first-child{
+  margin-top: 10%;
+  margin-bottom:10%;
+}
+.image{
+  width:40%;
+  margin:10rpx auto 0;
+
+}
+.description{
+  margin: 20rpx;
+}
+
+.advantages{
+  margin: 10rpx;
+}

@@ -1,0 +1,13 @@
+.ui-h3{
+  background: #fff;
+  text-align: center;
+  line-height: 2.8;
+  border-bottom: 1px solid #ddd;
+}
+.infobar{
+  background-color: #fff;
+  padding: 40rpx 4%;
+}
+.infobar .ui-info-row:last-child{
+  border-bottom: 0;
+}

@@ -1,0 +1,37 @@
+<view class="container banner">
+  <image src="../../images/coursebanner2.png" mode="widthFix"></image>
+  <image src="../../images/coursebanner.png" class="banner2" mode="widthFix"></image>
+  <text>课程内容分类</text>
+</view>
+<view  class="list">
+  <view wx:if="{{detail.animation}}" data-open-type="1" data-data="{{detail.animation}}" class="item" bindtap="toDetailPage">
+    <view>
+      <image class="icon" src="../../images/video.png" mode="aspectFit"></image>
+      <text class="name">原理动画</text>
+    </view>
+  </view>
+  <view wx:if="{{detail.example}}" class="item" data-open-type="0" data-data="{{detail.example}}" bindtap="toDetailPage">
+    <view>
+      <image class="icon" src="../../images/recommend.png" mode="aspectFit"></image>
+      <text class="name">例题分析</text>
+    </view>
+  </view>
+  <view wx:if="{{detail.model}}" class="item" data-open-type="2" data-data="{{detail.model}}" bindtap="toDetailPage">
+    <view>
+      <image class="icon" src="../../images/video.png" mode="aspectFit"></image>
+      <text class="name">模型交互</text>
+    </view>
+  </view>
+  <view wx:if="{{detail.video}}" class="item" data-open-type="3" data-data="{{detail.video}}" bindtap="toDetailPage">
+    <view>
+      <image class="icon" src="../../images/video.png" mode="aspectFit"></image>
+      <text class="name">视频讲解</text>
+    </view>
+  </view>
+  <view wx:if="{{detail.medicals}}" class="item" data-open-type="4" data-data="{{detail.medicals}}" bindtap="toDetailPage">
+    <view>
+      <image class="icon" src="../../images/medical.png" mode="aspectFit"></image>
+      <text class="name">医学拓展</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,43 @@
+exports.COURSE_CONTENT_TYPES = [
+  {
+    id: 1,
+    name: "principle",
+    label: "原理动画",
+  },
+  {
+    id: 2,
+    name: "analysis",
+    label: "例题分析",
+  },
+  {
+    id: 3,
+    name: "video",
+    label: "视频讲解",
+  },
+  {
+    id: 4,
+    name: "model",
+    label: "模型交互",
+  },
+  {
+    id: 5,
+    name: "medicals",
+    label: "医学拓展",
+  },
+];
+
+// Auth config
+exports.USERINFO_STORAGE_KEY = "userInfo";
+exports.USER_LOGIN_EXPIRE_DURATION = 3600 * 24 * 7 * 1000;
+
+// EasyAR config
+exports.EASYAR_IMG_ID = ["22cc5fa8-4716-4c4f-a331-25f364a623d8"];
+exports.EASYAR_CLOUD_KEY = "13fd77824aaf3f9226076ef46cda3461";
+exports.EASYAR_CLOUD_SECRET =
+  "twKVIE7RQd3KMt1OhsLOFIcsKYtQm3plcRWyAJpbHasRrPK7Q7R95l2UotEgtbjnSGS0KwwAxXQmbxu7lG8sQ9ujLPG0p04Cq0jZuD3cTTfoKtzv70KgUMEoTvZkdjK7";
+exports.EASYAR_CLOUD_URL = "https://cn1-crs.easyar.com:8443";
+exports.EASYAR_API_KEY = "5f1df2e6701617f96b8b60bc7e5eaab2";
+exports.EASYAR_API_SECRET =
+  "d6bfea0ffe542db2fdf796db98790238e1841145251dc6cbfde0f63bdccdfc44";
+exports.EASYAR_TOKEN =
+  "9o2Y5mV1Vly4EDOTnHverlX84drLRLGVQ9/3EsAxpKRVMmWSHDI6tHscM3QOw79Yc7ncfEhGorNef89PXOH0zWG94F6/+8uSl9hAc4+l5Lt8m0GqK1Ocy/jyBoQE2jkDa/wPznmJ+zEN9h0HK0LA/s8hTY2BEfan5G4csUJiaWrChs82JdEcfk3r04BiAgdq79QmY/Amd/cmWmlrV51emIOL4RzuvQEb3SGY6WOfkkpo6mQnMKEn4Q4Gc/1D1h800AvkRIxdq1Z5ragQcY1wM6u1IyacXoc629PR0pl3kdXInuatYLrc1HkekMCkacng2VW3HSpjgla5sQxxvadFQY5/+DCsc9NDWYp+LuPt3zKW2/8fnB/NCmmoshpNPECkgBIsdbkOg6Ex5AriY1Abp/WNgAFGuKg7cPYOzKVf/8toJLtNZ+Sw7OcEjPKgLwOWdDhUStDuVW8aUoiCz9hExQ==";

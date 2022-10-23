@@ -1,0 +1,9 @@
+<view class="list">
+  <view data-id="{{item._id}}" bindtap="toReview" class="item" wx:for="{{list}}" wx:key="_id" hover-class="ui-hover">
+    <view class="left">
+      <text class="title">{{item.exam_name}}</text>
+      <text class="time">{{item.date}}</text>
+    </view>
+    <image src="../../images/right.png" mode="widthFix"></image>
+  </view>
+</view>
