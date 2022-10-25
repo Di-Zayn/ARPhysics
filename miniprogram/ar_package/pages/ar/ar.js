@@ -34,15 +34,22 @@ var arContent = {
       canvas: null
     }
 };
-var standModel, lieModel;
 
-var ani1, ani2, ani3;
+var ani1, ani2, ani3, ani4;
+let canvasDict = {
+
+}
 var systemInfo = wx.getSystemInfoSync();
 var SELECT_TYPE = {
     NONE: 0,
     IMAGE: 1,
     VIDEO: 2
 };
+// var aniIdDict = {
+//   'lie': null,
+//   'stand': null,
+
+// }
 Page({
     disposing: false,
     frameId: -1,
@@ -230,10 +237,11 @@ Page({
             .select(selector)
             .node()
             .exec(function (res) {
-              var canvas = null
+              let canvas = null
               if (res[0] && res[0].node) {
                 canvas = res[0].node
               } else {
+                console.log("null")
                 return
               }
               var gl = canvas.getContext("webgl", {
@@ -241,14 +249,6 @@ Page({
               });
               arContent[type].canvas = canvas;
               that.initTHREE(new THREE.global.registerCanvas(canvas), config, type);
-              // if (that.data.showStep == 1) {
-              //   canvas.width = 300;
-              //   canvas.height = 300;
-              // } else if (that.data.showStep == 3) {
-              //   canvas.width = 300;
-              //   canvas.height = 300;
-              // }              
-
         });
     },
     initTHREE: function (canvas, config, type) {
@@ -313,7 +313,6 @@ Page({
               }
               if(obj.children[5] != undefined){
                 //qzx 衣服
-                console.log('obj.children[5]')
                 obj.children[5].translateX(-0.015);
                 //obj.children[5].translateY(0.001)
               }
@@ -336,45 +335,37 @@ Page({
         else {
             content.renderer.setSize(canvas.width, canvas.height);
         }
-        //调用动画
-        this.animate(canvas);
     },
-    animate: function (canvas) {
+
+    animate: function (type) {
       var that = this;
+      var canvas = arContent[type].canvas
       var aniId = canvas.requestAnimationFrame(function () {
-        //  return that.animate(canvas);
+        // 该函数是每次页面刷新前的回调函数
+        // 不断调用实现渲染
+        return that.animate(type);
       });
-      if (this.data.showStep == 1) {
+      if (type == 'lie') {
         var _a = arContent["lie"], renderer = _a.renderer, scene = _a.scene, camera = _a.camera;
-        console,log(_a)
         renderer && renderer.clear();
         renderer && renderer.render(scene, camera);
         ani1 = aniId;
-        console.log(ani1)
-
-      } else if (this.data.showStep == 2) {
+      } else if (type == 'stand') {
         var _b = arContent["stand"], renderer = _b.renderer, scene = _b.scene, camera = _b.camera;
         renderer && renderer.clear();
         renderer && renderer.render(scene, camera);
         ani2 = aniId;
-      }else if (this.data.showStep == 3) {
-        var _c = arContent["lie"], renderer = _c.renderer, scene = _c.scene, camera = _c.camera;
-        var _d = arContent["stand"], renderer2 = _d.renderer, scene2 = _d.scene, camera2 = _d.camera;
-        console.log(_c)
-        console.log(_d)
-        renderer && renderer.clear();
-        renderer2 && renderer2.clear();
-        renderer && renderer.render(scene, camera);
-        renderer2 && renderer2.render(scene2, camera2);
-        ani3 = aniId;
-        console.log(ani3)
       }
     },
+
     clear3d: function (type) {
       
       if (type == 1 || type == 2) {
         var _a = type == 1 ? arContent["lie"] : arContent["stand"], canvas = _a.canvas, renderer = _a.renderer, camera = _a.camera, model = _a.model, scene = _a.scene;
+        ani1 && console.log("clear 1")
         ani1 && canvas.cancelAnimationFrame(ani1);
+        ani2 && canvas.cancelAnimationFrame(ani2);
+
         if (renderer) {
           if (type == 1) {
             // arContent["lie"].renderer.forceContextLoss();
@@ -421,15 +412,12 @@ Page({
           arContent["stand"].camera = null;
         }
       } else {
-
+        wx.showToast({
+          title: 'ani1',
+        })
         ani1 && arContent["lie"].canvas.cancelAnimationFrame(ani1);
         ani3 && arContent["lie"].canvas.cancelAnimationFrame(ani3);
-        wx.showToast({
-          title: 'clear3!!!',
-        })
-        setTimeout(()=>{
-        }, 1000)
-
+      
         if (arContent["lie"].renderer) {
           // arContent["lie"].renderer.forceContextLoss();
           // arContent["lie"].renderer.clearDepth();
@@ -449,6 +437,9 @@ Page({
           arContent["lie"].model = null;
         }
         arContent["lie"].camera = null;
+        wx.showToast({
+          title: 'ani2',
+        })
         ani2 && arContent["stand"].canvas.cancelAnimationFrame(ani2);
         ani3 && arContent["stand"].canvas.cancelAnimationFrame(ani3);
         if (arContent["stand"].renderer) {
@@ -482,53 +473,68 @@ Page({
         var pre_step = this.data.showStep;
         this.setData({
             showStep: e.currentTarget.dataset.value
-        }, function () {
-            var config = {}, selector = "";
-            if (this.data.showStep == 1) {
-              // 记得要清除之前界面的模型
-              // 目前是只有3界面存在模型
-              if (pre_step == 3) {
-                console.log(ani1)
-                console.log(ani2)
-                ani1 && ani2 && this.clear3d(3);
-              } else {
-                ani2 && this.clear3d(2);
-              }
-              // selector = "#lie";
-              // config = {
-              //   camera: [1, 0.1, 1000],
-              //   pos: [100, 40, 8],
-              //   src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
-              // };
-              this.initModel(selector, config, "lie");
+        }, 
+        function () {
+          // 1: 只有lie模型 
+          // 2: 只有stand
+          // 3: 两个都有
+          var config = {}, selector = "";
+          if (this.data.showStep == 0) {
+            ani1 && this.clear3d(1)
+            ani2 && this.clear3d(2)
+            ani3 && this.clear3d(3)
+          }
+          if (this.data.showStep == 1) {
+            if (pre_step == 3) {
+              ani3 && this.clear3d(3)
+            } else {
+              ani2 && this.clear3d(2);
             }
-            else if (this.data.showStep == 2) {
-              if (pre_step == 3) {
-                ani1 && ani2 && this.clear3d(3);
-              } else {
-                ani2 && this.clear3d(1);
-              }
-              // selector = "#stand";
-              // config = {
-              //   camera: [0.74, 0.1, 1000],
-              //   pos: [150, 100, 120],
-              //   src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
-              // };
-              this.initModel(selector, config, "stand");
-            } else if (this.data.showStep == 3) {
-              this.initModel("#lie", {
-                  camera: [1.2, 0.1, 1000],
-                  pos: [100, 20, 20],
-                  src: 
-                  "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
-              }, "lie");
-              this.initModel("#stand", {
-                  camera: [0.55, 0.1, 1000],
-                  pos: [150, 50, 120],
-                  src: 
-                  "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
-              }, "stand");
+            ani1 && this.clear3d(1)
+            ani2 && this.clear3d(2)
+            ani3 && this.clear3d(3)
+            selector = "#lie";
+            config = {
+              camera: [1, 0.1, 1000],
+              pos: [100, 40, 8],
+              src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
+            };
+            this.initModel(selector, config, "lie");
+          } else if (this.data.showStep == 2) {
+            ani1 && this.clear3d(1)
+            ani2 && this.clear3d(2)
+            ani3 && this.clear3d(3)
+            if (pre_step == 3) {
+              ani3 && this.clear3d(3)
+            } else {
+              ani1 && this.clear3d(1);
             }
+            selector = "#stand";
+            config = {
+              camera: [0.74, 0.1, 1000],
+              pos: [150, 100, 120],
+              src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
+            };
+            this.initModel(selector, config, "stand");
+          } else if (this.data.showStep == 3) {
+            ani1 && this.clear3d(1)
+            ani2 && this.clear3d(2)
+            ani3 && this.clear3d(3)
+            this.initModel("#lie", {
+                camera: [1.2, 0.1, 1000],
+                pos: [100, 20, 20],
+                src: 
+                "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
+            }, "lie");
+            this.initModel("#stand", {
+                camera: [0.55, 0.1, 1000],
+                pos: [150, 50, 120],
+                src: 
+                "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
+            }, "stand");
+            this.animate('lie');
+            this.animate('stand');
+          }
         });
     },
     playAnimate: function(e){
