@@ -25,6 +25,7 @@ export class CrsClient {
     let ctxImageData = this.context.createImageData(frame.width, frame.height); //#1
     ctxImageData.data.set(new Uint8ClampedArray(frame.data)); //#1
     this.context.putImageData(ctxImageData, 0, 0); //#1
+
     let dataUrl = this.canvas.toDataURL("image/jpeg", this.config.quality); //#2
     let base64 = dataUrl.substr(23); //#2 去除dataURL头，留下文件内容
 

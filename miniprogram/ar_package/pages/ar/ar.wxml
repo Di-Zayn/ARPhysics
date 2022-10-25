@@ -3,7 +3,7 @@
 </view> -->
 <!-- 相机组件，放在UI最底层显示相机内容 -->
 <camera frame-size="medium" bindinitdone="onCameraInit" mode="normal" device-position="back" resolution="high"
-  flash="off" />
+  flash="off" wx:if="{{showOverlay}}"/>
 <!-- canvas组件，用于进行图片压缩，位置在屏幕外，不可见 -->
 <canvas type="2d" id="capture" style="width:1px; height: 1px;" />
 
@@ -99,8 +99,8 @@
       </image>
       <image src="../../../images/ar/back.png" mode="widthFix" bindtap="goback"></image>
     </view>
-    <video src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/video5.mp4"
-      style="height: 0;width: 0;" id="video5"></video>
+    <video src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/test.mp4"
+      style="height: 0px;width: 0px;" id="video5"></video>
   </view>
     <!-- 浮层 -->
     <!-- <view class="b1" wx:if="{{showAnimate}}" bindtap="playAnimate">
@@ -114,17 +114,15 @@
         </view>
     </view> -->
     
-    <view id="content2" wx:if="{{showPicture || showAnimate}}">
-        <view wx:if="{{showPicture}}" bindtap="playPicture">
-            <image src="{{showStep==1 ? '../../../images/ar/pingtang.png' : '../../../images/ar/zhanli.png'}}" style="width:80%;" mode="widthFix"></image>
-        </view>
-        <view wx:if="{{showAnimate}}" bindtap="playAnimate">
-            <image src="http://yunrusoft.top/2022-10-08-20-28-50.gif" style="width:80%;" mode="widthFix"></image>
-        </view>
+  <view id="content2" wx:if="{{showPicture || showAnimate}}">
+    <view wx:if="{{showPicture}}" bindtap="playPicture">
+      <image src="{{showStep==1 ? '../../../images/ar/pingtang.png' : '../../../images/ar/zhanli.png'}}" style="width:80%;" mode="widthFix"></image>
     </view>
+    <view wx:if="{{showAnimate}}" bindtap="playAnimate">
+      <image src="http://yunrusoft.top/2022-10-08-20-28-50.gif" style="width:80%;" mode="widthFix"></image>
+    </view>
+  </view>
   
-      <!--<image id="models" src="../../../images/tangxia-model.png" mode="widthFix" wx:if="{{showStep == 1}}"
-        data-value="2"></image>-->
       
 </view>
 <canvas type="2d" id="loaderNeed"></canvas>

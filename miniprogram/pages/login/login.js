@@ -75,10 +75,11 @@ Page({
                 });
               },
             })
+          } else {
+            wx.switchTab({
+              url: "/pages/user/user",
+            });
           }
-          // wx.switchTab({
-          //   url: "/pages/user/user",
-          // });
         }, 1500);
       }
     } else {
