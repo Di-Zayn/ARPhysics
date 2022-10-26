@@ -78,7 +78,7 @@
       <text bindtap="playAudio">点击文字，听血压与体位的关系讲解</text>
       <view class="video4-main">
         <video bindended="handleVideo4End" id="video4" controls="{{false}}" show-center-play-btn="{{true}}"
-          src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/video4.mp4"></video>
+          src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/test.mp4"></video>
         <!-- <audio id="audio" style="height: 0; width: 0;"
                                 src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/audio.mp3"></audio> -->
         <text>对均匀流管S1=S2，各处流速v1=v2。此时伯努利方程为 p+ρgh</text>
@@ -102,17 +102,6 @@
     <video src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/test.mp4"
       style="height: 0px;width: 0px;" id="video5"></video>
   </view>
-    <!-- 浮层 -->
-    <!-- <view class="b1" wx:if="{{showAnimate}}" bindtap="playAnimate">
-    <view class="b2">
-        <video id="video6" src="http://www.yunrusoft.top:8001/file/fefd4a9e3e8a4daab96a34f3fc5df4a8/6341755a148714e29da545729604696c5a7155fd/2022-10-08-20-28-50.mp4" controls="false" autoplay="true" ></video>
-        </view>
-    </view>
-    <view class="b1" wx:if="{{showPicture}}" bindtap="playPicture">
-    <view class="b2">
-        <image id="image6" src="../../../images/ar/pingtang.png" ></image>
-        </view>
-    </view> -->
     
   <view id="content2" wx:if="{{showPicture || showAnimate}}">
     <view wx:if="{{showPicture}}" bindtap="playPicture">

@@ -15,7 +15,8 @@ var arContent = {
         model: null,
         renderer: null,
         animationId: null,
-        canvas: null
+        canvas: null,
+        inited: false
     },
     stand: {
         camera: null,
@@ -23,7 +24,8 @@ var arContent = {
         model: null,
         renderer: null,
         animationId: null,
-        canvas: null
+        canvas: null,
+        inited: false
     },
     anima: {
       camera: null,
@@ -31,25 +33,17 @@ var arContent = {
       model: null,
       renderer: null,
       animationId: null,
-      canvas: null
+      canvas: null,
+      inited: false
     }
 };
 
-var ani1, ani2, ani3, ani4;
-let canvasDict = {
-
-}
 var systemInfo = wx.getSystemInfoSync();
 var SELECT_TYPE = {
     NONE: 0,
     IMAGE: 1,
     VIDEO: 2
 };
-// var aniIdDict = {
-//   'lie': null,
-//   'stand': null,
-
-// }
 Page({
     disposing: false,
     frameId: -1,
@@ -232,16 +226,14 @@ Page({
     },
     initModel: function (selector, config, type) {
         var that = this;
-        var query = wx.createSelectorQuery();
+        var query = wx.createSelectorQuery()
         query
-            .select(selector)
-            .node()
-            .exec(function (res) {
+            .select(selector).fields({node: true}).exec(function (res) {
               let canvas = null
               if (res[0] && res[0].node) {
                 canvas = res[0].node
               } else {
-                console.log("null")
+                console.log("canvas is null")
                 return
               }
               var gl = canvas.getContext("webgl", {
@@ -335,6 +327,7 @@ Page({
         else {
             content.renderer.setSize(canvas.width, canvas.height);
         }
+        content.inited = true
     },
 
     animate: function (type) {
@@ -345,154 +338,63 @@ Page({
         // 不断调用实现渲染
         return that.animate(type);
       });
-      if (type == 'lie') {
-        var _a = arContent["lie"], renderer = _a.renderer, scene = _a.scene, camera = _a.camera;
-        renderer && renderer.clear();
-        renderer && renderer.render(scene, camera);
-        ani1 = aniId;
-      } else if (type == 'stand') {
-        var _b = arContent["stand"], renderer = _b.renderer, scene = _b.scene, camera = _b.camera;
-        renderer && renderer.clear();
-        renderer && renderer.render(scene, camera);
-        ani2 = aniId;
-      }
+
+      const { renderer, scene, camera } = arContent[type]
+      renderer && renderer.clear();
+      renderer && renderer.render(scene, camera);
+      arContent[type].animationId = aniId
     },
 
     clear3d: function (type) {
       
-      if (type == 1 || type == 2) {
-        var _a = type == 1 ? arContent["lie"] : arContent["stand"], canvas = _a.canvas, renderer = _a.renderer, camera = _a.camera, model = _a.model, scene = _a.scene;
-        ani1 && console.log("clear 1")
-        ani1 && canvas.cancelAnimationFrame(ani1);
-        ani2 && canvas.cancelAnimationFrame(ani2);
+      const { canvas, renderer, model , scene, animationId } = arContent[type]
 
-        if (renderer) {
-          if (type == 1) {
-            // arContent["lie"].renderer.forceContextLoss();
-            // arContent["lie"].renderer.clearDepth();
-            // arContent["lie"].renderer.resetGLState();
-            // arContent["lie"].renderer.clearStencil();
-            arContent["lie"].renderer.clear();
-            arContent["lie"].renderer.dispose();
-            arContent["lie"].renderer.domElement = null;
-            arContent["lie"].renderer = null;
-          } else {
-            // arContent["stand"].renderer.forceContextLoss();
-            // arContent["stand"].renderer.clearDepth();
-            // arContent["stand"].renderer.resetGLState();
-            // arContent["stand"].renderer.clearStencil();
-            arContent["stand"].renderer.clear();
-            arContent["stand"].renderer.dispose();
-            arContent["stand"].renderer.domElement = null;
-            arContent["stand"].renderer = null;
-          }
-        }
-        if (scene) {
-          if (type == 1) {
-            arContent["lie"].scene.dispose();
-            arContent["lie"].scene = null;
-          }
-          else {
-            arContent["stand"].scene.dispose();
-            arContent["stand"].scene = null;
-          }
-        }
-        if (model) {
-          if (type == 1) {
-            arContent["lie"].model.dispose();
-            arContent["lie"].model = null;
-          } else {
-            arContent["stand"].model.dispose();
-            arContent["stand"].model = null;
-          }
-        }
-        if (type == 1) {
-          arContent["lie"].camera = null;
-        } else {
-          arContent["stand"].camera = null;
-        }
-      } else {
-        wx.showToast({
-          title: 'ani1',
-        })
-        ani1 && arContent["lie"].canvas.cancelAnimationFrame(ani1);
-        ani3 && arContent["lie"].canvas.cancelAnimationFrame(ani3);
-      
-        if (arContent["lie"].renderer) {
-          // arContent["lie"].renderer.forceContextLoss();
-          // arContent["lie"].renderer.clearDepth();
-          // arContent["lie"].renderer.resetGLState();
-          // arContent["lie"].renderer.clearStencil();
-          arContent["lie"].renderer.clear();
-          arContent["lie"].renderer.dispose();
-          arContent["lie"].renderer.domElement = null;
-          arContent["lie"].renderer = null;
-        }
-        if (arContent["lie"].scene) {
-          arContent["lie"].scene.dispose();
-          arContent["lie"].scene = null;
-        }
-        if (arContent["lie"].model) {
-          arContent["lie"].model.dispose();
-          arContent["lie"].model = null;
-        }
-        arContent["lie"].camera = null;
-        wx.showToast({
-          title: 'ani2',
-        })
-        ani2 && arContent["stand"].canvas.cancelAnimationFrame(ani2);
-        ani3 && arContent["stand"].canvas.cancelAnimationFrame(ani3);
-        if (arContent["stand"].renderer) {
-          // arContent["stand"].renderer.forceContextLoss();
-          // arContent["stand"].renderer.clearDepth();
-          // arContent["stand"].renderer.resetGLState();
-          // arContent["stand"].renderer.clearStencil();
-          arContent["stand"].renderer.clear();
-          arContent["stand"].renderer.dispose();
-          arContent["stand"].renderer.domElement = null;
-          arContent["stand"].renderer = null;
-        }
-        if (arContent["stand"].scene) {
-          arContent["stand"].scene.dispose();
-          arContent["stand"].scene = null;
-        }
-        if (arContent["stand"].model) {
-          arContent["stand"].model.dispose();
-          arContent["stand"].model = null;
-        }
-        arContent["stand"].camera = null;
+      animationId && canvas.cancelAnimationFrame(animationId)
+      arContent[type].camera = null
+      arContent[type].inited = false
+
+      if (renderer) {
+        // arContent[type].renderer.forceContextLoss();
+        // arContent[type].renderer.clearDepth();
+        // arContent[type].renderer.resetGLState();
+        // arContent[type].renderer.clearStencil();
+        arContent[type].renderer.clear();
+        arContent[type].renderer.dispose();
+        arContent[type].renderer.domElement = null;
+        arContent[type].renderer = null;
       }
+
+      if (scene) {
+        arContent[type].scene.dispose();
+        arContent[type].scene = null;
+      }
+
+      if (model) {
+        arContent[type].model.dispose();
+        arContent[type].model = null;
+      }
+
       // THREE.BufferGeometry.dispose();
       // THREE.Material.dispose();
       // THREE.Texture.dispose();
       // THREE.WebGLRenderTarget.dispose();
       // THREE.Scene.dispose();
     },
+
     // 切换进入不同的交互界面
     changeStep: function (e) {
-        var pre_step = this.data.showStep;
         this.setData({
             showStep: e.currentTarget.dataset.value
         }, 
         function () {
-          // 1: 只有lie模型 
-          // 2: 只有stand
-          // 3: 两个都有
+
           var config = {}, selector = "";
-          if (this.data.showStep == 0) {
-            ani1 && this.clear3d(1)
-            ani2 && this.clear3d(2)
-            ani3 && this.clear3d(3)
+          for (let type in arContent) {
+            if (arContent[type].animationId) {
+              this.clear3d(type)
+            }
           }
           if (this.data.showStep == 1) {
-            if (pre_step == 3) {
-              ani3 && this.clear3d(3)
-            } else {
-              ani2 && this.clear3d(2);
-            }
-            ani1 && this.clear3d(1)
-            ani2 && this.clear3d(2)
-            ani3 && this.clear3d(3)
             selector = "#lie";
             config = {
               camera: [1, 0.1, 1000],
@@ -500,15 +402,13 @@ Page({
               src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
             };
             this.initModel(selector, config, "lie");
+            let id1 = setInterval(()=>{
+              if (arContent['lie'].inited) {
+                clearInterval(id1)
+                this.animate('lie');
+              }
+            }, 1000)
           } else if (this.data.showStep == 2) {
-            ani1 && this.clear3d(1)
-            ani2 && this.clear3d(2)
-            ani3 && this.clear3d(3)
-            if (pre_step == 3) {
-              ani3 && this.clear3d(3)
-            } else {
-              ani1 && this.clear3d(1);
-            }
             selector = "#stand";
             config = {
               camera: [0.74, 0.1, 1000],
@@ -516,10 +416,13 @@ Page({
               src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
             };
             this.initModel(selector, config, "stand");
+            let id2 = setInterval(()=>{
+              if (arContent['stand'].inited) {
+                clearInterval(id2)
+                this.animate('stand');
+              }
+            }, 1000)
           } else if (this.data.showStep == 3) {
-            ani1 && this.clear3d(1)
-            ani2 && this.clear3d(2)
-            ani3 && this.clear3d(3)
             this.initModel("#lie", {
                 camera: [1.2, 0.1, 1000],
                 pos: [100, 20, 20],
@@ -532,8 +435,20 @@ Page({
                 src: 
                 "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
             }, "stand");
-            this.animate('lie');
-            this.animate('stand');
+            // initModel后 需要一定的时间渲染 不能接着执行animate
+            // 如果把animate放在initThree中执行会导致id被两个模型抢占
+            let id1 = setInterval(()=>{
+              if (arContent['lie'].inited) {
+                clearInterval(id1)
+                this.animate('lie');
+              }
+            }, 1000)
+            let id2 = setInterval(()=>{
+              if (arContent['stand'].inited) {
+                clearInterval(id2)
+                this.animate('stand');
+              }
+            }, 1000)
           }
         });
     },
@@ -564,33 +479,34 @@ Page({
     },
     playPicture: function(e){
       // console.log("555");
+      // 如果用户自己没有关的话 需要在切页面的时候处理一下
       this.setData({
         showPicture: !this.data.showPicture
       });
     },
     playAudio: function () {
-        var query = this.createSelectorQuery();
-        var me = this;
-        query.select("#video4").context(function (res) {
-            var audio = wx.createInnerAudioContext();
-            if (!me.data.isPlaying) {
-                audio.src =
-                    "cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/audio.mp3";
-                audio.onCanplay(function () {
-                    audio.play();
-                    res.context.play();
-                    me.setData({
-                        isPlaying: true
-                    });
-                });
-                audio.onStop(function () {
-                    me.setData({
-                        isPlaying: false
-                    });
-                });
-            }
-        });
-        query.exec();
+      var query = this.createSelectorQuery();
+      var _this = this;
+      query.select("#video4").context(function (res) {
+        var audio = wx.createInnerAudioContext();
+        if (!_this.data.isPlaying) {
+          audio.src = "cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/audio/Oasis - Don't Look Back In Anger.ncm"
+              //"cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/audio.mp3";
+          audio.onCanplay(function () {
+            audio.play();
+            res.context.play();
+            _this.setData({
+                isPlaying: true
+            });
+          });
+          audio.onStop(function () {
+            _this.setData({
+                  isPlaying: false
+              });
+          });
+        }
+      });
+      query.exec();
     },
     handleVideo4End: function () {
         this.setData({

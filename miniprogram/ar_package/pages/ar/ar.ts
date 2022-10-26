@@ -40,7 +40,7 @@ let standModel, lieModel;
 
 console.log("111");
 
-let ani1, ani2, ani3;
+let lie_ani, stand_ani, double_ani;
 
 const systemInfo = wx.getSystemInfoSync();
 
@@ -387,12 +387,12 @@ Page({
       const { renderer, scene, camera } = arContent["lie"];
       renderer && renderer.clear();
       renderer && renderer.render(scene, camera);
-      ani1 = aniId;
+      lie_ani = aniId;
     } else if (this.data.showStep == 2) {
       const { renderer, scene, camera } = arContent["stand"];
       renderer && renderer.clear();
       renderer && renderer.render(scene, camera);
-      ani2 = aniId;
+      stand_ani = aniId;
     } else if (this.data.showStep == 3) {
       const { renderer, scene, camera } = arContent["lie"];
       const { renderer: renderer2, scene: scene2, camera: camera2 } = arContent[
@@ -402,7 +402,7 @@ Page({
       renderer2 && renderer2.clear();
       renderer && renderer.render(scene, camera);
       renderer2 && renderer2.render(scene2, camera2);
-      ani3 = aniId;
+      double_ani = aniId;
     }
   },
 
@@ -410,7 +410,7 @@ Page({
     if (type == 1 || type == 2) {
       const { canvas, renderer, camera, model, scene } =
         type == 1 ? arContent["lie"] : arContent["stand"];
-      ani1 && canvas.cancelAnimationFrame(ani1);
+      lie_ani && canvas.cancelAnimationFrame(lie_ani);
       if (renderer) {
         if (type == 1) {
           // arContent["lie"].renderer.forceContextLoss();
@@ -456,8 +456,8 @@ Page({
         arContent["stand"].camera = null;
       }
     } else {
-      ani1 && arContent["lie"].canvas.cancelAnimationFrame(ani1);
-      ani3 && arContent["lie"].canvas.cancelAnimationFrame(ani3);
+      lie_ani && arContent["lie"].canvas.cancelAnimationFrame(lie_ani);
+      double_ani && arContent["lie"].canvas.cancelAnimationFrame(double_ani);
       if (arContent["lie"].renderer) {
         // arContent["lie"].renderer.forceContextLoss();
         // arContent["lie"].renderer.clearDepth();
@@ -478,8 +478,8 @@ Page({
       }
       arContent["lie"].camera = null;
 
-      ani2 && arContent["stand"].canvas.cancelAnimationFrame(ani2);
-      ani3 && arContent["stand"].canvas.cancelAnimationFrame(ani3);
+      stand_ani && arContent["stand"].canvas.cancelAnimationFrame(stand_ani);
+      double_ani && arContent["stand"].canvas.cancelAnimationFrame(double_ani);
       if (arContent["stand"].renderer) {
         // arContent["stand"].renderer.forceContextLoss();
         // arContent["stand"].renderer.clearDepth();
@@ -525,9 +525,9 @@ Page({
               "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914",
           };
           if (pre_step == 3) {
-            ani1 && ani2 && this.clear3d(3);
+            lie_ani && stand_ani && this.clear3d(3);
           } else {
-            ani2 && this.clear3d(2);
+            stand_ani && this.clear3d(2);
           }
         } else if (this.data.showStep == 2) {
           selector = "#stand";
@@ -538,9 +538,9 @@ Page({
               "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508",
           };
           if (pre_step == 3) {
-            ani1 && ani2 && this.clear3d(3);
+            lie_ani && stand_ani && this.clear3d(3);
           } else {
-            ani1 && this.clear3d(1);
+            lie_ani && this.clear3d(1);
           }
         }
         if (this.data.showStep == 1) {
