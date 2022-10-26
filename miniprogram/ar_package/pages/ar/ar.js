@@ -59,6 +59,13 @@ Page({
         showAnimate: false,
         showPicture: false,
         showModel1:false,
+        // 模型可交互参数
+        modelData: {
+          angle: 0,
+          maxDegree: 90,
+          minDegree: 0,
+
+        },
         //CRS配置
         config: {
             token: constants_1.EASYAR_TOKEN,
@@ -137,17 +144,15 @@ Page({
         });
     },
     queryImage: function (frame) {
-
         var _this = this;
         // 若crs未运行/正在请求/crs客户端初始化则不可继续
         if (!this.runningCrs || this.busy || !this.crsClient)
             return;
-        
+
         // 设置最短CRS请求间隔
         var now = new Date().getTime();
         if (this.last && now - this.last < this.data.config.minInterval)
-            return;
-
+            return
         this.last = now;
         this.busy = true; //如果正在进行CRS请求，就不允许再次请求
         this.crsClient
@@ -162,19 +167,18 @@ Page({
                 console.log("识别成功", result.target.targetId);
                 //如果待触发的id列表中存在识别到的这个id，就触发
                 if (_this.data.targetIds.find(function (targetId) { return targetId === result.target.targetId; })) {
-                    _this.onResult(result.target);
+                    _this.onResult();
                 }
-            }
-            else {
-                wx.showToast({
-                  title: "请重新尝试", //result.message,
-                  icon:"none"
-                });
-                setTimeout(()=>{
-                  _this.back();
-                }, 500);
-                console.log("识别失败", result);
-                //_this.onResult(result);
+            } else {
+              // 用于快速调试:
+              _this.onResult();
+              // wx.showToast({
+              //   title: "请重新尝试", //result.message,
+              //   icon:"none"
+              // });
+              // setTimeout(()=>{
+              //   _this.back();
+              // }, 500);
             }
             _this.busy = false;
         }).catch(function (e) {
@@ -182,7 +186,7 @@ Page({
             console.log(e);
         }); //小程序iOS端不支持finally，所以在then和catch里分别设置busy = false
     },
-    onResult: function (target) {
+    onResult: function () {
         this.runningCrs = false;
         this.hideLoading();
         wx.showToast({
@@ -266,50 +270,26 @@ Page({
         
         // 创建gltf加载器 用于载入http请求返回的gltf文件
         var gltfLoader = new GLTFLoader();
+        // var loader = new THREE.FBXLoader();
         gltfLoader.load(config.src, function (gltf) {
 
           content.model = gltf.scene;
           track(content.model);
           content.scene.add(content.model);
+
+          // content.model.scale.set(1, 1, 1)
+          // content.model.position.set(0, -5, 0)
           
           // traverse本身是一个循环 遍历父物体的所有子物体
-          content.model.traverse(function (obj) {
-            if (type == "lie") {
-              if (_this.data.showStep == 1) {
-                if(obj.children[7] != undefined){
-                  obj.children[7].translateX(-0.01);
-                }
-                if(obj.children[5] != undefined){
-                  obj.children[5].translateX(-0.005);
-                }  
-              }
-              else if (_this.data.showStep == 3) {
-                obj.translateX(1);
-              }
-            } else if(type == "stand") {
-              obj.translateY(-1);
-              obj.translateX(0.2);
-              obj.children.forEach(function (element) {
-                  element.rotateY(Math.PI / 4);
-              });
-              if(obj.children[2] != undefined){
-                obj.children[2].translateZ(0.045); // 裤子
-                obj.children[2].translateX(-0.03);
-                obj.children[2].translateY(0.02);
-              }
-              if(obj.children[3] != undefined){
-                //qzx 头发
-                obj.children[3].translateZ(0.05);
-                obj.children[3].translateX(-0.05);
-                obj.children[3].translateY(0.01);
-              }
-              if(obj.children[5] != undefined){
-                //qzx 衣服
-                obj.children[5].translateX(-0.015);
-                //obj.children[5].translateY(0.001)
-              }
-            }
-          });
+          // content.model.traverse(function (obj) {
+          // });
+          
+          // 将人体上的牌子去掉
+          content.model.children[1].visible = false 
+          content.model.children[2].visible = false 
+          content.model.children[3].visible = false 
+          // content.model.children[5].translateX(0.01)
+
           content.model.updateMatrixWorld();
         }, function (e) {
             console.error(e);
@@ -331,25 +311,29 @@ Page({
     },
 
     animate: function (type) {
-      var that = this;
-      var canvas = arContent[type].canvas
-      var aniId = canvas.requestAnimationFrame(function () {
-        // 该函数是每次页面刷新前的回调函数
-        // 不断调用实现渲染
-        return that.animate(type);
-      });
+
+      // var that = this;
+      // var canvas = arContent[type].canvas    
+      // 本身是静态的动画 就不用再不停的渲染了
+      // var aniId = canvas.requestAnimationFrame(function () {
+      //   // 该函数是每次页面刷新前的回调函数
+      //   // 不断调用实现渲染
+      //   // return that.animate(type);
+      // });
+      // arContent[type].animationId = aniId
+
 
       const { renderer, scene, camera } = arContent[type]
       renderer && renderer.clear();
       renderer && renderer.render(scene, camera);
-      arContent[type].animationId = aniId
+
     },
 
     clear3d: function (type) {
       
       const { canvas, renderer, model , scene, animationId } = arContent[type]
 
-      animationId && canvas.cancelAnimationFrame(animationId)
+      // animationId && canvas.cancelAnimationFrame(animationId)
       arContent[type].camera = null
       arContent[type].inited = false
 
@@ -387,7 +371,6 @@ Page({
             showStep: e.currentTarget.dataset.value
         }, 
         function () {
-
           var config = {}, selector = "";
           for (let type in arContent) {
             if (arContent[type].animationId) {
@@ -398,7 +381,7 @@ Page({
             selector = "#lie";
             config = {
               camera: [1, 0.1, 1000],
-              pos: [100, 40, 8],
+              pos: [130, 40, 0],
               src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
             };
             this.initModel(selector, config, "lie");
@@ -411,9 +394,10 @@ Page({
           } else if (this.data.showStep == 2) {
             selector = "#stand";
             config = {
-              camera: [0.74, 0.1, 1000],
-              pos: [150, 100, 120],
-              src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
+              camera: [1, 0.1, 1000],//[0.74, 0.1, 1000],
+              pos: [150, 0, 8],//[150, 100, 120],
+              src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
+              //"https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
             };
             this.initModel(selector, config, "stand");
             let id2 = setInterval(()=>{
@@ -426,14 +410,13 @@ Page({
             this.initModel("#lie", {
                 camera: [1.2, 0.1, 1000],
                 pos: [100, 20, 20],
-                src: 
-                "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
+                src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
             }, "lie");
             this.initModel("#stand", {
                 camera: [0.55, 0.1, 1000],
                 pos: [150, 50, 120],
-                src: 
-                "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
+                src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
+                //"https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
             }, "stand");
             // initModel后 需要一定的时间渲染 不能接着执行animate
             // 如果把animate放在initThree中执行会导致id被两个模型抢占
@@ -451,6 +434,23 @@ Page({
             }, 1000)
           }
         });
+    },
+    handleRotateDegreeChange: function(event) {
+      console.log(event)
+      const degree = event.detail.value
+      const key = event.currentTarget.dataset.key
+      console.log(arContent['lie'].model)
+      console.log(arContent['lie'].camera)
+      if (arContent['lie'].inited) {
+        if (key == 'degree') {
+          arContent['lie'].model.rotation.x = degree/180 * Math.PI
+        } else if (key == 'x') {
+          arContent['lie'].model.children[5].translateX(0.005)
+          arContent['lie'].model.children[5].translateZ(0.005)
+        }
+        // arContent['lie'].model.rotation.x = degree/180 * Math.PI
+        this.animate('lie')
+      }
     },
     playAnimate: function(e){
       // console.log("555");
@@ -496,13 +496,13 @@ Page({
             audio.play();
             res.context.play();
             _this.setData({
-                isPlaying: true
+              isPlaying: true
             });
           });
           audio.onStop(function () {
             _this.setData({
-                  isPlaying: false
-              });
+              isPlaying: false
+            });
           });
         }
       });
