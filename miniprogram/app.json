@@ -64,8 +64,7 @@
     {
       "root": "ar_package",
       "pages": [
-        "pages/ar/ar",
-        "pages/index/index"
+        "pages/ar/ar"
       ]
     }
   ]

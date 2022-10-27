@@ -310,9 +310,9 @@ Page({
           content.renderer.setClearAlpha(0.2)
           content.renderer.setSize(canvas.width, canvas.height);
           content.inited = true
-          this.setData({
-            showModel: true
-          })
+          // this.setData({
+          //   showModel: true
+          // })
         }, function (e) {
             console.error(e);
         });
