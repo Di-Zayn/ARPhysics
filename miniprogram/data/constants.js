@@ -34,6 +34,8 @@ exports.USER_LOGIN_EXPIRE_DURATION = 3600 * 24 * 7 * 1000;
 exports.EASYAR_IMG_ID = [
   "3ee1ad10-6ddb-4549-baa2-142f61f3e875", //lie
   "6f935f7c-bfc3-48a3-ad74-6eb242dce874", //stand
+  "e435ede3-f017-4283-9243-a4b9d07b3a28", //xiaokong,
+  "6c1acce9-5c81-48d5-acbf-ccb03373553e" //Venturi
 ]; // 图片id
 exports.EASYAR_CLOUD_KEY = "3722baa090fb7ddfa9ef6b9e4e031360"; //crs appid
 //"fb3199aa8c2abb22f3d3802361668d3c";

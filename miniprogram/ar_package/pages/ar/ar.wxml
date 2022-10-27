@@ -31,10 +31,11 @@
   </view>
   
   <view class="ar_main" wx:else>
-    <view class="model"  bindtap="playPicture" wx:if="{{showStep == 1}}">
+    <view class="model" wx:if="{{showStep == 1}}">
+        <mp-loading show="{{!showModel}}" ext-class="model_loading" type="circle"></mp-loading>
         <canvas type="webgl" id="body" class="model_vanvas"></canvas>
     </view>
-    <view class="realTimeData">
+    <view class="realTimeData" wx:if="{{showStep==1}}">
         <mp-cells title="参数" ext-class="my-cells">
           <mp-cell value="动脉血压(kPa)" ext-class="cell_item_param"></mp-cell>
           <mp-cell value="静脉血压(kPa)" ext-class="cell_item_param"></mp-cell>
@@ -63,35 +64,41 @@
           max="{{modelData.maxDegree}}" show-value bindchange="handleRotateDegreeChange" data-key="degree" />
       </view>
     </block>
-    <view class="video4" wx:if="{{showStep == 3 }}" >
-      <image id="models" src="../../../images/both-model.png" bindtap="playAnimate"></image>
-      <text bindtap="playAudio">点击文字，听血压与体位的关系讲解</text>
-      <view class="video4-main">
+    <scroll-view class="video4" wx:if="{{showStep == 2 }}" scroll-y="true">
+      <view class="video4-main" style="display: flex;flex-direction: column;">
         <video bindended="handleVideo4End" id="video4" controls="{{false}}" show-center-play-btn="{{true}}"
           src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/test.mp4"></video>
-        <text>对均匀流管S1=S2，各处流速v1=v2。此时伯努利方程为 p+ρgh</text>
+        <view style="display: flex;flex-direction: row;">
+          <mp-icon icon="voice" bindtap="playAudio" ></mp-icon>
+          <text>音频讲解:对均匀流管S1=S2，各处流速v1=v2。此时伯努利方程为 p+ρgh...具体可见下图:</text>
+        </view>
       </view>
-    </view>
+      <image id="models" src="../../../images/both-model.png"></image>
+      <image class="returnButton" src="../../../images/ar/back.png" mode="widthFix" bindtap="changeStep" data-value="1"></image>
+    </scroll-view>
  
-    <view class="btns" style="display: flex;flex-direction: row;">
-      <image src="../../../images/ar/both.png" mode="widthFix" wx:if="{{showStep != 3}}" bindtap="changeStep"
-        data-value="3">
+    <view class="btns" style="display: flex;flex-direction: row;" wx:if="{{showStep == 1}}">
+      <image src="../../../images/ar/both.png" mode="widthFix" bindtap="changeStep"
+        data-value="2">
       </image>
-      <image src="../../../images/ar/video.png" mode="widthFix" wx:if="{{showStep != 3}}" bindtap="playVideo5"
-        data-value="4">
+      <image src="../../../images/ar/video.png" mode="widthFix" bindtap="playVideo5"
+        data-value="3">
       </image>
       <image src="../../../images/ar/back.png" mode="widthFix" bindtap="goback"></image>
     </view>
     <video src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/test.mp4"
       style="height: 0px;width: 0px;" id="video5"></video>
+
+    <view wx:if="{{showStep == 4}}" style="display: flex;flex-direction: column;">
+      <image src="../../../images/xiaokong.gif">
+      </image>
+      <text>文字解说</text>>
+      <image class="returnButton" src="../../../images/ar/back.png" mode="widthFix" bindtap="goToCamera"></image>
+    </view>
+    <view wx:if="{{showStep == 5}}" style="display: flex;flex-direction: column;">
+      <image src="../../../images/Venturi.gif"></image>
+      <text>文字解说</text>>
+      <image class="returnButton" src="../../../images/ar/back.png" mode="widthFix" bindtap="goToCamera"></image>
+    </view>
   </view>
-    
-  <view id="content2" wx:if="{{showPicture || showAnimate}}">
-    <view wx:if="{{showPicture}}" bindtap="playPicture">
-      <image src="{{showStep==1 ? '../../../images/ar/pingtang.png' : '../../../images/ar/zhanli.png'}}" style="width:80%;" mode="widthFix"></image>
-    </view>
-    <view wx:if="{{showAnimate}}" bindtap="playAnimate">
-      <image src="http://yunrusoft.top/2022-10-08-20-28-50.gif" style="width:80%;" mode="widthFix"></image>
-    </view>
-  </view> 
 </view>

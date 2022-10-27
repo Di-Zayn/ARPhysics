@@ -55,10 +55,6 @@ Page({
         SELECT_TYPE: SELECT_TYPE,
         selectType: 0,
         isPlaying: false,
-        pageLoading: false,
-        showAnimate: false,
-        showPicture: false,
-        showModel1:false,
         // 人体模型可交互参数
         modelData: {
           // 模型旋转相关
@@ -98,7 +94,6 @@ Page({
         showLoading: false,
         showLoadingText: "加载中，请稍后...",
         showStep: 0,
-        isPageLoading: true
     },
     listener: null,
     canvas: null,
@@ -180,11 +175,11 @@ Page({
                 console.log("识别成功", result.target.targetId);
                 //如果待触发的id列表中存在识别到的这个id，就触发
                 if (_this.data.targetIds.find(function (targetId) { return targetId === result.target.targetId; })) {
-                    _this.onResult();
+                    _this.onResult(_this.data.targetIds.indexOf(result.target.targetId));
                 }
             } else {
               // 用于快速调试:
-              _this.onResult();
+              // _this.onResult();
               // wx.showToast({
               //   title: "请重新尝试", //result.message,
               //   icon:"none"
@@ -199,17 +194,26 @@ Page({
             console.log(e);
         }); //小程序iOS端不支持finally，所以在then和catch里分别设置busy = false
     },
-    onResult: function () {
-        this.runningCrs = false;
-        this.hideLoading();
-        wx.showToast({
-          title: this.data.showContent,
-        })
-        this.setData({
-            showOverlay: false,
-            showContent: true,
-            selectType: SELECT_TYPE.IMAGE
-        });
+    onResult: function (id) {
+      this.runningCrs = false;
+      this.hideLoading();
+      wx.showToast({
+        title: this.data.showContent,
+      })
+      let showStep = 0
+      if (id == 0 || id == 1) {
+        showStep = 0
+      } else if (id == 2) {
+        showStep = 4
+      } else if (id == 3) {
+        showStep = 5
+      }
+      this.setData({
+          showOverlay: false,
+          showContent: true,
+          selectType: SELECT_TYPE.IMAGE,
+          showStep: showStep
+      });
     },
     back: function () {
         this.runningCrs = false;
@@ -309,12 +313,12 @@ Page({
           // 设置背景色与小程序背景色一致
           content.renderer.setClearColor(0xeef4fd, 1)
           // 设置背景为透明 这样销毁模型后对应canvas不会再有颜色
-          content.renderer.setClearAlpha(0.2)
+          content.renderer.setClearAlpha(0.1)
           content.renderer.setSize(canvas.width, canvas.height);
           content.inited = true
-          // this.setData({
-          //   showModel: true
-          // })
+          _this.setData({
+            showModel: true
+          })
         }, function (e) {
             console.error(e);
         });
@@ -367,7 +371,7 @@ Page({
         arContent[type].model.dispose();
         arContent[type].model = null;
       }
-
+      
       this.setData({
         showModel: false
       })
@@ -407,11 +411,7 @@ Page({
                 this.animate('body');
               }
             }, 1000)
-          } else if (this.data.showStep == 2) {
-            
-          } else if (this.data.showStep == 3) {
-            
-          }
+          } 
         });
     },
     calPreessure: function(angle) {
@@ -458,38 +458,6 @@ Page({
       }
 
     },
-    playAnimate: function(e){
-      // console.log("555");
-      this.setData({
-          showAnimate: !this.data.showAnimate
-      });
-      var query = this.createSelectorQuery();
-      const video = query.select("#video6");
-      // // const texture = new THREE.VideoTexture(video)//创建视频纹理
-      // var texture = new THREE.VideoTexture(video);
-      //   texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
-      //   texture.minFilter = THREE.LinearFilter;
-      //   var geometry = new THREE.PlaneGeometry(500, 1000); //矩形平面
-      //   var material = new THREE.MeshPhongMaterial({
-      //       map: texture, // 设置纹理贴图
-      //       side:THREE.DoubleSide
-      //   }); //材质对象Material
-      //   var mesh = new THREE.Mesh(geometry, material); //网格模型对象Mesh
-      //   var content = arContent["lie"];
-      //   content.scene.add(mesh);
-    },
-    playModel1:function(e){
-        this.setData({
-            showModel1: !this.data.showModel1
-          });
-    },
-    playPicture: function(e){
-      // console.log("555");
-      // 如果用户自己没有关的话 需要在切页面的时候处理一下
-      this.setData({
-        showPicture: !this.data.showPicture
-      });
-    },
     playAudio: function () {
       var query = this.createSelectorQuery();
       var _this = this;
@@ -515,28 +483,26 @@ Page({
       query.exec();
     },
     handleVideo4End: function () {
-        this.setData({
-            isPlaying: false
-        });
+      this.setData({
+          isPlaying: false
+      });
     },
     goback: function (e) {
-        var showStep = this.data.showStep;
-        var newStep = 0;
-        if (showStep == 3) {
-            newStep = 1;
+      var newStep = 0;
+      this.changeStep({
+        currentTarget: {
+          dataset: {
+              value: newStep
+          }
         }
-        // this.setData({
-        //   showStep: newStep,
-        // });
-        this.changeStep({
-            currentTarget: {
-                dataset: {
-                    value: newStep
-                }
-            }
-        });
+      });
     },
-    
+    goToCamera: function () {
+      this.setData({
+        showContent: false,
+        showOverlay: true
+      })
+    },
     playVideo5: function () {
         var query = wx.createSelectorQuery();
         query["in"](this)
