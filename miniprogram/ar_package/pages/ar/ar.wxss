@@ -300,3 +300,9 @@ camera {
     text-align:center;
     z-index: 100;  
 }
+
+.realTimeData {
+  display: flex;
+  flex-direction: column;
+  margin: ;
+}

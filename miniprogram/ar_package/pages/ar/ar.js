@@ -9,7 +9,7 @@ var GLTFLoader = (0, gltf_loader_1["default"])(THREE);
 var resMgr = new trask3d_1["default"]();
 var track = resMgr.track.bind(resMgr);
 var arContent = {
-    lie: {
+    body: {
         camera: null,
         scene: null,
         model: null,
@@ -59,13 +59,30 @@ Page({
         showAnimate: false,
         showPicture: false,
         showModel1:false,
-        // 模型可交互参数
+        // 人体模型可交互参数
         modelData: {
+          // 模型旋转相关
           angle: 0,
           maxDegree: 90,
           minDegree: 0,
-
+          //压强公式的参数
+          arteryConst: 13.33, //kPa 心脏动脉血压
+          venaConst: 0.27, //kPa 心脏静脉血压
+          density: 1, // k-kg/m3 血液密度
+          g: 9.8, 
+          deltaHead: 0.5, // 心脏离头的距离
+          deltaFoot: 1.2,
+          // 血压
+          arteryPressure: {
+            head: "13.33",
+            foot: "0.27"
+          },
+          venaPressure: {
+            head: '13.33',
+            foot: "0.27"
+          }
         },
+        showModel: false,
         //CRS配置
         config: {
             token: constants_1.EASYAR_TOKEN,
@@ -91,12 +108,6 @@ Page({
     onLoad: function () { },
     onReady: async function () {
         this.onCameraInit();
-        // this.loadAssets();
-        // standModel = await this.loadGlb(
-        //   "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/zhanli.gltf?sign=9baad86b84d83199daa63bafdc2b0a12&t=1641339879"
-        // );
-        // console.log("standModel", standModel);
-        // this.loadAssets();
     },
     showLoading: function (text) {
         this.setData({
@@ -240,9 +251,9 @@ Page({
                 console.log("canvas is null")
                 return
               }
-              var gl = canvas.getContext("webgl", {
-                  alpha: true
-              });
+              // var gl = canvas.getContext("webgl", {
+              //     alpha: true
+              // });
               arContent[type].canvas = canvas;
               that.initTHREE(new THREE.global.registerCanvas(canvas), config, type);
         });
@@ -258,6 +269,7 @@ Page({
 
         // 创建环境
         content.scene = new THREE.Scene();
+        // content.scene.background = new THREE.Color(0xeef4fd)
 
         // 创建光源
         var light = new THREE.HemisphereLight(0xffffff, 0x444444);
@@ -267,7 +279,7 @@ Page({
         light = new THREE.DirectionalLight(0xffffff);
         light.position.set(0, 20, 10);
         content.scene.add(light);
-        
+
         // 创建gltf加载器 用于载入http请求返回的gltf文件
         var gltfLoader = new GLTFLoader();
         // var loader = new THREE.FBXLoader();
@@ -276,52 +288,48 @@ Page({
           content.model = gltf.scene;
           track(content.model);
           content.scene.add(content.model);
-
-          // content.model.scale.set(1, 1, 1)
-          // content.model.position.set(0, -5, 0)
           
           // traverse本身是一个循环 遍历父物体的所有子物体
           // content.model.traverse(function (obj) {
           // });
-          
+
           // 将人体上的牌子去掉
           content.model.children[1].visible = false 
           content.model.children[2].visible = false 
-          content.model.children[3].visible = false 
+          content.model.children[3].visible = false
           // content.model.children[5].translateX(0.01)
-
+          
           content.model.updateMatrixWorld();
+          
+          // 该函数是异步的 所以最终的渲染和inited加在这里
+          content.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
+          content.renderer.setPixelRatio(systemInfo.devicePixelRatio);
+          // 设置背景色与小程序背景色一致
+          content.renderer.setClearColor(0xeef4fd, 1)
+          // 设置背景为透明 这样销毁模型后对应canvas不会再有颜色
+          content.renderer.setClearAlpha(0.2)
+          content.renderer.setSize(canvas.width, canvas.height);
+          content.inited = true
+          this.setData({
+            showModel: true
+          })
         }, function (e) {
             console.error(e);
         });
-
-        content.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas });
-        content.renderer.setPixelRatio(systemInfo.devicePixelRatio);
-        if (_this.data.showStep == 3) {
-          if (type == "lie") {
-            content.renderer.setSize((systemInfo.screenWidth * systemInfo.devicePixelRatio) / 2 + 120, (systemInfo.screenWidth * systemInfo.devicePixelRatio) / 2 + 120);
-          } else if (type == "stand") {
-            content.renderer.setSize((systemInfo.screenWidth * systemInfo.devicePixelRatio) / 2, (systemInfo.screenWidth * systemInfo.devicePixelRatio) / 2);
-          }
-        }
-        else {
-            content.renderer.setSize(canvas.width, canvas.height);
-        }
-        content.inited = true
     },
 
     animate: function (type) {
 
       // var that = this;
       // var canvas = arContent[type].canvas    
-      // 本身是静态的动画 就不用再不停的渲染了
+      // // 本身是静态的动画 就不用再不停的渲染了
       // var aniId = canvas.requestAnimationFrame(function () {
       //   // 该函数是每次页面刷新前的回调函数
       //   // 不断调用实现渲染
-      //   // return that.animate(type);
+      //   return that.animate(type);
       // });
+      // // 只要是用的同一个canvas 就可以共用一个aniId
       // arContent[type].animationId = aniId
-
 
       const { renderer, scene, camera } = arContent[type]
       renderer && renderer.clear();
@@ -333,7 +341,7 @@ Page({
       
       const { canvas, renderer, model , scene, animationId } = arContent[type]
 
-      // animationId && canvas.cancelAnimationFrame(animationId)
+      animationId && canvas.cancelAnimationFrame(animationId)
       arContent[type].camera = null
       arContent[type].inited = false
 
@@ -358,6 +366,9 @@ Page({
         arContent[type].model = null;
       }
 
+      this.setData({
+        showModel: false
+      })
       // THREE.BufferGeometry.dispose();
       // THREE.Material.dispose();
       // THREE.Texture.dispose();
@@ -373,84 +384,72 @@ Page({
         function () {
           var config = {}, selector = "";
           for (let type in arContent) {
-            if (arContent[type].animationId) {
+            if (arContent[type].inited) {
               this.clear3d(type)
             }
           }
           if (this.data.showStep == 1) {
-            selector = "#lie";
+            selector = "#body";
             config = {
               camera: [1, 0.1, 1000],
               pos: [130, 40, 0],
               src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
             };
-            this.initModel(selector, config, "lie");
-            let id1 = setInterval(()=>{
-              if (arContent['lie'].inited) {
-                clearInterval(id1)
-                this.animate('lie');
+            this.initModel(selector, config, "body");
+            // initModel后 需要一定的时间渲染 不能接着执行animate
+            let id = setInterval(()=>{
+              if (arContent['body'].inited) {
+                console.log("true")
+                clearInterval(id)
+                this.animate('body');
               }
             }, 1000)
           } else if (this.data.showStep == 2) {
-            selector = "#stand";
-            config = {
-              camera: [1, 0.1, 1000],//[0.74, 0.1, 1000],
-              pos: [150, 0, 8],//[150, 100, 120],
-              src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
-              //"https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
-            };
-            this.initModel(selector, config, "stand");
-            let id2 = setInterval(()=>{
-              if (arContent['stand'].inited) {
-                clearInterval(id2)
-                this.animate('stand');
-              }
-            }, 1000)
+            
           } else if (this.data.showStep == 3) {
-            this.initModel("#lie", {
-                camera: [1.2, 0.1, 1000],
-                pos: [100, 20, 20],
-                src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
-            }, "lie");
-            this.initModel("#stand", {
-                camera: [0.55, 0.1, 1000],
-                pos: [150, 50, 120],
-                src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
-                //"https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508"
-            }, "stand");
-            // initModel后 需要一定的时间渲染 不能接着执行animate
-            // 如果把animate放在initThree中执行会导致id被两个模型抢占
-            let id1 = setInterval(()=>{
-              if (arContent['lie'].inited) {
-                clearInterval(id1)
-                this.animate('lie');
-              }
-            }, 1000)
-            let id2 = setInterval(()=>{
-              if (arContent['stand'].inited) {
-                clearInterval(id2)
-                this.animate('stand');
-              }
-            }, 1000)
+            
           }
         });
     },
     handleRotateDegreeChange: function(event) {
-      console.log(event)
-      const degree = event.detail.value
-      const key = event.currentTarget.dataset.key
-      console.log(arContent['lie'].model)
-      console.log(arContent['lie'].camera)
-      if (arContent['lie'].inited) {
-        if (key == 'degree') {
-          arContent['lie'].model.rotation.x = degree/180 * Math.PI
-        } else if (key == 'x') {
-          arContent['lie'].model.children[5].translateX(0.005)
-          arContent['lie'].model.children[5].translateZ(0.005)
-        }
-        // arContent['lie'].model.rotation.x = degree/180 * Math.PI
-        this.animate('lie')
+      const angle = event.detail.value
+      const degree = event.detail.value / 180 * Math.PI
+      
+      const headArteryPressure = this.data.modelData.arteryConst 
+      - this.data.modelData.density * this.data.modelData.g 
+      * (this.data.modelData.deltaHead * Math.sin(degree))
+      
+      const headVenaPressure = this.data.modelData.venaConst 
+      - this.data.modelData.density * this.data.modelData.g 
+      * (this.data.modelData.deltaHead * Math.sin(degree))
+      
+      const footArteryPressure = this.data.modelData.arteryConst 
+      + this.data.modelData.density * this.data.modelData.g 
+      * (this.data.modelData.deltaFoot * Math.sin(degree))
+      
+      const footVenaPressure = this.data.modelData.venaConst 
+      + this.data.modelData.density * this.data.modelData.g 
+      * (this.data.modelData.deltaFoot * Math.sin(degree))
+      
+      const temp = { ...this.data.modelData }
+      temp.arteryPressure = {
+        head: headArteryPressure.toFixed(2),
+        foot: footArteryPressure.toFixed(2)
       }
+      temp.venaPressure = {
+        head: headVenaPressure.toFixed(2),
+        foot: footVenaPressure.toFixed(2)
+      }
+      temp.angle = angle
+      this.setData({
+        modelData: temp
+      })
+
+      if (arContent['body'].inited) {
+        arContent['body'].model.rotation.x = degree
+        this.animate('body')
+      }
+      console.log(this.data.modelData)
     },
     playAnimate: function(e){
       // console.log("555");
@@ -542,64 +541,4 @@ Page({
         }).exec();
     },
     onUnload: function () { },
-    onTX: function (e) {
-        this.platform.dispatchTouchEvent(e);
-    },
-    loadAssets: function () {
-        var _this = this;
-        var query = wx.createSelectorQuery();
-        query
-            .select("#loaderNeed")
-            .node()
-            .exec(function (res) {
-            var canvas = res[0].node;
-            new THREE.global.registerCanvas(canvas);
-            var requests = [];
-            [
-                "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=66f750ae7eb401e789bfc32c23f31c48&t=1636428963",
-                "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/new/zhanli.fbx?sign=6998091710ff75e7e37f1de0729ee462&t=1666109508",
-            ].forEach(function (item) {
-                requests.push(_this.loadGlb(item));
-            });
-            Promise.all(requests)
-                .then(function (res) {
-                wx.showToast({
-                    title: "成功啦",
-                    icon: "success"
-                });
-                console.log(res);
-                // lieModel = res[0].scene;
-                // standModel = res[1].scene;
-                lieModel = res[0];
-                standModel = res[1];
-                _this.setData({
-                    isPageLoading: false
-                });
-            })["catch"](function (err) {
-                console.log(err);
-                wx.showToast({
-                    title: err.message,
-                    icon: "error",
-                    duration: 10000
-                });
-            });
-        });
-    },
-    loadGlb: function (src) {
-        return new Promise(function (resolve, reject) {
-            var loader = new GLTFLoader();
-            loader.setCrossOrigin('Anonymous');//跨域问题
-            loader.load(src, function (gltf) {
-                // cb && cb(gltf);
-                resolve(gltf);
-            }, undefined, function (e) {
-                wx.showToast({
-                    title: "失败啦" + e.message,
-                    icon: "error",
-                    duration: 10000
-                });
-                reject(e);
-            });
-        });
-    }
 });

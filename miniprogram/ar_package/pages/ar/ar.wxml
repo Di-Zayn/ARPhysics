@@ -31,21 +31,34 @@
   </view>
   
   <view class="ar_main" wx:else>
-    <view class="{{showStep!= 3 ? 'model' : 'model both'}}"  bindtap="{{showStep==3 ? 'playAnimate' : showStep==1 || showStep == 2 ? 'playPicture' : ''}}">
-      <canvas type="webgl" wx:if="{{showStep == 1 || showStep == 3}}"
-        style="{{showStep==1 ? 'width: 300px;height: 300px;' : 'width: 300px;height: 300px;'}}" id="lie"
-        class="model_vanvas"></canvas>
-      <canvas type="webgl" wx:if="{{showStep == 2 || showStep == 3}}"
-        style="{{showStep==2 ? 'width: 300px;height: 300px;' : 'width: 300px;height: 300px;'}}" id="stand"
-        class="model_vanvas"></canvas>
+    <view class="realTimeData">
+      <mp-cells title="头部血压">
+        <mp-cell value="{{modelData.arteryPrssure.head}}" footer="说明文字"></mp-cell>
+        <mp-cell value="{{modelData.venaPressure.head}}" footer="说明文字"></mp-cell>
+      </mp-cells>
+      <mp-cells title="心脏血压">
+        <mp-cell value="{{modelData.arteryConst}}" footer="说明文字"></mp-cell>
+        <mp-cell value="{{modelData.venaConst}}" footer="说明文字"></mp-cell>
+      </mp-cells>
+      <mp-cells title="足部血压">
+        <mp-cell value="{{modelData.arteryPrssure.foot}}" footer="说明文字"></mp-cell>
+        <mp-cell value="{{modelData.venaPressure.foot}}" footer="说明文字"></mp-cell>
+      </mp-cells>
+      <!-- <text>{{modelData.arteryPrssure.head}}</text>
+      <text>{{modelData.venaPressure.head}}</text>
+      <text>{{modelData.arteryConst}}</text>
+      <text>{{modelData.venaConst}}</text>
+      <text>{{modelData.arteryPrssure.foot}}</text>
+      <text>{{modelData.venaPressure.head}}</text> -->
+    </view>
+    <view class="model"  bindtap="playPicture" wx:if="{{showStep == 1}}">
+      <canvas type="webgl" style="width: 300px;height: 300px;" id="body" class="model_vanvas"></canvas>
     </view>
     <block wx:if="{{showStep == 1}}">
       <view class="slider-item">
         <text>旋转角度</text>
         <slider value="{{modelData.angle}}" block-size="{{16}}" step="{{1}}" activeColor="#4592e2" min="{{modelData.minDegree}}"
           max="{{modelData.maxDegree}}" show-value bindchange="handleRotateDegreeChange" data-key="degree" />
-          <slider value="{{modelData.angle}}" block-size="{{16}}" step="{{1}}" activeColor="#4592e2" min="{{modelData.minDegree}}"
-          max="{{modelData.maxDegree}}" show-value bindchange="handleRotateDegreeChange" data-key="x" />
       </view>
     </block>
     <view class="video4" wx:if="{{showStep == 3 }}" >
@@ -58,12 +71,7 @@
       </view>
     </view>
  
-    <view class="btns">
-      <image src="../../../images/ar/lie.png" mode="widthFix" wx:if="{{showStep == 2}}" bindtap="changeStep"
-        data-value="1">
-      </image>
-      <image src="../../../images/ar/stand.png" mode="widthFix" wx:if="{{showStep == 1}}" bindtap="changeStep"
-        data-value="2"></image>
+    <view class="btns" style="display: flex;flex-direction: row;">
       <image src="../../../images/ar/both.png" mode="widthFix" wx:if="{{showStep != 3}}" bindtap="changeStep"
         data-value="3">
       </image>
@@ -85,4 +93,3 @@
     </view>
   </view> 
 </view>
-<canvas type="2d" id="loaderNeed"></canvas>
