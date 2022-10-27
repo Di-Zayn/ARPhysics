@@ -67,5 +67,8 @@
         "pages/ar/ar"
       ]
     }
-  ]
+  ],
+  "useExtendedLib": {
+    "weui": true
+  }
 }

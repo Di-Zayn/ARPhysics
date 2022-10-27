@@ -31,33 +31,35 @@
   </view>
   
   <view class="ar_main" wx:else>
-    <view class="realTimeData">
-      <mp-cells title="头部血压">
-        <mp-cell value="{{modelData.arteryPrssure.head}}" footer="说明文字"></mp-cell>
-        <mp-cell value="{{modelData.venaPressure.head}}" footer="说明文字"></mp-cell>
-      </mp-cells>
-      <mp-cells title="心脏血压">
-        <mp-cell value="{{modelData.arteryConst}}" footer="说明文字"></mp-cell>
-        <mp-cell value="{{modelData.venaConst}}" footer="说明文字"></mp-cell>
-      </mp-cells>
-      <mp-cells title="足部血压">
-        <mp-cell value="{{modelData.arteryPrssure.foot}}" footer="说明文字"></mp-cell>
-        <mp-cell value="{{modelData.venaPressure.foot}}" footer="说明文字"></mp-cell>
-      </mp-cells>
-      <!-- <text>{{modelData.arteryPrssure.head}}</text>
-      <text>{{modelData.venaPressure.head}}</text>
-      <text>{{modelData.arteryConst}}</text>
-      <text>{{modelData.venaConst}}</text>
-      <text>{{modelData.arteryPrssure.foot}}</text>
-      <text>{{modelData.venaPressure.head}}</text> -->
-    </view>
     <view class="model"  bindtap="playPicture" wx:if="{{showStep == 1}}">
-      <canvas type="webgl" style="width: 300px;height: 300px;" id="body" class="model_vanvas"></canvas>
+        <canvas type="webgl" id="body" class="model_vanvas"></canvas>
+    </view>
+    <view class="realTimeData">
+        <mp-cells title="参数" ext-class="my-cells">
+          <mp-cell value="动脉血压(kPa)" ext-class="cell_item_param"></mp-cell>
+          <mp-cell value="静脉血压(kPa)" ext-class="cell_item_param"></mp-cell>
+          <mp-cell value="高度差(m)" ext-class="cell_item_param"></mp-cell>
+        </mp-cells>
+        <mp-cells title="头部" ext-class="my-cells">
+          <mp-cell value="{{modelData.arteryPressure.head}}" ext-class="cell_item"></mp-cell>
+          <mp-cell value="{{modelData.venaPressure.head}}" ext-class="cell_item"></mp-cell>
+          <mp-cell value="{{modelData.heightHead}}" ext-class="cell_item"></mp-cell>
+        </mp-cells>
+        <mp-cells title="心脏" ext-class="my-cells">
+          <mp-cell value="{{modelData.arteryConst}}" ext-class="cell_item"></mp-cell>
+          <mp-cell value="{{modelData.venaConst}}" ext-class="cell_item"></mp-cell>
+          <mp-cell value="{{0}}" ext-class="cell_item"></mp-cell>
+        </mp-cells>
+        <mp-cells title="足部" ext-class="my-cells">
+          <mp-cell value="{{modelData.arteryPressure.foot}}" ext-class="cell_item"></mp-cell>
+          <mp-cell value="{{modelData.venaPressure.foot}}" ext-class="cell_item"></mp-cell>
+          <mp-cell value="{{modelData.heightFoot}}" ext-class="cell_item"></mp-cell>
+        </mp-cells>
     </view>
     <block wx:if="{{showStep == 1}}">
       <view class="slider-item">
         <text>旋转角度</text>
-        <slider value="{{modelData.angle}}" block-size="{{16}}" step="{{1}}" activeColor="#4592e2" min="{{modelData.minDegree}}"
+        <slider value="{{modelData.angle}}" block-size="{{6}}" step="{{1}}" activeColor="#4592e2" min="{{modelData.minDegree}}"
           max="{{modelData.maxDegree}}" show-value bindchange="handleRotateDegreeChange" data-key="degree" />
       </view>
     </block>

@@ -72,6 +72,8 @@ Page({
           g: 9.8, 
           deltaHead: 0.5, // 心脏离头的距离
           deltaFoot: 1.2,
+          heightHead: null, //高度差, 
+          heightFoot: null,
           // 血压
           arteryPressure: {
             head: "13.33",
@@ -389,6 +391,7 @@ Page({
             }
           }
           if (this.data.showStep == 1) {
+            this.calPreessure(0)
             selector = "#body";
             config = {
               camera: [1, 0.1, 1000],
@@ -411,25 +414,21 @@ Page({
           }
         });
     },
-    handleRotateDegreeChange: function(event) {
-      const angle = event.detail.value
-      const degree = event.detail.value / 180 * Math.PI
+    calPreessure: function(angle) {
+      const degree = angle / 180 * Math.PI
+      const heightHead = this.data.modelData.deltaHead * Math.sin(degree)
+      const heightFoot = this.data.modelData.deltaFoot * Math.sin(degree)
+      const arteryPress = this.data.modelData.arteryConst 
+      const venaPress = this.data.modelData.venaConst
+      const { density, g } = this.data.modelData
+
+      const headArteryPressure = arteryPress - density * g * heightHead
       
-      const headArteryPressure = this.data.modelData.arteryConst 
-      - this.data.modelData.density * this.data.modelData.g 
-      * (this.data.modelData.deltaHead * Math.sin(degree))
+      const headVenaPressure = venaPress - density * g * heightHead
       
-      const headVenaPressure = this.data.modelData.venaConst 
-      - this.data.modelData.density * this.data.modelData.g 
-      * (this.data.modelData.deltaHead * Math.sin(degree))
+      const footArteryPressure = arteryPress + density * g * heightFoot
       
-      const footArteryPressure = this.data.modelData.arteryConst 
-      + this.data.modelData.density * this.data.modelData.g 
-      * (this.data.modelData.deltaFoot * Math.sin(degree))
-      
-      const footVenaPressure = this.data.modelData.venaConst 
-      + this.data.modelData.density * this.data.modelData.g 
-      * (this.data.modelData.deltaFoot * Math.sin(degree))
+      const footVenaPressure = venaPress + density * g * heightFoot
       
       const temp = { ...this.data.modelData }
       temp.arteryPressure = {
@@ -441,15 +440,23 @@ Page({
         foot: footVenaPressure.toFixed(2)
       }
       temp.angle = angle
+      temp.heightHead = heightHead.toFixed(2)
+      temp.heightFoot = heightFoot.toFixed(2)
       this.setData({
         modelData: temp
       })
+
+    },
+
+    handleRotateDegreeChange: function(event) {
+      const degree = event.detail.value / 180 * Math.PI
+      this.calPreessure(event.detail.value)
 
       if (arContent['body'].inited) {
         arContent['body'].model.rotation.x = degree
         this.animate('body')
       }
-      console.log(this.data.modelData)
+
     },
     playAnimate: function(e){
       // console.log("555");
