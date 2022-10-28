@@ -119,7 +119,6 @@ Page({
     },
     onCameraInit: function () {
         var _this = this;
-        //找到canvas对象
         var query = wx.createSelectorQuery();
         query
             .select("#capture")
@@ -144,54 +143,55 @@ Page({
                 }
                 _this.queryImage(frame);
             });
-            _this.listener.start();
         });
     },
     queryImage: function (frame) {
-        var _this = this;
-        // 若crs客户端初始化/crs未运行/正在请求则不可继续
-        if (!this.crsClient || !this.runningCrs || this.busy)
-            return;
-
-        // 设置最短CRS请求间隔
-        var now = new Date().getTime();
-        if (this.last && now - this.last < this.data.config.minInterval)
-            return
-        this.last = now;
-        this.busy = true; //如果正在进行CRS请求，就不允许再次请求
-        this.crsClient
-            .queryImage(frame)
-            .then(function (res) {
-            if (!_this.runningCrs)
-                return; //避免在停止后仍然触发
-            var result = res && res.result;
-            if (!result)
-                return;
-            if (result.target) {
-                console.log("识别成功", result.target.targetId);
-                //如果待触发的id列表中存在识别到的这个id，就触发
-                if (_this.data.targetIds.find(function (targetId) { return targetId === result.target.targetId; })) {
-                    _this.onResult(_this.data.targetIds.indexOf(result.target.targetId));
-                }
-            } else {
-              // 用于快速调试:
-              // _this.onResult();
-              wx.showToast({
-                title: "请重新尝试", //result.message,
-                icon:"none"
-              });
-              setTimeout(()=>{
-                _this.back();
-              }, 500);
+      var _this = this;
+      // 若crs客户端初始化/crs未运行/正在请求则不可继续
+      if (!this.crsClient || !this.runningCrs || this.busy)
+          return;
+      
+      // 设置最短CRS请求间隔
+      var now = new Date().getTime();
+      if (this.last && now - this.last < this.data.config.minInterval)
+          return
+      this.last = now
+      this.busy = true //如果正在进行CRS请求，就不允许再次请求
+      this.crsClient
+          .queryImage(frame)
+          .then(function (res) {
+          if (!_this.runningCrs)
+              return; //避免在停止后仍然触发
+          var result = res && res.result;
+          if (!result)
+              return;
+          if (result.target) {
+            console.log("识别成功", result.target.targetId);
+            //如果待触发的id列表中存在识别到的这个id，就触发
+            if (_this.data.targetIds.find(function (targetId) { return targetId === result.target.targetId; })) {
+                _this.onResult(_this.data.targetIds.indexOf(result.target.targetId));
             }
-            _this.busy = false;
-        }).catch(function (e) {
-            _this.busy = false;
-            console.log(e);
-        }); //小程序iOS端不支持finally，所以在then和catch里分别设置busy = false
+          } else {
+            wx.showToast({
+              title: "请重新尝试", //result.message,
+              icon:"none"
+            });
+            _this.back();
+          }
+          _this.busy = false
+      }).catch(function (e) {
+        wx.showToast({
+          title: "客户端错误,请重试",
+          icon:"none"
+        });
+        _this.busy = false
+        _this.back();
+        console.log(e);
+      }); //小程序iOS端不支持finally，所以在then和catch里分别设置busy = false
     },
     onResult: function (id) {
       this.runningCrs = false;
+      // this.listener.stop() // 不加也可以 页面切换会自动调用
       this.hideLoading();
       wx.showToast({
         title: this.data.showContent,
@@ -212,40 +212,23 @@ Page({
       });
     },
     back: function () {
-        this.runningCrs = false;
-        this.setData({
-            showOverlay: true,
-            showContent: false,
-            selectType: SELECT_TYPE.NONE
-        });
-        this.hideLoading();
-    },
-    experience: function () {
-        this.setData({
-            showOverlay: false,
-            showContent: true,
-            selectType: SELECT_TYPE.IMAGE
-        });
+      // 返回摄像头界面 用户可以重新点击识别按钮
+      this.runningCrs = false;
+      this.listener.stop()
+      this.hideLoading();
     },
     scan: function () {
-      console.log("scan")
       this.runningCrs = true;
       if (this.listener) {
         //页面隐藏时相机帧的监听会自动停止，但恢复展示时不会自动启动，这里手动启动
         this.listener.start()
+      } else {
+        wx.showToast({
+          title: '相机初始化失败',
+        })
+        return 
       }
-      // 这段setData可以删去
-      this.setData({
-          showOverlay: true,
-          showContent: false,
-          selectType: SELECT_TYPE.NONE
-      });
       this.showLoading("识别中");
-    },
-    selectContent: function (e) {
-        this.setData({
-            selectType: e.currentTarget.dataset.contenttype
-        });
     },
     initModel: function (selector, config, type) {
         var that = this;
@@ -259,9 +242,6 @@ Page({
                 console.log("canvas is null")
                 return
               }
-              // var gl = canvas.getContext("webgl", {
-              //     alpha: true
-              // });
               arContent[type].canvas = canvas;
               that.initTHREE(new THREE.global.registerCanvas(canvas), config, type);
         });
@@ -296,17 +276,11 @@ Page({
           content.model = gltf.scene;
           track(content.model);
           content.scene.add(content.model);
-          
-          // traverse本身是一个循环 遍历父物体的所有子物体
-          // content.model.traverse(function (obj) {
-          // });
 
           // 将人体上的牌子去掉
           content.model.children[1].visible = false 
           content.model.children[2].visible = false 
-          content.model.children[3].visible = false
-          // content.model.children[5].translateX(0.01)
-          
+          content.model.children[3].visible = false          
           content.model.updateMatrixWorld();
           
           // 该函数是异步的 所以最终的渲染和inited加在这里
