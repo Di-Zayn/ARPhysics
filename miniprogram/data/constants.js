@@ -35,7 +35,8 @@ exports.EASYAR_IMG_ID = [
   "3ee1ad10-6ddb-4549-baa2-142f61f3e875", //lie
   "6f935f7c-bfc3-48a3-ad74-6eb242dce874", //stand
   "e435ede3-f017-4283-9243-a4b9d07b3a28", //xiaokong,
-  "6c1acce9-5c81-48d5-acbf-ccb03373553e" //Venturi
+  "6c1acce9-5c81-48d5-acbf-ccb03373553e", //Venturi
+  "109027b1-0989-4d53-ba33-6c4c1b2c6572" //Hg
 ]; // 图片id
 exports.EASYAR_CLOUD_KEY = "3722baa090fb7ddfa9ef6b9e4e031360"; //crs appid
 exports.EASYAR_CLOUD_SECRET = "9e8650be11c06be1ce6ac707d096ea122d1f45216da7be0eb2163f73155c86c1"; //没用到

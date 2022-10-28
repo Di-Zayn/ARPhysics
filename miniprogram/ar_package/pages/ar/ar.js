@@ -203,6 +203,8 @@ Page({
         showStep = 4
       } else if (id == 3) {
         showStep = 5
+      } else if (id == 4) {
+        showStep = 6
       }
       this.setData({
           showOverlay: false,

@@ -100,5 +100,10 @@
       <text>文字解说</text>>
       <image class="returnButton" src="../../../images/ar/back.png" mode="widthFix" bindtap="goToCamera"></image>
     </view>
+    <view wx:if="{{showStep == 6}}" style="display: flex;flex-direction: column;">
+      <image src="../../../images/Hg.gif"></image>
+      <text>文字解说</text>>
+      <image class="returnButton" src="../../../images/ar/back.png" mode="widthFix" bindtap="goToCamera"></image>
+    </view>
   </view>
 </view>
