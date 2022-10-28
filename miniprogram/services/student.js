@@ -18,13 +18,12 @@ const login = async (account, password, onFail = () => {}) => {
   }
 };
 
-const setPreTestDone = async ({id}, onFail = () => {}) => {
+const checkPreTest = async ({id}, onFail = () => {}) => {
   try {
-    console.log(id)
     return await wx.cloud.callFunction({
       name: "quickstartFunctions",
       data: {
-        type: "setPreTestDone",
+        type: "checkPreTest",
         id: id,
       },
     });
@@ -36,4 +35,4 @@ const setPreTestDone = async ({id}, onFail = () => {}) => {
 };
 
 exports.login = login;
-exports.setPreTestDone = setPreTestDone;
+exports.checkPreTest = checkPreTest;

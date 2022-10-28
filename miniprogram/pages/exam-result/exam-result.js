@@ -9,6 +9,7 @@ Page({
     current: 0,
     score: 0,
     countTimer: null,
+    testType: null
   },
 
   countInterval: function () {
@@ -27,12 +28,13 @@ Page({
     }, 10);
   },
 
-  retrieveRecordDetail: async function (recordId) {
+  retrieveRecordDetail: async function (recordId, type) {
     const response = await retrieveRecord(recordId);
     if (response && response.result?.data) {
       this.setData(
         {
           record: response.result.data,
+          testType: type
         },
         () => {
           this.circle = this.selectComponent("#circle1");
@@ -47,7 +49,8 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    const { record } = options;
+    let params = JSON.parse(options.obj)
+    const { record, type} = params
     if (!record) {
       wx.showToast({
         title: "找不到结果",
@@ -61,7 +64,7 @@ Page({
       });
       return;
     }
-    this.retrieveRecordDetail(record);
+    this.retrieveRecordDetail(record, type);
   },
 
   /**

@@ -12,7 +12,8 @@ const submitExam = require("./submitExam/index");
 const retrieveRecordDetail = require("./retrieveRecordDetail/index");
 const retrieveExamDetail = require("./retrieveExamDetail/index");
 const retrieveRecords = require("./retrieveRecords/index");
-const setPreTestDone = require("./setPreTestDone/index");
+const checkPreTest = require("./checkPreTest/index");
+
 
 // 云函数入口函数
 exports.main = async (event, context) => {
@@ -45,7 +46,7 @@ exports.main = async (event, context) => {
       return await retrieveExamDetail.main(event, context);
     case "retrieveExamRecords":
       return await retrieveRecords.main(event, context);
-    case "setPreTestDone":
-      return await setPreTestDone.main(event, context);
+    case "checkPreTest":
+      return await checkPreTest.main(event, context);
   }
 };

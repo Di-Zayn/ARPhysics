@@ -1,4 +1,5 @@
 const { login } = require("../../services/student");
+const { checkPreTest } = require("../../services/student");
 const {
   USERINFO_STORAGE_KEY,
   USER_LOGIN_EXPIRE_DURATION,
@@ -51,22 +52,22 @@ Page({
           icon: "error",
         });
         const userInfo = data[0];
+        // 检查是否完成前测 并存入到全局信息中
+        const isPreTestDone = await checkPreTest({id: userInfo._id})
+        userInfo.preTestDone = isPreTestDone.result
+        App.globalData.userInfo = userInfo;
+        // 调试时每次保存都会清空globaldata并重加载缓存数据 因此需要存一下
         userInfo.savedTime = Date.now() + USER_LOGIN_EXPIRE_DURATION;
         wx.setStorageSync(USERINFO_STORAGE_KEY, userInfo);
-        App.globalData.userInfo = userInfo;
         setTimeout(() => {
           this.setData({
             isLogin: false,
           });
-          // wx.navigateBack({
-          //   delta: 0,
-          // });
           // 没有进行前测则进入测试界面
-          if (!data[0].preTestDone) {
+          if (!userInfo.preTestDone) {
             wx.navigateTo({
               url: '/pages/answer/answer',
               success: (res) => {
-                console.log(res)
                 res.eventChannel.emit("acceptDataFromOpenerPage", {
                   exam: {
                     _id: 'pre_test',

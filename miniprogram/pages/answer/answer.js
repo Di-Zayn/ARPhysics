@@ -1,6 +1,5 @@
 const { retrieveQuestions } = require("../../services/question");
 const { submitExam } = require("../../services/exam");
-const { setPreTestDone } = require("../../services/student");
 const {
   USERINFO_STORAGE_KEY,
   USER_LOGIN_EXPIRE_DURATION,
@@ -192,8 +191,12 @@ Page({
     });
     
     if (result) {
+      let params = {
+        record: result.result._id,
+      }
       if (exam._id == "pre_test") {
         const user = APP.globalData.userInfo;
+        params.type = "preTest"
         if (!user) {
           wx.showToast({
             title: "登录超时",
@@ -203,29 +206,24 @@ Page({
           });
           return;
         } else {
-          const update_result = await setPreTestDone({
-            id: user._id
-          })
-          console.log(update_result)
-          if (update_result) {
-            user.preTestDone = true
-            user.savedTime = Date.now() + USER_LOGIN_EXPIRE_DURATION;
-            wx.setStorageSync(USERINFO_STORAGE_KEY, user);
-            APP.globalData.userInfo = user
-            setTimeout(() => {
-              wx.showToast({
-                title: '已成功完成前测',
-              })
-            }, 500);
-          } 
+          user.preTestDone = true
+          APP.globalData.userInfo = user
+          // user.savedTime = Date.now() + USER_LOGIN_EXPIRE_DURATION;
+          wx.setStorageSync(USERINFO_STORAGE_KEY, user);
+          setTimeout(() => {
+            wx.showToast({
+              title: '已成功完成前测',
+            })
+          }, 500);
         }
       } else {
+        params.type = "normalTest"
         wx.showToast({
           title: "答案提交成功",
         });
       }
       wx.navigateTo({
-        url: `/pages/exam-result/exam-result?record=${result.result._id}`,
+        url: `/pages/exam-result/exam-result?obj=${JSON.stringify(params)}`,
       });
     } else {
       this.setData({

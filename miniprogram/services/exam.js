@@ -24,7 +24,6 @@ const submitExam = async (
   }
 ) => {
   baseLoadingHandler("答案提交中...");
-  console.log(data);
   try {
     return await wx.cloud.callFunction({
       name: "quickstartFunctions",

@@ -41,7 +41,7 @@ Page({
   },
 
   retrieveQuestions: async function () {
-    const response = await retrieveQuestions(this.data.record.exam, 1);
+    const response = await retrieveQuestions(this.data.record.exam_id, true);
     if (response && response.result?.data) {
       this.setData(
         {
@@ -59,7 +59,8 @@ Page({
   },
 
   retrieveExamDetail: async function () {
-    const response = await retrieveExamDetail(this.data.record.exam);
+    const response = await retrieveExamDetail(this.data.record.exam_id);
+    console.log(response)
     if (response && response.result?.data) {
       this.setData(
         {

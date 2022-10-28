@@ -25,7 +25,6 @@ exports.main = async (event, context) => {
       name: true,
       number: true,
       major: true,
-      preTestDone: true
     })
     .get();
 };
