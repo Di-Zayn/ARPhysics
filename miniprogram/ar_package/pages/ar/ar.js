@@ -104,22 +104,18 @@ Page({
     tang_first:false,
     onLoad: function () { },
     onReady: async function () {
-        this.onCameraInit();
+      this.onCameraInit();
     },
     showLoading: function (text) {
-        this.setData({
-            showLoading: true,
-            showLoadingText: text
-        });
+      this.setData({
+          showLoading: true,
+          showLoadingText: text
+      });
     },
     hideLoading: function () {
         this.setData({
             showLoading: false
         });
-    },
-    onShow: function () {
-        if (this.listener)
-            this.listener.start(); //页面隐藏时相机帧的监听会自动停止，但恢复展示时不会自动启动，这里手动启动
     },
     onCameraInit: function () {
         var _this = this;
@@ -153,8 +149,8 @@ Page({
     },
     queryImage: function (frame) {
         var _this = this;
-        // 若crs未运行/正在请求/crs客户端初始化则不可继续
-        if (!this.runningCrs || this.busy || !this.crsClient)
+        // 若crs客户端初始化/crs未运行/正在请求则不可继续
+        if (!this.crsClient || !this.runningCrs || this.busy)
             return;
 
         // 设置最短CRS请求间隔
@@ -180,13 +176,13 @@ Page({
             } else {
               // 用于快速调试:
               // _this.onResult();
-              // wx.showToast({
-              //   title: "请重新尝试", //result.message,
-              //   icon:"none"
-              // });
-              // setTimeout(()=>{
-              //   _this.back();
-              // }, 500);
+              wx.showToast({
+                title: "请重新尝试", //result.message,
+                icon:"none"
+              });
+              setTimeout(()=>{
+                _this.back();
+              }, 500);
             }
             _this.busy = false;
         }).catch(function (e) {
@@ -232,13 +228,19 @@ Page({
         });
     },
     scan: function () {
-        this.runningCrs = true;
-        this.setData({
-            showOverlay: true,
-            showContent: false,
-            selectType: SELECT_TYPE.NONE
-        });
-        this.showLoading("识别中");
+      console.log("scan")
+      this.runningCrs = true;
+      if (this.listener) {
+        //页面隐藏时相机帧的监听会自动停止，但恢复展示时不会自动启动，这里手动启动
+        this.listener.start()
+      }
+      // 这段setData可以删去
+      this.setData({
+          showOverlay: true,
+          showContent: false,
+          selectType: SELECT_TYPE.NONE
+      });
+      this.showLoading("识别中");
     },
     selectContent: function (e) {
         this.setData({
