@@ -30,18 +30,7 @@ exports.main = async (event, context) => {
       }
       maxScore += Number(score);
     });
-    var a = {
-      data: {
-        exam_id: exam._id,
-        exam_name: exam.name,
-        list: wrongQuestions,
-        score: totalScore,
-        user_id: user._id,
-        total_score: maxScore,
-        time: Date.now(),
-      },
-    }
-    console.log(a)
+    let errorRate = Math.round(wrongQuestions.length / questions.data.length * 100 * 100) / 100
     return await db.collection("exam_record").add({
       data: {
         exam_id: exam._id,
@@ -49,6 +38,9 @@ exports.main = async (event, context) => {
         list: wrongQuestions,
         score: totalScore,
         user_id: user._id,
+        wrong_num: wrongQuestions.length,
+        total_num: questions.data.length,
+        errorRate: errorRate,
         total_score: maxScore,
         time: Date.now(),
       },

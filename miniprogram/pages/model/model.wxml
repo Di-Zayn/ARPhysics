@@ -4,34 +4,71 @@
   <button data-model="{{3}}" hover-class="ui-hover" bindtap="setModel">水银压强计</button>
 </view>
 <view wx:if="{{model}}" class="content">
-  <icon type="cancel" color="#666" bindtap="setModel" data-model="{{0}}" />
-  <canvas type="2d" id="main"></canvas>
+  <icon type="cancel" color="#666" bindtap="setModel" data-model="{{0}}" style="z-index: 99999;" />
+  <canvas type="2d" id="main" class="canvas"></canvas>
   <view class="bar">
     <block wx:if="{{model == 1}}">
+      <view style="display: flex;flex-direction: row;" class="params-venturi">
+        <mp-cells ext-class="my-cells">
+          <mp-cell ext-class="cell_item_key"><text class="super">Q(m<text>3</text></text><text>/s)</text></mp-cell>
+          <mp-cell ext-class="cell_item_value"><text class="super">{{venturiData.Q}}*10<text>-5</text></text></mp-cell>
+        </mp-cells>
+        <mp-cells ext-class="my-cells">
+          <mp-cell ext-class="cell_item_key_samll"><text>h(cm)</text></mp-cell>
+          <mp-cell value="{{venturiData.h}}" ext-class="cell_item_value_small"></mp-cell>
+        </mp-cells>
+        <mp-cells ext-class="my-cells">
+          <mp-cell ext-class="cell_item_key"><text class="sub">S<text>1</text></text>
+          <text class="super">(cm<text>2</text>)</text></mp-cell>
+          <mp-cell value="{{venturiData.s1}}" ext-class="cell_item_value"></mp-cell>
+        </mp-cells>
+        <mp-cells ext-class="my-cells">
+          <mp-cell ext-class="cell_item_key"><text class="sub">S<text>2</text></text>
+          <text class="super">(cm<text>2</text>)</text></mp-cell>
+          <mp-cell value="{{venturiData.s2}}" ext-class="cell_item_value"></mp-cell>
+        </mp-cells>
+      </view>
       <view class="slider-item">
-        <text>h(cm)</text>
-        <slider value="{{venturiData.h}}" block-size="{{16}}" activeColor="#4592e2" min="{{10}}" max="{{30}}" show-value
+        <text>h</text>
+        <slider value="{{venturiData.h}}" block-size="{{16}}" activeColor="#4592e2" min="{{hMin}}" max="{{hMax}}" show-value
           bindchange="handleVenturiDataChange" data-key="h" />
       </view>
       <view class="slider-item">
-        <text>s1(cm^2)</text>
-        <slider value="{{venturiData.s1_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{2.5}}"
-          max="{{5}}" show-value bindchange="handleVenturiDataChange" data-key="s1_cm" />
+        <text class="sub-text">S<text>1</text></text>
+        <slider value="{{venturiData.s1}}" block-size="{{16}}" step="{{5}}" activeColor="#4592e2" min="{{s1Min}}"
+          max="{{s1Max}}" show-value bindchange="handleVenturiDataChange" data-key="s1" />
       </view>
       <view class="slider-item">
-        <text>s2(cm^2)</text>
-        <slider value="{{venturiData.s2_cm}}" block-size="{{16}}" activeColor="#4592e2" step="{{0.5}}" min="{{2}}"
-          max="{{4.5}}" show-value bindchange="handleVenturiDataChange" data-key="s2_cm" />
+        <text class="sub-text">S<text>2</text></text>
+        <slider value="{{venturiData.s2}}" block-size="{{16}}" activeColor="#4592e2" step="{{5}}" min="{{s2Min}}"
+          max="{{s2Max}}" show-value bindchange="handleVenturiDataChange" data-key="s2" />
       </view>
     </block>
     <block wx:if="{{model == 2}}">
+      <view style="display: flex;flex-direction: row;" class="params-orifice">
+        <mp-cells ext-class="params-orifice-cells">
+          <mp-cell ext-class="cell_item_key" ><text class="sub">V<text>b</text></text>
+          <text>(m/s)</text></mp-cell>
+          <mp-cell value="{{orificeData.v_cm}}" ext-class="cell_item_value"></mp-cell>
+        </mp-cells>
+        <mp-cells ext-class="params-orifice-cells">
+          <mp-cell ext-class="cell_item_key"><text class="sub">H<text>a</text></text>
+          <text>(cm)</text></mp-cell>
+          <mp-cell value="{{orificeData.ha_cm}}" ext-class="cell_item_value"></mp-cell>
+        </mp-cells>
+        <mp-cells ext-class="params-orifice-cells">
+          <mp-cell ext-class="cell_item_key"><text class="sub">H<text>b</text></text>
+          <text>(cm)</text></mp-cell>
+          <mp-cell value="{{orificeData.hb_cm}}" ext-class="cell_item_value"></mp-cell>
+        </mp-cells>
+      </view>
       <view class="slider-item">
-        <text>Ha(/cm)</text>
+        <text class="sub-text">H<text>a</text></text>
         <slider value="{{orificeData.ha_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{1}}"
           max="{{10}}" show-value bindchange="handleOrificeDataChange" data-key="ha_cm" />
       </view>
       <view class="slider-item">
-        <text>Hb(/cm)</text>
+        <text class="sub-text">H<text>b</text></text>
         <slider value="{{orificeData.hb_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{0.5}}"
           max="{{9.5}}" show-value bindchange="handleOrificeDataChange" data-key="hb_cm" />
       </view>
@@ -42,7 +79,7 @@
         <rich-text nodes="{{[{name: 'sup', attrs: {class:'sup-text'},children: [{type:'text',text: '5'}]}]}}">
         </rich-text>
         <text class="lastText">Pa)</text>
-        <slider value="{{mercuryData.p_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{0.5}}"
+        <slider value="{{mercuryData.p_cm}}" block-size="{{16}}" step="{{0.1}}" activeColor="#4592e2" min="{{0.5}}"
           max="{{3}}" show-value bindchange="handleMercuryDataChange" data-key="p_cm" />
       </view>
       <view class="slider-item">
@@ -50,7 +87,7 @@
         <rich-text nodes="{{[{name: 'sup', attrs: {class:'sup-text'},children: [{type:'text',text: '5'}]}]}}">
         </rich-text>
         <text class="lastText">Pa)</text>
-        <slider value="{{mercuryData.p0_cm}}" block-size="{{16}}" step="{{0.5}}" activeColor="#4592e2" min="{{0.5}}"
+        <slider value="{{mercuryData.p0_cm}}" block-size="{{16}}" step="{{0.1}}" activeColor="#4592e2" min="{{0.5}}"
           max="{{3}}" show-value bindchange="handleMercuryDataChange" data-key="p0_cm" />
       </view>
     </block>

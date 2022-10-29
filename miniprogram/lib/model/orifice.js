@@ -45,23 +45,66 @@ export const drawOrifice = (ctx, layout, canvas) => {
   fillPath.lineTo(startX + width, startY + height);
   fillPath.lineTo(startX + width, startY + height - ha);
   ctx.fill(fillPath);
+  // 落地点X坐标
+  ctx.beginPath();
+  ctx.setLineDash([]);
+  const endLen = 2 * Math.sqrt(hb * (ha - hb));
+  ctx.lineWidth = v;
+  ctx.strokeStyle = fillColor;
+  ctx.moveTo(startX, startY + height - hb);
+  ctx.quadraticCurveTo(
+    startX - endLen / 2 - 30,
+    startY + height - hb / 2 - 30,
+    // startX - endLen / 2 + 3000 / (startY + height),
+    // startY + height - hb - (ha - hb) / 2 + 5000 / (startY + height),
+    // startX - 20,
+    // startY + height - hb - 20,
+    startX - endLen,
+    startY + height
+  );
+  ctx.stroke();
+
   ctx.fillStyle = "#000";
   ctx.font = "16px serif";
-
-  ctx.fillText(`ha:${ha_cm}cm`, startX + 5, startY + height - ha);
-  const hbTextInfo = ctx.measureText(`—hb:${hb}cm`);
+  const offset_x = ctx.measureText('h').width
+  const offset_y = ctx.measureText('h').width
+  const hbTextInfo = ctx.measureText(`h`);
+  // 防止重叠
+  if (ha_cm > hb_cm + 2) {
+    ctx.fillText(
+      `h`,
+      startX - 25,
+      startY + height - ha
+    );
+    ctx.fillText(
+      `h`,
+      startX - 25,
+      startY + height - hb
+    );
+    ctx.font = '10px serif'
+    ctx.textBaseline = 'bottom'
+    ctx.fillText(`a`, startX - 25 + offset_x, startY + height - ha + (offset_y / 1.5));
+    ctx.fillText(`b`, startX - 25 + offset_x, startY + height - hb + (offset_y / 1.5));
+  }
   ctx.fillText(
-    `—hb:${hb_cm}cm`,
-    startX + 5,
-    startY + height - hb + hbTextInfo.emHeightAscent / 2
-  );
-  ctx.fillText(`Vb: ${v_cm.toFixed(2)}`, 40, 40);
-  ctx.fillText(
-    `Δh: ${ha_cm - hb_cm}`,
-    startX + 5,
+    `Δh`,
+    startX - 27,
     startY + height - hb - (ha - hb) / 2 + 8
   );
-
+  
+  ctx.strokeStyle = "rgb(0, 0, 0)";
+  ctx.setLineDash([5,2]);
+  ctx.lineWidth = 1;
+  ctx.beginPath()
+  ctx.moveTo(startX, startY + height - ha + 1)
+  ctx.lineTo(startX - 4, startY + height - ha + 1)
+  ctx.lineTo(startX - 4, (2 * startY + 2 * height - ha - hb + 2) / 2 - 2)
+  ctx.lineTo(startX - 8, (2 * startY + 2 * height - ha - hb + 2) / 2)
+  ctx.lineTo(startX - 4, (2 * startY + 2 * height - ha - hb + 2) / 2 + 2)
+  ctx.lineTo(startX - 4, startY + height - hb + 1)
+  ctx.lineTo(startX, startY + height - hb + 1)
+  ctx.stroke()
+  ctx.setLineDash([]);
   // const text1 = `Vb(${v_cm.toFixed(2)}) = `;
   // const text1Info = ctx.measureText(text1);
   // const text2 = `2×g×Δh(${ha_cm - hb_cm})`;
@@ -114,22 +157,4 @@ export const drawOrifice = (ctx, layout, canvas) => {
   ctx.stroke();
   ctx.fillText(text3, start2, 378);
   ctx.fillText(text4, genStart2 + 28, 378);
-
-  // 落地点X坐标
-  ctx.beginPath();
-  const endLen = 2 * Math.sqrt(hb * (ha - hb));
-  ctx.lineWidth = v;
-  ctx.strokeStyle = fillColor;
-  ctx.moveTo(startX, startY + height - hb);
-  ctx.quadraticCurveTo(
-    startX - endLen / 2 - 30,
-    startY + height - hb / 2 - 30,
-    // startX - endLen / 2 + 3000 / (startY + height),
-    // startY + height - hb - (ha - hb) / 2 + 5000 / (startY + height),
-    // startX - 20,
-    // startY + height - hb - 20,
-    startX - endLen,
-    startY + height
-  );
-  ctx.stroke();
 };

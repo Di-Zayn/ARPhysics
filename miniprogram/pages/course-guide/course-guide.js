@@ -2,6 +2,7 @@
 const { COURSE_CONTENT_TYPES } = require('../../data/constants');
 const {baseFaultHandler} = require('../../utils/handler');
 const {retrieveCourseContent} = require('../../services/course');
+const APP = getApp();
 
 Page({
 
@@ -30,14 +31,13 @@ Page({
    */
   toDetailPage(event){
     const { openType: type, data } = event.currentTarget.dataset || {};
-    let path = '',
-        extraData = data;
+    let path = '', extraData = data;
     switch(parseInt(type)){
       case 1:
         path = '/pages/video/video';
         break;
       case 2:
-        path = data;
+        path = "/pages/model/model";
         extraData = null;
         break;
       case 3:
@@ -63,6 +63,29 @@ Page({
    */
   onLoad: function (options) {
     const {course_id, content_id} = options;
+    const user = APP.globalData.userInfo;
+    if (!user) {
+      wx.navigateTo({
+        url: "/pages/login/login",
+      });
+      return;
+    } else if (!user.preTestDone) {
+      wx.showToast({
+        title: '请先完成前测',
+      })
+      wx.navigateTo({
+        url: '/pages/answer/answer',
+        success: (res) => {
+          res.eventChannel.emit("acceptDataFromOpenerPage", {
+            exam: {
+              _id: 'pre_test',
+              name: '学前测试'
+            },
+          });
+        },
+      })
+      return
+    }
     if(!course_id || !content_id){
       baseFaultHandler('课程不存在', 1500, () => {
         wx.navigateBack()
