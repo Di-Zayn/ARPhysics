@@ -148,6 +148,6 @@ export const drawMercury = (ctx, layout, canvas) => {
   const text2 = "P = P\u2080+ ρgΔh";
   const text1Info = ctx.measureText(text1);
   const text2Info = ctx.measureText(text2);
-  ctx.fillText(text1, (300 - text1Info.width) / 2, 400);
+  // ctx.fillText(text1, (300 - text1Info.width) / 2, 400);
   ctx.fillText(text2, (300 - text2Info.width) / 2, bottomY + 15);
 };
