@@ -305,12 +305,12 @@ camera {
   text-align: center;
 }
 .cell_item {
-  width: 50px;
+  width: 12vw;
   height: 5px;
   text-align: center;
 }
 .cell_item_param {
-  width: 50px;
+  width: 25vw;
   height: 5px;
   text-align: center;
   font-size: small;

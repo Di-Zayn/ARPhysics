@@ -23,8 +23,8 @@ Page({
       l2: 18,
       d1: 56,
       d2: 23,
-      Q: 5679,
-      start: { x: 50, y: 120},
+      Q: 0.057,
+      start: { x: 70, y: 120},
       w1: 60,
       w2: 40,
       fillColor: [15, 90, 125],
@@ -37,7 +37,7 @@ Page({
       pw2: 6,
       ph1: 80,
       ph2: 70,
-      qMax: 20000,
+      qMax: 0.2,
     },
     orificeData: {
       ha_cm: 10,
@@ -71,8 +71,8 @@ Page({
       thickness: 20,
       height: 200,
       space: 120,
-      startX: 90,
-      startY: 60,
+      startX: 100,
+      startY: 15,
     },
   },
 
@@ -106,7 +106,7 @@ Page({
   execVenturi({ h, s1, s2 }) {
     const gh2 = 2 * 9.8 * h;
     const s1_s2 = Math.pow(s1, 2) - Math.pow(s2, 2);
-    const Q = ((s1 * s2 * Math.sqrt(gh2 / s1_s2))).toFixed(0);
+    const Q = ((s1 * s2 * Math.sqrt(gh2 / s1_s2)) / Math.pow(10, 5)).toFixed(3);
     const { venturiData } = this.data;
     const d1 = Math.sqrt(4 * s1 / Math.PI)
     const d2 = Math.sqrt(4 * s2 / Math.PI)
@@ -204,12 +204,12 @@ Page({
     let subKey;
     if (type == "p0_cm") {
       subKey = value > mercuryData.p0_cm ? "h1" : "h2";
-      mercuryData.p0 = value * 100000;
-      mercuryData.p0_cm = value;
+      mercuryData.p0 = Math.round(value * 100000 * 10) / 10;
+      mercuryData.p0_cm = Math.round(value  * 10) / 10 ;
     } else if (type == "p_cm") {
       subKey = value > mercuryData.p_cm ? "h2" : "h1";
-      mercuryData.p = value * 100000;
-      mercuryData.p_cm = value;
+      mercuryData.p = Math.round(value * 100000 * 10) / 10;
+      mercuryData.p_cm = Math.round(value  * 10) / 10;
     }
     const h3 = Math.abs(
       (mercuryData.p - mercuryData.p0) / (mercuryData.density * 9.8)
@@ -231,6 +231,9 @@ Page({
       mercuryData.h3 = Math.abs(h3);
     }
     mercuryData[type] = value;
+    mercuryData.p_cm = Number(mercuryData.p_cm.toFixed(1))
+    mercuryData.p0_cm = Number(mercuryData.p0_cm.toFixed(1))
+
     this.setData(
       {
         mercuryData,

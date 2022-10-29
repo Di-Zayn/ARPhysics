@@ -274,15 +274,24 @@ Page({
         var gltfLoader = new GLTFLoader();
         // var loader = new THREE.FBXLoader();
         gltfLoader.load(config.src, function (gltf) {
-
           content.model = gltf.scene;
           track(content.model);
           content.scene.add(content.model);
 
-          // 将人体上的牌子去掉
-          content.model.children[1].visible = false 
-          content.model.children[2].visible = false 
-          content.model.children[3].visible = false          
+          // 由于已经存在指标且牌子是静态的，将人体上的牌子去掉 注意模型传过来的时候顺序是不一定的 需要检查name
+          let deleteList = ['tang-zubu', 'tang-xingzhang', 'tang-toubu']
+          for (let i = 0; i < content.model.children.length; i++) {
+            if (deleteList.indexOf(content.model.children[i].name) != -1) {
+              content.model.children[i].visible = false
+            }
+            if (content.model.children[i].name == 'maofa002') {
+              content.model.children[i].translateX(-0.005)
+            }
+            if (content.model.children[i].name == 'renti002') {
+              content.model.children[i].translateX(-0.01)
+            }
+          }
+
           content.model.updateMatrixWorld();
           
           // 该函数是异步的 所以最终的渲染和inited加在这里
@@ -325,7 +334,7 @@ Page({
       
       const { canvas, renderer, model , scene, animationId } = arContent[type]
 
-      animationId && canvas.cancelAnimationFrame(animationId)
+      // animationId && canvas.cancelAnimationFrame(animationId)
       arContent[type].camera = null
       arContent[type].inited = false
 
@@ -384,7 +393,6 @@ Page({
             // initModel后 需要一定的时间渲染 不能接着执行animate
             let id = setInterval(()=>{
               if (arContent['body'].inited) {
-                console.log("true")
                 clearInterval(id)
                 this.animate('body');
               }

@@ -120,7 +120,7 @@ export const drawVenturi = (ctx, layout, canvas) => {
   ctx.fillText(
     `S\u2082`,
     startX + w1 + w2 + l2 / 2 - l2Info.width / 2,
-    middleBottomY + l2Info.emHeightAscent + l2Info.emHeightDescent + 5
+    middleBottomY  + 15
   );
   ctx.fillStyle = "rgb(0, 0, 0)";
   // ctx.font = "12px serif";
@@ -171,11 +171,11 @@ export const drawVenturi = (ctx, layout, canvas) => {
   const text1StartY = startY + d1 + 50
   ctx.fillText(text1, text1StartX, text1StartY);
   ctx.textBaseline = 'top'
-  ctx.font = "10px serif";
-  ctx.fillText('1', text1StartX + 5 * offset_x + 4, text1StartY - (offset_y / 1.5));
-  ctx.fillText('1', text1StartX + 6 * offset_x + 8, text1StartY - (offset_y / 1.5));
-  ctx.fillText('1', text1StartX + 10 * offset_x + 8, text1StartY - (offset_y / 1.5));
-  ctx.fillText('2', text1StartX + 12 * offset_x + 8, text1StartY - (offset_y / 1.5));
+  ctx.font = "8px serif";
+  ctx.fillText('1', text1StartX + 38, text1StartY - 7);
+  ctx.fillText('1', text1StartX + 49, text1StartY - 7);
+  ctx.fillText('1', text1StartX + 75, text1StartY - 7);
+  ctx.fillText('2', text1StartX + 86, text1StartY - 7);
   
   ctx.font = "14px serif";
   ctx.textBaseline = 'alphabetic'
@@ -187,9 +187,9 @@ export const drawVenturi = (ctx, layout, canvas) => {
   ctx.stroke();
   ctx.fillText(text2, text1StartX + text1Info.width + 25, text1StartY);
   ctx.textBaseline = 'top'
-  ctx.font = "10px serif";
-  ctx.fillText('1', text1StartX + text1Info.width + 25 + 6 * offset_x + 5, text1StartY - (offset_y / 1.5));
-  ctx.fillText('2', text1StartX + text1Info.width + 25 + 9 * offset_x + 6, text1StartY - (offset_y / 1.5));
+  ctx.font = "8px serif";
+  ctx.fillText('1', text1StartX + text1Info.width + 25 + 6 * offset_x + 5, text1StartY - 5);
+  ctx.fillText('2', text1StartX + text1Info.width + 25 + 9 * offset_x + 6, text1StartY - 5);
 
   
   // ctx.font = "10px serif";

@@ -78,7 +78,7 @@ export const drawMercury = (ctx, layout, canvas) => {
   // ctx.moveTo(startX - thickness, startY);
   // ctx.lineTo(startX - thickness * 2, startY);
   ctx.stroke();
-
+  
   // draw fluid
   const fillLeftArea = new Path2D();
   const bottomY = startY + height + space / 2;
@@ -117,7 +117,7 @@ export const drawMercury = (ctx, layout, canvas) => {
   ctx.fill(fillBottom2Area);
   ctx.font = "16px serif";
   ctx.fillStyle = "#000";
-  const p0_text = "P0:" + p0 / 100000 + "×10";
+  const p0_text = "P\u2080:" + p0 / 100000 + "×10";
   const p0_info = ctx.measureText(p0_text);
   const p_text = "P:" + p / 100000 + "×10";
   const p_info = ctx.measureText(p_text);
@@ -130,10 +130,10 @@ export const drawMercury = (ctx, layout, canvas) => {
     startX + space / 2 - h3Info.width / 2,
     bottomY - h1 + h3 / 2 + (h3Info.emHeightAscent + h3Info.emHeightDescent) / 2
   );
-  const phText = `Ph:${ph}cm`;
+  const phText = `h:${ph}cm`;
   const phTextInfo = ctx.measureText(phText);
   ctx.fillText(phText, startX - phTextInfo.width - 5, bottomY - h2 + 10);
-  const p0hText = `P0h:${p0h}cm`;
+  const p0hText = `h\u2080:${p0h}cm`;
   ctx.fillText(p0hText, startX + space + 5, bottomY - h1 + 10);
 
   ctx.beginPath();
@@ -145,9 +145,9 @@ export const drawMercury = (ctx, layout, canvas) => {
   ctx.font = "16px serif";
   // const text = `p(${p})=p0(${p0})+ρ(${density})*g*Δh(${h3})`;
   const text1 = `${p}=${p0}+${density}×9.8×${h3}`;
-  const text2 = "p=p0+ρgΔh";
+  const text2 = "P = P\u2080+ ρgΔh";
   const text1Info = ctx.measureText(text1);
   const text2Info = ctx.measureText(text2);
   ctx.fillText(text1, (300 - text1Info.width) / 2, 400);
-  ctx.fillText(text2, (300 - text2Info.width) / 2, 370);
+  ctx.fillText(text2, (300 - text2Info.width) / 2, bottomY + 15);
 };
