@@ -18,24 +18,6 @@ var arContent = {
         canvas: null,
         inited: false
     },
-    stand: {
-        camera: null,
-        scene: null,
-        model: null,
-        renderer: null,
-        animationId: null,
-        canvas: null,
-        inited: false
-    },
-    anima: {
-      camera: null,
-      scene: null,
-      model: null,
-      renderer: null,
-      animationId: null,
-      canvas: null,
-      inited: false
-    }
 };
 
 var systemInfo = wx.getSystemInfoSync();
@@ -52,6 +34,7 @@ Page({
         showOverlay: true,
         showContent: false,
         showSelect: false,
+        showPicture: false,
         SELECT_TYPE: SELECT_TYPE,
         selectType: 0,
         isPlaying: false,
@@ -444,6 +427,11 @@ Page({
       }
 
     },
+    playPicture: function() {
+      this.setData({
+        showPicture: !this.data.showPicture
+      })
+    },
     playAudio: function () {
       var query = this.createSelectorQuery();
       var _this = this;
@@ -499,5 +487,4 @@ Page({
             res.context.play();
         }).exec();
     },
-    onUnload: function () { },
 });
