@@ -295,7 +295,7 @@ camera {
 .realTimeData {
   height: 30%;
   width: 100%;
-  margin: -65px 0px 20px 0px;
+  margin: -65px 0vw 20px 0vw;
   display: flex;
   flex-direction: row;
 }
@@ -304,13 +304,20 @@ camera {
   padding-top: -10px;
   text-align: center;
 }
+.data-cells {
+  position: absolute;
+  right: 0px;
+  display: flex;
+}
 .cell_item {
-  width: 12vw;
+  width: 100%;
+  margin-right: 8vw;
   height: 5px;
   text-align: center;
+  font-size: large;
 }
 .cell_item_param {
-  width: 25vw;
+  width: 75%;
   height: 5px;
   text-align: center;
   font-size: small;

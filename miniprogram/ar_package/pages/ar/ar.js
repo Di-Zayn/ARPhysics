@@ -191,7 +191,7 @@ Page({
     },
     onResult: function (id) {
       this.runningCrs = false;
-      // this.listener.stop() // 不加也可以 页面切换会自动调用
+      this.listener.stop() // 不加也可以 页面切换会自动调用
       this.hideLoading();
       wx.showToast({
         title: this.data.showContent,

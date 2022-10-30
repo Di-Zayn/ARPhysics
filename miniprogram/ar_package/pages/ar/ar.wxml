@@ -1,7 +1,7 @@
 
 <!-- 相机组件，放在UI最底层显示相机内容 -->
 <camera frame-size="medium" bindinitdone="onCameraInit" mode="normal" device-position="back" resolution="high"
-  flash="off" wx:if="{{showOverlay}}"/>
+  flash="off"/>
 <!-- canvas组件，用于进行图片压缩，位置在屏幕外，不可见 -->
 <canvas type="2d" id="capture" style="width:1px; height: 1px;" />
 
@@ -36,26 +36,28 @@
         <canvas type="webgl" id="body" class="model_vanvas"></canvas>
     </view>
     <view class="realTimeData" wx:if="{{showStep==1}}">
-        <mp-cells title="参数" ext-class="my-cells">
-          <mp-cell value="动脉血压(kPa)" ext-class="cell_item_param"></mp-cell>
-          <mp-cell value="静脉血压(kPa)" ext-class="cell_item_param"></mp-cell>
-          <mp-cell value="高度差(m)" ext-class="cell_item_param"></mp-cell>
-        </mp-cells>
-        <mp-cells title="头部" ext-class="my-cells">
-          <mp-cell value="{{modelData.arteryPressure.head}}" ext-class="cell_item"></mp-cell>
-          <mp-cell value="{{modelData.venaPressure.head}}" ext-class="cell_item"></mp-cell>
-          <mp-cell value="{{modelData.heightHead}}" ext-class="cell_item"></mp-cell>
-        </mp-cells>
-        <mp-cells title="心脏" ext-class="my-cells">
-          <mp-cell value="{{modelData.arteryConst}}" ext-class="cell_item"></mp-cell>
-          <mp-cell value="{{modelData.venaConst}}" ext-class="cell_item"></mp-cell>
-          <mp-cell value="{{0}}" ext-class="cell_item"></mp-cell>
-        </mp-cells>
-        <mp-cells title="足部" ext-class="my-cells">
-          <mp-cell value="{{modelData.arteryPressure.foot}}" ext-class="cell_item"></mp-cell>
-          <mp-cell value="{{modelData.venaPressure.foot}}" ext-class="cell_item"></mp-cell>
-          <mp-cell value="{{modelData.heightFoot}}" ext-class="cell_item"></mp-cell>
-        </mp-cells>
+        <view class="data-cells">
+          <mp-cells title="参数" ext-class="my-cells">
+            <mp-cell value="动脉血压(kPa)" ext-class="cell_item_param"></mp-cell>
+            <mp-cell value="静脉血压(kPa)" ext-class="cell_item_param"></mp-cell>
+            <mp-cell value="高度差(m)" ext-class="cell_item_param"></mp-cell>
+          </mp-cells>
+          <mp-cells title="头部" ext-class="my-cells">
+            <mp-cell value="{{modelData.arteryPressure.head}}" ext-class="cell_item"></mp-cell>
+            <mp-cell value="{{modelData.venaPressure.head}}" ext-class="cell_item"></mp-cell>
+            <mp-cell value="{{modelData.heightHead}}" ext-class="cell_item"></mp-cell>
+          </mp-cells>
+          <mp-cells title="心脏" ext-class="my-cells">
+            <mp-cell value="{{modelData.arteryConst}}" ext-class="cell_item"></mp-cell>
+            <mp-cell value="{{modelData.venaConst}}" ext-class="cell_item"></mp-cell>
+            <mp-cell value="{{0}}" ext-class="cell_item"></mp-cell>
+          </mp-cells>
+          <mp-cells title="足部" ext-class="my-cells">
+            <mp-cell value="{{modelData.arteryPressure.foot}}" ext-class="cell_item"></mp-cell>
+            <mp-cell value="{{modelData.venaPressure.foot}}" ext-class="cell_item"></mp-cell>
+            <mp-cell value="{{modelData.heightFoot}}" ext-class="cell_item"></mp-cell>
+          </mp-cells>
+        </view>
     </view>
     <block wx:if="{{showStep == 1}}">
       <view class="slider-item">
