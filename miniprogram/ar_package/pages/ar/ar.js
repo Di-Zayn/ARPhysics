@@ -219,8 +219,7 @@ Page({
       }
       this.showLoading("识别中");
     },
-    initModel: function (selector, config, type) {
-        var that = this;
+    initModel: function (selector, type) {
         var query = wx.createSelectorQuery()
         query
             .select(selector).fields({node: true}).exec(function (res) {
@@ -253,162 +252,7 @@ Page({
                     arContent[type].height);
                   arContent[type].inited = true
               }
-
-              // that.initTHREE(new THREE.global.registerCanvas(canvas), config, type);
         });
-    },
-    initTHREE: function (canvas, config, type) {
-        var _this = this;
-        var content = arContent[type];
-
-        // 创建相机及设置位置和朝向
-        content.camera = new THREE.PerspectiveCamera(config.camera[0], canvas.width / canvas.height, config.camera[1], config.camera[2]);
-        content.camera.position.set(config.pos[0], config.pos[1], config.pos[2]);
-        content.camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-        // 创建环境
-        content.scene = new THREE.Scene();
-        // content.scene.background = new THREE.Color(0xeef4fd)
-
-        // 创建光源
-        var light = new THREE.HemisphereLight(0xffffff, 0x444444);
-        light.position.set(0, 20, 0);
-        content.scene.add(light);
-
-        light = new THREE.DirectionalLight(0xffffff);
-        light.position.set(0, 20, 10);
-        content.scene.add(light);
-
-        // 创建gltf加载器 用于载入http请求返回的gltf文件
-        let loader = new THREE.TextureLoader()
-        loader.load(content.src, (texture) => {
-          const mat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, transparent: true });
-          const geom = new THREE.PlaneGeometry(3, 2);
-          const mesh = new THREE.Mesh(geom, mat);
-          // mesh.scale.set(0.6, 1, 1);
-          mesh.rotation.x = -0.5 * Math.PI
-          mesh.rotation.z = 0.5 * Math.PI
-          content.model = mesh;
-
-          // const mat = new THREE.SpriteMaterial({ map: texture, color: 0xffffff });
-          // const obj = new THREE.Sprite(mat);
-          // obj.scale.set(3, 1, 1);
-          // content.model = obj;
-
-          track(content.model);
-          content.scene.add(content.model);
-          // content.model.updateMatrixWorld();
-
-          // 该函数是异步的 所以最终的渲染和inited加在这里
-          content.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
-          content.renderer.setPixelRatio(systemInfo.devicePixelRatio);
-          // 设置背景色与小程序背景色一致
-          // content.renderer.setClearColor(0xeef4fd, 1)
-          // 设置背景为透明 这样销毁模型后对应canvas不会再有颜色
-          // content.renderer.setClearAlpha(0.1)
-          content.renderer.setSize(canvas.width, canvas.height);
-          content.inited = true
-          _this.setData({
-            showModel: true
-          })
-        }, function (e) {
-          console.error(e);
-        })
-
-        // var gltfLoader = new GLTFLoader();
-        // gltfLoader.load(config.src, function (gltf) {
-        //   content.model = gltf.scene;
-        //   track(content.model);
-        //   content.scene.add(content.model);
-
-        //   // 由于已经存在指标且牌子是静态的，将人体上的牌子去掉 注意模型传过来的时候顺序是不一定的 需要检查name
-        //   let deleteList = ['tang-zubu', 'tang-xingzhang', 'tang-toubu']
-        //   for (let i = 0; i < content.model.children.length; i++) {
-        //     if (deleteList.indexOf(content.model.children[i].name) != -1) {
-        //       content.model.children[i].visible = false
-        //     }
-        //     if (content.model.children[i].name == 'maofa002') {
-        //       content.model.children[i].translateX(-0.005)
-        //     }
-        //     if (content.model.children[i].name == 'renti002') {
-        //       content.model.children[i].translateX(-0.01)
-        //     }
-        //   }
-
-        //   content.model.updateMatrixWorld();
-          
-        //   // 该函数是异步的 所以最终的渲染和inited加在这里
-        //   content.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
-        //   content.renderer.setPixelRatio(systemInfo.devicePixelRatio);
-        //   // 设置背景色与小程序背景色一致
-        //   content.renderer.setClearColor(0xeef4fd, 1)
-        //   // 设置背景为透明 这样销毁模型后对应canvas不会再有颜色
-        //   content.renderer.setClearAlpha(0.1)
-        //   content.renderer.setSize(canvas.width, canvas.height);
-        //   content.inited = true
-        //   _this.setData({
-        //     showModel: true
-        //   })
-        // }, function (e) {
-        //     console.error(e);
-        // });
-    },
-
-    animate: function (type) {
-
-      // var that = this;
-      // var canvas = arContent[type].canvas    
-      // // 本身是静态的动画 就不用再不停的渲染了
-      // var aniId = canvas.requestAnimationFrame(function () {
-      //   // 该函数是每次页面刷新前的回调函数
-      //   // 不断调用实现渲染
-      //   return that.animate(type);
-      // });
-      // // 只要是用的同一个canvas 就可以共用一个aniId
-      // arContent[type].animationId = aniId
-
-      // const { renderer, scene, camera } = arContent[type]
-      // renderer && renderer.clear();
-      // renderer && renderer.render(scene, camera);
-    },
-
-    clear3d: function (type) {
-      
-      const { canvas, renderer, model , scene, animationId } = arContent[type]
-
-      // animationId && canvas.cancelAnimationFrame(animationId)
-      arContent[type].camera = null
-      arContent[type].inited = false
-
-      if (renderer) {
-        // arContent[type].renderer.forceContextLoss();
-        // arContent[type].renderer.clearDepth();
-        // arContent[type].renderer.resetGLState();
-        // arContent[type].renderer.clearStencil();
-        arContent[type].renderer.clear();
-        arContent[type].renderer.dispose();
-        arContent[type].renderer.domElement = null;
-        arContent[type].renderer = null;
-      }
-
-      if (scene) {
-        arContent[type].scene.dispose();
-        arContent[type].scene = null;
-      }
-
-      if (model) {
-        arContent[type].model.dispose();
-        arContent[type].model = null;
-      }
-      
-      this.setData({
-        showModel: false
-      })
-      // THREE.BufferGeometry.dispose();
-      // THREE.Material.dispose();
-      // THREE.Texture.dispose();
-      // THREE.WebGLRenderTarget.dispose();
-      // THREE.Scene.dispose();
     },
 
     // 切换进入不同的交互界面
@@ -417,22 +261,11 @@ Page({
             showStep: e.currentTarget.dataset.value
         }, 
         function () {
-          var config = {}, selector = "";
-          for (let type in arContent) {
-            if (arContent[type].inited) {
-              this.clear3d(type)
-            }
-          }
+          var selector = "";
           if (this.data.showStep == 1) {
             this.calPreessure(0)
             selector = "#body";
-            config = {
-              camera: [1, 0.1, 1000],
-              pos: [130, 40, 0],
-              src: "https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/ar/small/tang.gltf?sign=5d210479bab3ea660e8c2da9d6e30a96&t=1641339914"
-            };
-            this.initModel(selector, config, "body");
-            // initModel后 需要一定的时间渲染 不能接着执行animate
+            this.initModel(selector, "body");
             let id = setInterval(()=>{
               if (arContent['body'].inited) {
                 clearInterval(id)
@@ -480,19 +313,14 @@ Page({
       const pre_angle = this.data.modelData.angle
       const delta = event.detail.value - pre_angle
       const degree =  - delta / 180 * Math.PI // 加负号是因为默认旋转方向是顺时针 而希望能逆时针转
-
       this.calPreessure(event.detail.value)
       const { inited, ctx, model, width, height, canvas} = arContent['body']
       if (inited) {
-        // arContent['body'].model.rotation.z = 0.5 * Math.PI + degree
-        // ctx.fillStyle = 'rgba(255, 255, 255, 0)';
-        // ctx.fillRect(0, 0, canvas.width, canvas.height)
-        // ctx.clearRect(-width / 2, - height / 2, canvas.width, canvas.height)
+        ctx.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height)
         ctx.rotate(degree)
         console.log(model)
         console.log(canvas)
         ctx.drawImage(model, -width / 2, - height / 2, width, height);
-        // this.animate('body')
       }
 
     },
@@ -508,7 +336,6 @@ Page({
         var audio = wx.createInnerAudioContext();
         if (!_this.data.isPlaying) {
           audio.src = "cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/audio/Oasis - Don't Look Back In Anger.ncm"
-              //"cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/ar/audio.mp3";
           audio.onCanplay(function () {
             audio.play();
             res.context.play();
