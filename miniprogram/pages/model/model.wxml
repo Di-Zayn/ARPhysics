@@ -48,7 +48,7 @@
       <view style="display: flex;flex-direction: row;" class="params-orifice">
         <mp-cells ext-class="params-orifice-cells">
           <mp-cell ext-class="cell_item_key" ><text class="sub">V<text>b</text></text>
-          <text>(m/s)</text></mp-cell>
+          <text>(cm/s)</text></mp-cell>
           <mp-cell value="{{orificeData.v_cm}}" ext-class="cell_item_value"></mp-cell>
         </mp-cells>
         <mp-cells ext-class="params-orifice-cells">

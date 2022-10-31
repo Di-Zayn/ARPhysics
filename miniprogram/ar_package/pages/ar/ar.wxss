@@ -355,4 +355,8 @@ camera {
   width: 70%;
   height: 45%;
 }
+.gif-model {
+  width: 90%;
+  margin: 5%;
+}
 

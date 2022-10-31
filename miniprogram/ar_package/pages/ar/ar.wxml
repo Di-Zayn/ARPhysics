@@ -1,7 +1,7 @@
 
 <!-- 相机组件，放在UI最底层显示相机内容 -->
 <camera frame-size="medium" bindinitdone="onCameraInit" mode="normal" device-position="back" resolution="high"
-  flash="off"/>
+  flash="off" wx:if="{{showStep != 1}}"/>
 <!-- canvas组件，用于进行图片压缩，位置在屏幕外，不可见 -->
 <canvas type="2d" id="capture" style="width:1px; height: 1px;" />
 
@@ -35,7 +35,6 @@
     <view class="model" wx:if="{{showStep == 1}}">
         <mp-loading show="{{!showModel}}" ext-class="model_loading" type="circle"></mp-loading>
         <canvas type="2d" id="body" class="model_vanvas"></canvas>
-        <!-- <image id="standModel" src="../../../images/zhanli-model.png"></image> -->
     </view>
     <view class="realTimeData" wx:if="{{showStep==1}}">
         <view class="data-cells">
@@ -84,19 +83,19 @@
     </scroll-view>
  
     <view wx:if="{{showStep == 4}}" style="display: flex;flex-direction: column;">
-      <image src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/xiaokong.gif">
+      <image class="gif-model" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/xiaokong.gif">
       </image>
-      <text>文字解说</text>>
+      <text>文字解说</text>
       <image class="returnButton" src="../../../images/ar/back.png" mode="widthFix" bindtap="goToCamera"></image>
     </view>
     <view wx:if="{{showStep == 5}}" style="display: flex;flex-direction: column;">
-      <image src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/Venturi.gif"></image>
-      <text>文字解说</text>>
+      <image class="gif-model" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/Venturi.gif"></image>
+      <text>文字解说</text>
       <image class="returnButton" src="../../../images/ar/back.png" mode="widthFix" bindtap="goToCamera"></image>
     </view>
     <view wx:if="{{showStep == 6}}" style="display: flex;flex-direction: column;">
-      <image src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/Hg.gif"></image>
-      <text>文字解说</text>>
+      <image class="gif-model" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/Hg.gif"></image>
+      <text>文字解说</text>
       <image class="returnButton" src="../../../images/ar/back.png" mode="widthFix" bindtap="goToCamera"></image>
     </view>
 

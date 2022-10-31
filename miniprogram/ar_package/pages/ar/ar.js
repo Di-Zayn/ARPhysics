@@ -18,7 +18,7 @@ var arContent = {
         canvas: null,
         inited: false,
         ctx: null,
-        src: '../../../images/arModel.png',
+        src: '../../../images/static-model.png',
         width: null,
         height: null
     },
@@ -220,60 +220,67 @@ Page({
       this.showLoading("识别中");
     },
     initModel: function (selector, type) {
-        var query = wx.createSelectorQuery()
-        query
-            .select(selector).fields({node: true}).exec(function (res) {
-              let canvas = null
-              if (res[0] && res[0].node) {
-                canvas = res[0].node
-                canvas.width = 600
-                canvas.height = 480
-              } else {
-                console.log("canvas is null")
-                return
-              }
-              arContent[type].canvas = canvas;
-              
-              let ctx = arContent[type].canvas.getContext("2d")
-              ctx.translate(canvas.width / 2, canvas.height / 2)
-              arContent[type].ctx = ctx
-              const img = canvas.createImage()
-              img.src = arContent[type].src
+      let _this = this
+      var query = wx.createSelectorQuery()
+      query.select(selector).fields({node: true}).exec(function (res) {
+        let canvas = null
+        if (res[0] && res[0].node) {
+          canvas = res[0].node
+          canvas.width = 600
+          canvas.height = 480
+        } else {
+          console.log("canvas is null")
+          return
+        }
+        arContent[type].canvas = canvas;
+        
+        let ctx = arContent[type].canvas.getContext("2d")
+        ctx.translate(canvas.width / 2, canvas.height / 2)
+        arContent[type].ctx = ctx
+        const img = canvas.createImage()
+        img.src = arContent[type].src
 
-              arContent[type].width = canvas.width * 0.8
-              arContent[type].height = canvas.height * 0.4
-              console.log("init")
-              img.onload = function(){
-                  arContent[type].model = img
-                  arContent[type].ctx.drawImage(img, 
-                    -arContent[type].width / 2, 
-                    -arContent[type].height / 2, 
-                    arContent[type].width,
-                    arContent[type].height);
-                  arContent[type].inited = true
-              }
-        });
+        arContent[type].width = canvas.width * 0.8
+        arContent[type].height = canvas.height * 0.4
+        img.onload = function(){
+            arContent[type].model = img
+            arContent[type].ctx.drawImage(img, 
+              -arContent[type].width / 2, 
+              -arContent[type].height / 2, 
+              arContent[type].width,
+              arContent[type].height);
+            arContent[type].inited = true
+            _this.setData({
+              showModel: true
+            })
+        }
+      });
     },
 
     // 切换进入不同的交互界面
     changeStep: function (e) {
+      if (this.showStep == 1) {
         this.setData({
-            showStep: e.currentTarget.dataset.value
-        }, 
-        function () {
-          var selector = "";
-          if (this.data.showStep == 1) {
-            this.calPreessure(0)
-            selector = "#body";
-            this.initModel(selector, "body");
-            let id = setInterval(()=>{
-              if (arContent['body'].inited) {
-                clearInterval(id)
-                this.animate('body');
-              }
-            }, 1000)
-          } 
-        });
+          showModel: false
+        })
+      }
+      this.setData({
+          showStep: e.currentTarget.dataset.value
+      }, 
+      function () {
+        var selector = "";
+        if (this.data.showStep == 1) {
+          this.calPreessure(0)
+          selector = "#body";
+          this.initModel(selector, "body");
+          let id = setInterval(()=>{
+            if (arContent['body'].inited) {
+              clearInterval(id)
+              this.animate('body');
+            }
+          }, 1000)
+        } 
+      });
     },
     calPreessure: function(angle) {
       const degree = angle / 180 * Math.PI
