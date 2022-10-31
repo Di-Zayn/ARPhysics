@@ -34,7 +34,8 @@
 
     <view class="model" wx:if="{{showStep == 1}}">
         <mp-loading show="{{!showModel}}" ext-class="model_loading" type="circle"></mp-loading>
-        <canvas type="webgl" id="body" class="model_vanvas"></canvas>
+        <canvas type="2d" id="body" class="model_vanvas"></canvas>
+        <!-- <image id="standModel" src="../../../images/zhanli-model.png"></image> -->
     </view>
     <view class="realTimeData" wx:if="{{showStep==1}}">
         <view class="data-cells">

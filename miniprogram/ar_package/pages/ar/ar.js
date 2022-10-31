@@ -16,7 +16,11 @@ var arContent = {
         renderer: null,
         animationId: null,
         canvas: null,
-        inited: false
+        inited: false,
+        ctx: null,
+        src: '../../../images/arModel.png',
+        width: null,
+        height: null
     },
 };
 
@@ -174,7 +178,7 @@ Page({
     },
     onResult: function (id) {
       this.runningCrs = false;
-      this.listener.stop() // 不加也可以 页面切换会自动调用
+      this.listener.stop()
       this.hideLoading();
       wx.showToast({
         title: this.data.showContent,
@@ -223,12 +227,34 @@ Page({
               let canvas = null
               if (res[0] && res[0].node) {
                 canvas = res[0].node
+                canvas.width = 600
+                canvas.height = 480
               } else {
                 console.log("canvas is null")
                 return
               }
               arContent[type].canvas = canvas;
-              that.initTHREE(new THREE.global.registerCanvas(canvas), config, type);
+              
+              let ctx = arContent[type].canvas.getContext("2d")
+              ctx.translate(canvas.width / 2, canvas.height / 2)
+              arContent[type].ctx = ctx
+              const img = canvas.createImage()
+              img.src = arContent[type].src
+
+              arContent[type].width = canvas.width * 0.8
+              arContent[type].height = canvas.height * 0.4
+              console.log("init")
+              img.onload = function(){
+                  arContent[type].model = img
+                  arContent[type].ctx.drawImage(img, 
+                    -arContent[type].width / 2, 
+                    -arContent[type].height / 2, 
+                    arContent[type].width,
+                    arContent[type].height);
+                  arContent[type].inited = true
+              }
+
+              // that.initTHREE(new THREE.global.registerCanvas(canvas), config, type);
         });
     },
     initTHREE: function (canvas, config, type) {
@@ -254,44 +280,78 @@ Page({
         content.scene.add(light);
 
         // 创建gltf加载器 用于载入http请求返回的gltf文件
-        var gltfLoader = new GLTFLoader();
-        // var loader = new THREE.FBXLoader();
-        gltfLoader.load(config.src, function (gltf) {
-          content.model = gltf.scene;
+        let loader = new THREE.TextureLoader()
+        loader.load(content.src, (texture) => {
+          const mat = new THREE.MeshBasicMaterial({ map: texture, side: THREE.DoubleSide, transparent: true });
+          const geom = new THREE.PlaneGeometry(3, 2);
+          const mesh = new THREE.Mesh(geom, mat);
+          // mesh.scale.set(0.6, 1, 1);
+          mesh.rotation.x = -0.5 * Math.PI
+          mesh.rotation.z = 0.5 * Math.PI
+          content.model = mesh;
+
+          // const mat = new THREE.SpriteMaterial({ map: texture, color: 0xffffff });
+          // const obj = new THREE.Sprite(mat);
+          // obj.scale.set(3, 1, 1);
+          // content.model = obj;
+
           track(content.model);
           content.scene.add(content.model);
+          // content.model.updateMatrixWorld();
 
-          // 由于已经存在指标且牌子是静态的，将人体上的牌子去掉 注意模型传过来的时候顺序是不一定的 需要检查name
-          let deleteList = ['tang-zubu', 'tang-xingzhang', 'tang-toubu']
-          for (let i = 0; i < content.model.children.length; i++) {
-            if (deleteList.indexOf(content.model.children[i].name) != -1) {
-              content.model.children[i].visible = false
-            }
-            if (content.model.children[i].name == 'maofa002') {
-              content.model.children[i].translateX(-0.005)
-            }
-            if (content.model.children[i].name == 'renti002') {
-              content.model.children[i].translateX(-0.01)
-            }
-          }
-
-          content.model.updateMatrixWorld();
-          
           // 该函数是异步的 所以最终的渲染和inited加在这里
           content.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
           content.renderer.setPixelRatio(systemInfo.devicePixelRatio);
           // 设置背景色与小程序背景色一致
-          content.renderer.setClearColor(0xeef4fd, 1)
+          // content.renderer.setClearColor(0xeef4fd, 1)
           // 设置背景为透明 这样销毁模型后对应canvas不会再有颜色
-          content.renderer.setClearAlpha(0.1)
+          // content.renderer.setClearAlpha(0.1)
           content.renderer.setSize(canvas.width, canvas.height);
           content.inited = true
           _this.setData({
             showModel: true
           })
         }, function (e) {
-            console.error(e);
-        });
+          console.error(e);
+        })
+
+        // var gltfLoader = new GLTFLoader();
+        // gltfLoader.load(config.src, function (gltf) {
+        //   content.model = gltf.scene;
+        //   track(content.model);
+        //   content.scene.add(content.model);
+
+        //   // 由于已经存在指标且牌子是静态的，将人体上的牌子去掉 注意模型传过来的时候顺序是不一定的 需要检查name
+        //   let deleteList = ['tang-zubu', 'tang-xingzhang', 'tang-toubu']
+        //   for (let i = 0; i < content.model.children.length; i++) {
+        //     if (deleteList.indexOf(content.model.children[i].name) != -1) {
+        //       content.model.children[i].visible = false
+        //     }
+        //     if (content.model.children[i].name == 'maofa002') {
+        //       content.model.children[i].translateX(-0.005)
+        //     }
+        //     if (content.model.children[i].name == 'renti002') {
+        //       content.model.children[i].translateX(-0.01)
+        //     }
+        //   }
+
+        //   content.model.updateMatrixWorld();
+          
+        //   // 该函数是异步的 所以最终的渲染和inited加在这里
+        //   content.renderer = new THREE.WebGLRenderer({ antialias: true, canvas: canvas, alpha: true });
+        //   content.renderer.setPixelRatio(systemInfo.devicePixelRatio);
+        //   // 设置背景色与小程序背景色一致
+        //   content.renderer.setClearColor(0xeef4fd, 1)
+        //   // 设置背景为透明 这样销毁模型后对应canvas不会再有颜色
+        //   content.renderer.setClearAlpha(0.1)
+        //   content.renderer.setSize(canvas.width, canvas.height);
+        //   content.inited = true
+        //   _this.setData({
+        //     showModel: true
+        //   })
+        // }, function (e) {
+        //     console.error(e);
+        // });
     },
 
     animate: function (type) {
@@ -307,10 +367,9 @@ Page({
       // // 只要是用的同一个canvas 就可以共用一个aniId
       // arContent[type].animationId = aniId
 
-      const { renderer, scene, camera } = arContent[type]
-      renderer && renderer.clear();
-      renderer && renderer.render(scene, camera);
-
+      // const { renderer, scene, camera } = arContent[type]
+      // renderer && renderer.clear();
+      // renderer && renderer.render(scene, camera);
     },
 
     clear3d: function (type) {
@@ -418,12 +477,22 @@ Page({
     },
 
     handleRotateDegreeChange: function(event) {
-      const degree = event.detail.value / 180 * Math.PI
-      this.calPreessure(event.detail.value)
+      const pre_angle = this.data.modelData.angle
+      const delta = event.detail.value - pre_angle
+      const degree =  - delta / 180 * Math.PI // 加负号是因为默认旋转方向是顺时针 而希望能逆时针转
 
-      if (arContent['body'].inited) {
-        arContent['body'].model.rotation.x = degree
-        this.animate('body')
+      this.calPreessure(event.detail.value)
+      const { inited, ctx, model, width, height, canvas} = arContent['body']
+      if (inited) {
+        // arContent['body'].model.rotation.z = 0.5 * Math.PI + degree
+        // ctx.fillStyle = 'rgba(255, 255, 255, 0)';
+        // ctx.fillRect(0, 0, canvas.width, canvas.height)
+        // ctx.clearRect(-width / 2, - height / 2, canvas.width, canvas.height)
+        ctx.rotate(degree)
+        console.log(model)
+        console.log(canvas)
+        ctx.drawImage(model, -width / 2, - height / 2, width, height);
+        // this.animate('body')
       }
 
     },
