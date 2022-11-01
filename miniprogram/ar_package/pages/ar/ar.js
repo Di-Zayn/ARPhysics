@@ -361,7 +361,7 @@ Page({
         }
         if (_this.data.isAudioPlaying) {
           _this.data.audioCtx.pause()
-          res.context.stop();
+          res.context.pause();
           _this.setData({
             isAudioPlaying: false,
             isPlaying: false
