@@ -6,11 +6,7 @@ const {
 } = require("../../data/constants");
 const APP = getApp();
 
-// pages/answer/answer.js
 Page({
-  /**
-   * 页面的初始数据
-   */
   data: {
     exam: {},
     submitDisabled: true,
@@ -53,9 +49,6 @@ Page({
     }
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
   onLoad: function (options) {
     const user = APP.globalData.userInfo;
     if (!user) {
@@ -189,7 +182,6 @@ Page({
       result: answers,
       user: APP.globalData.userInfo,
     });
-    
     if (result) {
       let params = {
         record: result.result._id,

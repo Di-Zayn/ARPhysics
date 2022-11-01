@@ -83,6 +83,7 @@ const retrieveExamDetail = async (
   }
 };
 const retrieveExamRecords = async (
+  user_id,
   onFail = () => {
     baseFaultHandler("记录加载失败");
   }
@@ -92,6 +93,7 @@ const retrieveExamRecords = async (
       name: "quickstartFunctions",
       data: {
         type: "retrieveExamRecords",
+        user_id: user_id
       },
     });
   } catch (err) {

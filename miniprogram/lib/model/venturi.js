@@ -39,7 +39,7 @@ export const drawVenturi = (ctx, layout, canvas) => {
     ph2,
     fillColor,
     strokeColor,
-    start: { x: startX, y: startY },
+    // start: { x: startX y: startY },
     strokeWidth,
     Q,
     pl1,
@@ -47,8 +47,11 @@ export const drawVenturi = (ctx, layout, canvas) => {
     plw,
     pw2,
     pw1,
-    qMax
+    qMax,
+    dpr
   } = layout;
+  const startX = canvas.width / dpr / 2 - w1 - w2 - l2 / 2
+  const startY = canvas.height / dpr / 2 - d1 / 2  
   const diff = d1 - d2;
   const middleTopY = startY + diff / 2;
   const middleBottomY = middleTopY + d2;
@@ -56,6 +59,9 @@ export const drawVenturi = (ctx, layout, canvas) => {
   // 绘制主容器
   ctx.strokeStyle = strokeColor;
   // 通过透明度反映Q
+  ctx.font = "12px serif";
+  ctx.fillStyle = "rgb(0, 0, 0)";
+  ctx.fillText("注:流量Q越大，液体颜色越深", 0, 10)
   const rate = Q / qMax > 1? 1: Q / qMax
   ctx.fillStyle = `rgba(${fillColor[0]}, ${fillColor[1]}, ${fillColor[2]}, ${rate})`;
   ctx.lineWidth = strokeWidth || 5;

@@ -1,7 +1,7 @@
 export const drawOrifice = (ctx, layout, canvas) => {
   const {
-    startX,
-    startY,
+    // startX,
+    // startY,
     width,
     height,
     ha,
@@ -13,7 +13,11 @@ export const drawOrifice = (ctx, layout, canvas) => {
     fillColor,
     v,
     v_cm,
+    dpr
   } = layout;
+  ctx.font = '16px serif'
+  const startX = canvas.width / dpr - width - 16
+  const startY = canvas.height / dpr - height - 28 - ctx.measureText('V').width * 2 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = fillColor;
   ctx.strokeStyle = strokeColor;
@@ -116,18 +120,18 @@ export const drawOrifice = (ctx, layout, canvas) => {
   const text1Info = ctx.measureText(text1);
   const text2 = "2gΔh";
   const text2Info = ctx.measureText(text2);
-  const genStart = startX - 10
+  const genStart = startX + width / 2 - (text2Info.width) / 2 - text1Info.width
   ctx.beginPath();
   ctx.strokeStyle = "#333";
   ctx.lineWidth = 1;
-  ctx.moveTo(genStart, startY + height + 16);
-  ctx.lineTo(genStart + 5, startY + height + 11);
-  ctx.lineTo(genStart + 8, startY + height + 26);
-  ctx.lineTo(genStart + 15, startY + height + 11);
-  ctx.lineTo(genStart + 15 + text2Info.width + 10, startY + height + 11);
+  ctx.moveTo(genStart + text1Info.width, startY + height + 16);
+  ctx.lineTo(genStart + text1Info.width + 5, startY + height + 11);
+  ctx.lineTo(genStart + text1Info.width + 8, startY + height + 24);
+  ctx.lineTo(genStart + text1Info.width + 15, startY + height + 11);
+  ctx.lineTo(genStart + text1Info.width + 15 + text2Info.width + 10, startY + height + 11);
   ctx.stroke();
-  ctx.fillText(text1, startX - text1Info.width / 2 - 20, startY + height + 25);
-  ctx.fillText(text2, genStart + 20, startY + height + 27);
+  ctx.fillText(text1, genStart, startY + height + 25);
+  ctx.fillText(text2, genStart + text1Info.width + 15, startY + height + 25);
   ctx.font = '8px serif'
-  ctx.fillText('b', startX - text1Info.width / 2 - 12, startY + height + 25);
+  ctx.fillText('b', genStart + ctx.measureText('V').width + 1.5, startY + height + 25);
 };

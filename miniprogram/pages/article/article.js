@@ -10,9 +10,15 @@ Page({
   },
 
   back() {
-    this.setData({
-      isMuti: false,
-    });
+    if (this.data.isMuti) {
+      this.setData({
+        isMuti: false,
+      });
+    } else {
+      wx.navigateBack({
+        delta: 0,
+      })
+    }
   },
 
   showQuestion(e) {

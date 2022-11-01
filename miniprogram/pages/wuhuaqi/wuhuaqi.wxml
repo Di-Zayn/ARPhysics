@@ -1,6 +1,6 @@
 <!--pages/wuhuaqi/wuhuaqi.wxml-->
 <view class="title"><text>医用雾化器</text></view>
-<video class="video" src="cloud://cloud1-0gwuxkfae8d5a879.636c-cloud1-0gwuxkfae8d5a879-1307053172/course/yiyongwuhuaqi.mp4"></video>
+<video class="video" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/video/yiyongwuhuaqi.mp4"></video>
 <view class="description"><text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;医用雾化器是伯努利方程在医学应用中的典型医疗设备。医用雾化器在临床上主要用于治疗各种上下呼吸系统疾病，如感冒、发烧、咳嗽、哮喘、咽喉肿痛、咽炎、鼻炎、支气管炎、尘肺等。使用医用雾化器的治疗方法为雾化吸入法。医用雾化器有一细管，利用压缩 氧气经过细小管口形成高速气流，使细小管口处形成负压，从而带动药液一起喷射到阻挡物上，药液在高速撞击下形成雾状，再从医用雾化器中喷出。</text></view>
 <image class="image" src='/images/wuhuaqi.png' mode="widthFix"></image>
 <view class="description"><text decode="{{true}}">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;医用雾化器的优点在于将药液雾化成微小颗粒，使得药物通过呼吸进入呼吸道和肺部沉积，从而达到无痛、起效迅速的治疗目的。</text></view>

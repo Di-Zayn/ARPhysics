@@ -60,7 +60,6 @@ Page({
 
   retrieveExamDetail: async function () {
     const response = await retrieveExamDetail(this.data.record.exam_id);
-    console.log(response)
     if (response && response.result?.data) {
       this.setData(
         {

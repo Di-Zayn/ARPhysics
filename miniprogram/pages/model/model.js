@@ -15,6 +15,7 @@ Page({
     s2Max: 1000,
     hMin: 10,
     hMax: 30,
+    dpr: null,
     venturiData: {
       h: 10,
       s1: 2400,
@@ -24,7 +25,7 @@ Page({
       d1: 56,
       d2: 23,
       Q: 0.057,
-      start: { x: 70, y: 120},
+      start: { x: 90, y: 120},
       w1: 60,
       w2: 40,
       fillColor: [15, 90, 125],
@@ -69,7 +70,7 @@ Page({
       strokeColor: "#ccc",
       strokeWidth: 1,
       thickness: 20,
-      height: 200,
+      height: 180,
       space: 120,
       startX: 100,
       startY: 15,
@@ -89,7 +90,6 @@ Page({
         } else if (this.data.model == 3) {
           this.draw(this.data.mercuryData);
         } else {
-          console.log('null')
           this.setData({
             ctx: null,
           });
@@ -311,13 +311,13 @@ Page({
     if (this.data.ctx && this.data.canvas) {
       switch (this.data.model) {
         case 1:
-          drawVenturi(this.data.ctx, layout, this.data.canvas);
+          drawVenturi(this.data.ctx, { ...layout, dpr:this.data.dpr}, this.data.canvas);
           break;
         case 2:
-          drawOrifice(this.data.ctx, layout, this.data.canvas);
+          drawOrifice(this.data.ctx, { ...layout, dpr:this.data.dpr}, this.data.canvas);
           break;
         case 3:
-          drawMercury(this.data.ctx, layout, this.data.canvas);
+          drawMercury(this.data.ctx, { ...layout, dpr:this.data.dpr}, this.data.canvas);
           break;
       }
     } else {
@@ -328,7 +328,6 @@ Page({
         .exec((res) => {
           const canvas = res[0].node;
           const ctx = canvas.getContext("2d");
-
           const dpr = wx.getSystemInfoSync().pixelRatio;
           canvas.width = res[0].width * dpr;
           canvas.height = res[0].height * dpr;
@@ -337,17 +336,18 @@ Page({
             {
               ctx,
               canvas,
+              dpr
             },
             () => {
               switch (this.data.model) {
                 case 1:
-                  drawVenturi(ctx, layout, canvas);
+                  drawVenturi(ctx, { ...layout, dpr:this.data.dpr}, canvas);
                   break;
                 case 2:
-                  drawOrifice(ctx, layout, canvas);
+                  drawOrifice(ctx, { ...layout, dpr:this.data.dpr}, canvas);
                   break;
                 case 3:
-                  drawMercury(ctx, layout, canvas);
+                  drawMercury(ctx, { ...layout, dpr:this.data.dpr}, canvas);
                   break;
               }
             }

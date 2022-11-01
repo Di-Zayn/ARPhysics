@@ -29,7 +29,7 @@
         </mp-cells>
       </view>
       <view class="slider-item">
-        <text>h</text>
+        <text class="sub-text">h<text class="placeholder"></text></text>
         <slider value="{{venturiData.h}}" block-size="{{16}}" activeColor="#4592e2" min="{{hMin}}" max="{{hMax}}" show-value
           bindchange="handleVenturiDataChange" data-key="h" />
       </view>
@@ -97,7 +97,7 @@
         </mp-cells>
       </view>
       <view class="slider-item">
-        <text class="sub-text">P</text>
+        <text class="sub-text">P<text class="placeholder">{{""}}</text></text>
         <!-- <text>P(10</text>
         <rich-text nodes="{{[{name: 'sup', attrs: {class:'sup-text'},children: [{type:'text',text: '5'}]}]}}">
         </rich-text>

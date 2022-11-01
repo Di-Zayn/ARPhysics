@@ -50,7 +50,6 @@ page {
   color: #333;
   margin-right: 16px;
   line-height: 20px;
-  /* vertical-align: middle; */
 }
 .bar .slider-item slider {
   flex: 1;
@@ -152,3 +151,5 @@ page {
   text-align: center;
   left: 20px;
 }
+/* .placeholder {
+} */

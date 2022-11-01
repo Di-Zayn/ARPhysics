@@ -18,7 +18,7 @@ var arContent = {
         canvas: null,
         inited: false,
         ctx: null,
-        src: '../../../images/static-model.png',
+        src: 'https://636c-cloud1-1g6gf2io118b9a8f-1314507429.tcb.qcloud.la/arModel/static-model.png?sign=a15abf77254b2ab70715aecf02a17fe6&t=1667226667',
         width: null,
         height: null
     },
@@ -81,6 +81,8 @@ Page({
         showLoading: false,
         showLoadingText: "加载中，请稍后...",
         showStep: 0,
+        audioCtx: null,
+        isAudioPlaying: false
     },
     listener: null,
     canvas: null,
@@ -259,10 +261,13 @@ Page({
 
     // 切换进入不同的交互界面
     changeStep: function (e) {
-      if (this.showStep == 1) {
+      if (this.data.howStep == 1) {
         this.setData({
           showModel: false
         })
+      }
+      if (this.data.showStep == 2) {
+        this.handleAudioCancel()
       }
       this.setData({
           showStep: e.currentTarget.dataset.value
@@ -325,8 +330,6 @@ Page({
       if (inited) {
         ctx.clearRect(-canvas.width / 2, -canvas.height / 2, canvas.width, canvas.height)
         ctx.rotate(degree)
-        console.log(model)
-        console.log(canvas)
         ctx.drawImage(model, -width / 2, - height / 2, width, height);
       }
 
@@ -340,22 +343,28 @@ Page({
       var query = this.createSelectorQuery();
       var _this = this;
       query.select("#video4").context(function (res) {
-        var audio = wx.createInnerAudioContext();
-        if (!_this.data.isPlaying) {
-          audio.src = "cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/audio/Oasis - Don't Look Back In Anger.ncm"
+        if (!_this.data.audioCtx) {
+          let audio = wx.createInnerAudioContext();
+          audio.src = "cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/audio/audio.mp3"
           audio.onCanplay(function () {
-            audio.play();
             res.context.play();
             _this.setData({
-              isPlaying: true
+              isPlaying: true,
+              isAudioPlaying: true
             });
           });
-          audio.onStop(function () {
-            _this.setData({
-              isPlaying: false
-            });
-          });
+          _this.data.audioCtx = audio
         }
+        if (_this.data.isAudioPlaying) {
+          _this.data.audioCtx.pause()
+          _this.setData({
+            isAudioPlaying: false,
+            isPlaying: false
+          })
+        } else {
+          _this.data.audioCtx.play()
+        }
+
       });
       query.exec();
     },
@@ -363,6 +372,14 @@ Page({
       this.setData({
           isPlaying: false
       });
+    },
+    handleAudioCancel: function() {
+      this.data.audioCtx.pause()
+      this.setData({
+        audioCtx: null,
+        isPlaying: false,
+        isAudioPlaying: false
+      })
     },
     goback: function (e) {
       var newStep = 0;

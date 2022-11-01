@@ -8,7 +8,7 @@
     </circle>
   </view>
   <view class="btn-group">
-    <navigator wx:if="{{record.list && record.list.length}}" url="{{'/pages/review/review?recordId='+record._id}}"
+    <navigator wx:if="{{record.list && record.list.length && testType == 'normalTest'}}" url="{{'/pages/review/review?recordId='+record._id}}"
       class="review">查看错题
     </navigator>
     <navigator open-type="switchTab" url="/pages/exam/exam" class="back" wx:if="{{testType == 'normalTest'}}">更多测试</navigator>
