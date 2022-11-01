@@ -10,7 +10,7 @@ Page({
 
   showFuyaPdf:function(){
     wx.downloadFile({
-      url: 'https://636c-cloud1-0gwuxkfae8d5a879-1307053172.tcb.qcloud.la/course/CN209900188U.PDF?sign=f57a794280e716b1c6c176720f788c06&t=1665770238',      //要预览的PDF的地址
+      url: 'https://636c-cloud1-1g6gf2io118b9a8f-1314507429.tcb.qcloud.la/CN209900188U.pdf?sign=65a0d6646db60a448a491510d92059d9&t=1667308379',      //要预览的PDF的地址
       success: function (res) {                           
         console.log(res);
         if (res.statusCode === 200) {                     //成功

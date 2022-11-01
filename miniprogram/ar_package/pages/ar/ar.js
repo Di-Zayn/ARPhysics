@@ -82,7 +82,9 @@ Page({
         showLoadingText: "加载中，请稍后...",
         showStep: 0,
         audioCtx: null,
-        isAudioPlaying: false
+        isAudioPlaying: false,
+        videoCtx: null,
+        isVideoPlaying: false
     },
     listener: null,
     canvas: null,
@@ -155,7 +157,6 @@ Page({
           if (!result)
               return;
           if (result.target) {
-            console.log("识别成功", result.target.targetId);
             //如果待触发的id列表中存在识别到的这个id，就触发
             if (_this.data.targetIds.find(function (targetId) { return targetId === result.target.targetId; })) {
                 _this.onResult(_this.data.targetIds.indexOf(result.target.targetId));
@@ -269,6 +270,9 @@ Page({
       if (this.data.showStep == 2) {
         this.handleAudioCancel()
       }
+      if (this.data.showStep == 7 || this.data.showStep == 8 || this.data.showStep == 3) {
+        this.handleVideoCancel()
+      }
       this.setData({
           showStep: e.currentTarget.dataset.value
       }, 
@@ -357,12 +361,18 @@ Page({
         }
         if (_this.data.isAudioPlaying) {
           _this.data.audioCtx.pause()
+          res.context.stop();
           _this.setData({
             isAudioPlaying: false,
             isPlaying: false
           })
         } else {
           _this.data.audioCtx.play()
+          res.context.play();
+          _this.setData({
+            isAudioPlaying: true,
+            isPlaying: true
+          })
         }
 
       });
@@ -374,12 +384,19 @@ Page({
       });
     },
     handleAudioCancel: function() {
-      this.data.audioCtx.pause()
-      this.setData({
-        audioCtx: null,
-        isPlaying: false,
-        isAudioPlaying: false
-      })
+      if (this.data.audioCtx) {
+        this.data.audioCtx.pause()
+        this.setData({
+          audioCtx: null,
+          isPlaying: false,
+          isAudioPlaying: false
+        })
+      } else {
+        this.setData({
+          isPlaying: false,
+          isAudioPlaying: false
+        })
+      }
     },
     goback: function (e) {
       var newStep = 0;
@@ -398,13 +415,48 @@ Page({
       })
     },
     playVideo5: function () {
+      let _this = this
         var query = wx.createSelectorQuery();
         query["in"](this)
             .select("#video5")
             .context(function (res) {
             // full函数只在真机上才会生效
-            res.context.requestFullScreen();
-            res.context.play();
+            if (!_this.data.videoCtx) {
+              _this.data.videoCtx = res.context
+            }
+            if (!_this.data.isVideoPlaying) {
+              res
+              _this.data.videoCtx.requestFullScreen()
+              _this.data.videoCtx.play()
+              _this.setData({
+                isVideoPlaying: true
+              })
+            } else {
+              _this.data.videoCtx.stop()
+              _this.setData({
+                isVideoPlaying: false
+              })
+            }
         }).exec();
     },
+    handleVideoCancel: function () {
+      if (this.data.videoCtx) {
+        this.data.videoCtx.stop()
+        this.setData({
+          videoCtx: null,
+          isVideoPlaying: false,
+        })
+      } else {
+        this.setData({
+          isVideoPlaying: false
+        })
+      }
+    },
+    handleFullScreen: function (e) {
+      let fullScreen = e.detail.fullScreen //值true为进入全屏，false为退出全屏
+      if (!fullScreen ){ //退出全屏
+        this.handleVideoCancel()
+      }
+    }
+
 });

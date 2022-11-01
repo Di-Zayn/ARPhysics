@@ -118,7 +118,7 @@
         <image src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/back.png" mode="widthFix" bindtap="changeStep" data-value="0"></image>
       </view>
       <video src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/video/video5.mp4"
-      style="height: 0px;width: 0px;" id="video5"></video>
+      style="height: 0px;width: 0px;" id="video5" bindfullscreenchange="handleFullScreen"></video>
     </view>
     <view id="content2" wx:if="{{showPicture}}">
      <view wx:if="{{showPicture}}" bindtap="playPicture">
