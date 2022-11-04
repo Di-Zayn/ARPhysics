@@ -244,7 +244,7 @@ Page({
         img.src = arContent[type].src
 
         arContent[type].width = canvas.width * 0.8
-        arContent[type].height = canvas.height * 0.4
+        arContent[type].height = canvas.height * 0.3
         img.onload = function(){
             arContent[type].model = img
             arContent[type].ctx.drawImage(img, 

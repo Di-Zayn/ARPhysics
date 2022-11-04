@@ -23,3 +23,7 @@ text{
 .info{
   margin:20rpx auto 0;
 }
+.concat {
+  margin:50rpx auto 0;
+  transform: scaleY(2);
+}

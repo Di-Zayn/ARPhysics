@@ -220,21 +220,24 @@ camera {
 .video4-main {
   display: flex;
   justify-content: flex-start;
-  align-items: center;
+  /* align-items: center; */
+  margin-top: 3vh;
+  margin-left: 0.5vw;
+  margin-bottom: 5%;
+  height: 90%;
 }
 .video4-main video {
   width: 700rpx;
   margin-left:20rpx;
 }
-.video4-main text {
-  margin-left: 20rpx;
+.narrate {
+  margin-left: 6rpx;
 }
 .returnButton {
-  position: absolute;
+  position: relative;
   width: 30%;
-  height: 30vh;
-  left: 35vw;
-  bottom: 1vh;
+  left: 35%;
+  bottom: -5%;
 }
 
 .both-model {
@@ -299,9 +302,10 @@ camera {
 }
 
 .realTimeData {
+  position: relative;
   height: 30%;
   width: 100%;
-  margin: -65px 0vw 20px 0vw;
+  margin: -65px 0vw 20px;
   display: flex;
   flex-direction: row;
 }
@@ -312,7 +316,7 @@ camera {
 }
 .data-cells {
   position: absolute;
-  right: 0px;
+  right: 0vw;
   display: flex;
 }
 .cell_item {
@@ -335,7 +339,7 @@ camera {
 }
 .btns {
   position: absolute;
-  bottom: 2vh;
+  bottom: 10vh;
   right: 0vw;
   width: 30%;
   height: 30vh;
@@ -348,12 +352,19 @@ camera {
   width: 250rpx;
   z-index:96;
 }
-.model-pic {
+.model-pic-stand {
   position: absolute;
-  top: 16vh;
+  top: 11vh;
   left: 18vw;
   width: 70%;
   height: 45%;
+}
+.model-pic-lie {
+  position: absolute;
+  top: 17vh;
+  left: 3vw;
+  width: 90%;
+  height: 30%;
 }
 .gif-model {
   width: 90%;

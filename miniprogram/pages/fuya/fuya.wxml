@@ -1,4 +1,4 @@
 <!--pages/fuya/fuya.wxml-->
 <view class="title"><text>负压封闭引流技术</text></view>
-<image class="fuya" src='/images/fuya.png' mode="widthFix" bindtap="showFuyaPdf"></image>
+<image class="fuya" src='cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ui/fuya.png' mode="widthFix" bindtap="showFuyaPdf"></image>
 <view class="click">点击图片浏览该专利详细介绍</view>

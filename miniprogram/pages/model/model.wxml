@@ -10,12 +10,14 @@
     <block wx:if="{{model == 1}}">
       <view style="display: flex;flex-direction: row;" class="params-venturi">
         <mp-cells ext-class="my-cells">
-          <mp-cell ext-class="cell_item_key"><text class="super">Q(m<text>3</text></text><text>/s)</text></mp-cell>
+          <mp-cell ext-class="cell_item_key"><text class="sub">Q<text class="placeholder"></text></text>
+          <text class="super">(m<text>3</text></text><text>/s)</text></mp-cell>
           <mp-cell ext-class="cell_item_value"><text class="super">{{venturiData.Q}}</text></mp-cell>
         </mp-cells>
         <mp-cells ext-class="my-cells">
-          <mp-cell ext-class="cell_item_key_samll"><text>h(cm)</text></mp-cell>
-          <mp-cell value="{{venturiData.h}}" ext-class="cell_item_value_small"></mp-cell>
+          <mp-cell ext-class="cell_item_key"><text class="sub">h<text class="placeholder"></text></text>
+          <text class="super">(cm)<text class="placeholder"></text></text></mp-cell>
+          <mp-cell value="{{venturiData.h}}" ext-class="cell_item_value"><text class="placeholder"></text></mp-cell>
         </mp-cells>
         <mp-cells ext-class="my-cells">
           <mp-cell ext-class="cell_item_key"><text class="sub">S<text>1</text></text>
@@ -76,7 +78,7 @@
     <block wx:if="{{model == 3}}">
       <view style="display: flex;flex-direction: row;" class="params-mercury">
         <mp-cells ext-class="params-mercury-cells">
-          <mp-cell ext-class="cell_item_key" ><text class="sub">P</text>
+          <mp-cell ext-class="cell_item_key" ><text class="sub">P<text class="placeholder"></text></text>
           <text class="super">(10<text>5</text>Pa)</text></mp-cell>
           <mp-cell value="{{mercuryData.p_cm}}" ext-class="cell_item_value"></mp-cell>
         </mp-cells>
@@ -86,31 +88,23 @@
           <mp-cell value="{{mercuryData.p0_cm}}" ext-class="cell_item_value"></mp-cell>
         </mp-cells>
         <mp-cells ext-class="params-mercury-cells">
-          <mp-cell ext-class="cell_item_key"><text class="sub">h</text>
-          <text>(cm)</text></mp-cell>
+          <mp-cell ext-class="cell_item_key"><text class="sub">h<text class="placeholder"></text></text>
+          <text class="super">(cm)<text class="placeholder"></text></text></mp-cell>
           <mp-cell value="{{mercuryData.ph}}" ext-class="cell_item_value"></mp-cell>
         </mp-cells>
         <mp-cells ext-class="params-mercury-cells">
           <mp-cell ext-class="cell_item_key"><text class="sub">h<text>0</text></text>
-          <text>(cm)</text></mp-cell>
+          <text class="super">(cm)<text class="placeholder"></text></text></mp-cell>
           <mp-cell value="{{mercuryData.p0h}}" ext-class="cell_item_value"></mp-cell>
         </mp-cells>
       </view>
       <view class="slider-item">
         <text class="sub-text">P<text class="placeholder">{{""}}</text></text>
-        <!-- <text>P(10</text>
-        <rich-text nodes="{{[{name: 'sup', attrs: {class:'sup-text'},children: [{type:'text',text: '5'}]}]}}">
-        </rich-text>
-        <text class="lastText">Pa)</text> -->
         <slider value="{{mercuryData.p_cm}}" block-size="{{16}}" step="{{0.1}}" activeColor="#4592e2" min="{{0.5}}"
           max="{{3}}" show-value bindchange="handleMercuryDataChange" data-key="p_cm" />
       </view>
       <view class="slider-item">
         <text class="sub-text">P<text>0</text></text>
-        <!-- <text class="sub">P<text>0</text>(10</text>
-        <rich-text nodes="{{[{name: 'sup', attrs: {class:'sup-text'},children: [{type:'text',text: '5'}]}]}}">
-        </rich-text>
-        <text class="lastText">Pa)</text> -->
         <slider value="{{mercuryData.p0_cm}}" block-size="{{16}}" step="{{0.1}}" activeColor="#4592e2" min="{{0.5}}"
           max="{{3}}" show-value bindchange="handleMercuryDataChange" data-key="p0_cm" />
       </view>

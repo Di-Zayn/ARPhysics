@@ -73,13 +73,14 @@
       <view class="video4-main" style="display: flex;flex-direction: column;">
         <video bindended="handleVideo4End" id="video4" controls="{{false}}" show-center-play-btn="{{true}}"
           src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/video/video4.mp4"></video>
-        <view style="display: flex;flex-direction: row;">
-          <mp-icon icon="voice" bindtap="playAudio" style="z-index: 9999;"></mp-icon>
-          <text>音频讲解:对均匀流管S1=S2，各处流速v1=v2。此时伯努利方程为 p+ρgh...点击下图，查看交互模型:</text>
+        <view style="display: flex;flex-direction: row;" class="narrate">
+        <mp-icon icon="voice" bindtap="playAudio" style="z-index: 9999;"></mp-icon>
+        <text>音频讲解:对均匀流管S1=S2，各处流速v1=v2。此时伯努利方程为 p+ρgh...点击下图，查看交互模型:</text>
         </view>
+        <image class="both-model" id="models" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/both-model.png" bindtap="changeStep" data-value="1"></image>
+        <image class="returnButton" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/back.png" mode="widthFix" bindtap="changeStep" data-value="7"></image>
       </view>
-      <image class="both-model" id="models" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/both-model.png" bindtap="changeStep" data-value="1"></image>
-      <image class="returnButton" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/back.png" mode="widthFix" bindtap="changeStep" data-value="7"></image>
+      <!-- <image class="returnButton" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/back.png" mode="widthFix" bindtap="changeStep" data-value="7"></image> -->
     </scroll-view>
  
     <view wx:if="{{showStep == 4}}" style="display: flex;flex-direction: column;">
@@ -100,8 +101,8 @@
     </view>
 
     <view>
-      <image class="model-pic" id="standModel" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/zhanli-model.png" wx:if="{{showStep==7}}" bindtap="playPicture"></image>
-      <image class="model-pic" id="lieModel" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/tangxia-model.png" wx:if="{{showStep==8}}" bindtap="playPicture"></image>
+      <image class="model-pic-stand" id="standModel" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/zhanli-model.png" wx:if="{{showStep==7}}" bindtap="playPicture"></image>
+      <image class="model-pic-lie" id="lieModel" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/tangxia-model.png" wx:if="{{showStep==8}}" bindtap="playPicture"></image>
       <view class="btns" style="display: flex;flex-direction: column;" wx:if="{{showStep == 7 || showStep == 8}}">
         <image src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/lie.png" mode="widthFix" wx:if="{{showStep == 7}}" bindtap="changeStep"
         data-value="8">

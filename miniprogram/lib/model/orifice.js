@@ -16,7 +16,7 @@ export const drawOrifice = (ctx, layout, canvas) => {
     dpr
   } = layout;
   ctx.font = '16px serif'
-  const startX = canvas.width / dpr - width - 16
+  const startX = canvas.width / dpr / 2
   const startY = canvas.height / dpr - height - 28 - ctx.measureText('V').width * 2 
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.fillStyle = fillColor;
