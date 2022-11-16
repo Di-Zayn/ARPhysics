@@ -39,6 +39,9 @@ Page({
       ph1: 80,
       ph2: 70,
       qMax: 0.2,
+      vMax: 2.57,
+      v1: 0.24,
+      v2: 1.43 
     },
     orificeData: {
       ha_cm: 10,
@@ -110,12 +113,16 @@ Page({
     const { venturiData } = this.data;
     const d1 = Math.sqrt(4 * s1 / Math.PI)
     const d2 = Math.sqrt(4 * s2 / Math.PI)
+    const v1 = (Q / s1 * Math.pow(10, 4)).toFixed(2)
+    const v2 = (Q / s2 * Math.pow(10, 4)).toFixed(2)
     return {
       ...venturiData,
       d1: d1, 
       d2: d2,
       ph2: venturiData.ph1 - h,
       Q,
+      v1,
+      v2
     };
   },
 

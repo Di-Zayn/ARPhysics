@@ -29,6 +29,17 @@
           <text class="super">(cm<text>2</text>)</text></mp-cell>
           <mp-cell value="{{venturiData.s2}}" ext-class="cell_item_value"></mp-cell>
         </mp-cells>
+        <mp-cells ext-class="my-cells">
+          <mp-cell ext-class="cell_item_key"><text class="sub">V<text>1</text></text>
+          <text class="super">(m/s<text></text>)</text></mp-cell>
+          <mp-cell value="{{venturiData.v1}}" ext-class="cell_item_value"></mp-cell>
+        </mp-cells>
+        <mp-cells ext-class="my-cells">
+          <mp-cell ext-class="cell_item_key"><text class="sub">V<text>2</text></text>
+          <text class="super">(m/s<text></text>)</text></mp-cell>
+          <mp-cell value="{{venturiData.v2}}" ext-class="cell_item_value"></mp-cell>
+        </mp-cells>
+
       </view>
       <view class="slider-item">
         <text class="sub-text">h<text class="placeholder"></text></text>

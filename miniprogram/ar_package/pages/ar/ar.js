@@ -18,7 +18,7 @@ var arContent = {
         canvas: null,
         inited: false,
         ctx: null,
-        src: 'https://636c-cloud1-1g6gf2io118b9a8f-1314507429.tcb.qcloud.la/arModel/static-model.png?sign=a15abf77254b2ab70715aecf02a17fe6&t=1667226667',
+        src: 'https://636c-cloud1-1g6gf2io118b9a8f-1314507429.tcb.qcloud.la/arModel/static-model.png?sign=ee60de11052ed0a12018baa7073b2f8a&t=1668497869',
         width: null,
         height: null
     },

@@ -48,10 +48,13 @@ export const drawVenturi = (ctx, layout, canvas) => {
     pw2,
     pw1,
     qMax,
-    dpr
+    dpr,
+    v1,
+    v2,
+    vMax,
   } = layout;
   const startX = canvas.width / dpr / 2 - w1 - w2 - l2 / 2
-  const startY = canvas.height / dpr / 2 - d1 / 2  
+  const startY = canvas.height / dpr / 2  
   const diff = d1 - d2;
   const middleTopY = startY + diff / 2;
   const middleBottomY = middleTopY + d2;
@@ -63,6 +66,10 @@ export const drawVenturi = (ctx, layout, canvas) => {
   ctx.fillStyle = "rgb(0, 0, 0)";
   ctx.fillText("注:流量Q越大，液体颜色越深", 0, 10)
   const rate = Q / qMax > 1? 1: Q / qMax
+  const len = (w1 + w2 + l2 / 2 - l1 -pw1)
+  const len1 = v1 / vMax > 1? len: v1 / vMax * len
+  const len2 = v2 / vMax > 1? len: v2 / vMax * len
+
   ctx.fillStyle = `rgba(${fillColor[0]}, ${fillColor[1]}, ${fillColor[2]}, ${rate})`;
   ctx.lineWidth = strokeWidth || 5;
   ctx.beginPath();
@@ -115,6 +122,36 @@ export const drawVenturi = (ctx, layout, canvas) => {
   ctx.moveTo(startX + w1 + w2 + l2 / 2, middleTopY);
   ctx.lineTo(startX + w1 + w2 + l2 / 2, middleTopY + d2);
   ctx.stroke();
+  // 绘制速度箭头
+  ctx.beginPath()
+  ctx.strokeStyle = "rgb(0, 0, 0)"
+  ctx.setLineDash([]);
+  ctx.moveTo(startX + l1 + pw1, startY + d1 / 2);
+  ctx.lineTo(startX + l1 + pw1 + len1, startY + d1 / 2)
+  ctx.lineTo(startX + l1 + pw1 + len1 - 3, startY + d1 / 2 - 4);
+  ctx.moveTo(startX + l1 + pw1 + len1, startY + d1 / 2)
+  ctx.lineTo(startX + l1 + pw1 + len1 - 3, startY + d1 / 2 + 4);
+  
+  ctx.moveTo(startX + w1 + w2 + l2 / 2 + pw2, startY + d1 / 2);
+  ctx.lineTo(startX + w1 + w2 + l2 / 2 + pw2 + len2, startY + d1 / 2)
+  ctx.lineTo(startX + w1 + w2 + l2 / 2 + pw2 + len2 - 3, startY + d1 / 2 - 4);
+  ctx.moveTo(startX + w1 + w2 + l2 / 2 + pw2 + len2, startY + d1 / 2)
+  ctx.lineTo(startX + w1 + w2 + l2 / 2 + pw2 + len2 - 3, startY + d1 / 2 + 4);
+  ctx.stroke();
+
+  ctx.font = "14px serif";
+  ctx.fillStyle = "rgb(0, 0, 0)";
+  ctx.textBaseline = 'alphabetic'
+  ctx.fillText(
+    `V\u2081`,
+    startX + l1 + pw1 + len1,
+    startY + d1 / 2 - 4 
+  );
+  ctx.fillText(
+    `V\u2082`,
+    startX + w1 + w2 + l2 / 2 + pw2 + len2,
+    startY + d1 / 2 - 4 
+  );
   // 绘制截面和流量标注
   ctx.font = "14px serif";
   ctx.fillStyle = "rgb(255, 0, 0)";
@@ -129,8 +166,6 @@ export const drawVenturi = (ctx, layout, canvas) => {
     middleBottomY  + 15
   );
   ctx.fillStyle = "rgb(0, 0, 0)";
-  // ctx.font = "12px serif";
-  // ctx.fillText(`Q = ${Q.toFixed(2)}`, startX + 2 * w1 + 2 * w2 + l2 + 10, startY + d1 / 2);
   // 绘制高度差的虚线
   ctx.strokeStyle = "rgb(0, 0, 0)";
   ctx.setLineDash([5,2]);
@@ -196,29 +231,4 @@ export const drawVenturi = (ctx, layout, canvas) => {
   ctx.font = "8px serif";
   ctx.fillText('1', text1StartX + text1Info.width + 25 + 6 * offset_x + 5, text1StartY - 5);
   ctx.fillText('2', text1StartX + text1Info.width + 25 + 9 * offset_x + 6, text1StartY - 5);
-
-  
-  // ctx.font = "10px serif";
-  // const text3 = `${Number(Q.toFixed(2))}=${s1}×${s2}×`;
-  // const text3Info = ctx.measureText(text3);
-  // const text4 = `2×9.8×${s1 - s2} / (${s1}² - ${s2}²)`;
-  // const text4Info = ctx.measureText(text4);
-  // ctx.beginPath();
-  // ctx.font = "16px serif";
-  // ctx.strokeStyle = "#000";
-  // ctx.lineWidth = 1;
-
-  // const text3StartX = startX + w1 + w2 + l2 / 2 - text3Info.width / 2- text4Info.width / 2;
-  // const text3StartY = startY + d1 + 100
-  // ctx.fillText(text3, text3StartX, text3StartY);
-  // ctx.moveTo(text3StartX + text3Info.width - 24, 370);
-  // ctx.lineTo(text3StartX + text3Info.width - 24 + 5, 365);
-  // ctx.lineTo(text3StartX + text3Info.width - 24 + 10, 380);
-  // ctx.lineTo(text3StartX + text3Info.width - 24 + 18, 360);
-  // ctx.lineTo(
-  //   text3StartX + text3Info.width - 24 + 18 + text4Info.width + 35 - 24,
-  //   startY + d1 + 120
-  // );
-  // ctx.stroke();
-  // ctx.fillText(text4, text3StartX + text3Info.width + 20 - 24, startY + d1 + 130);
 };

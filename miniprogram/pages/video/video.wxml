@@ -1,1 +1,1 @@
-<video wx:for="{{contents}}" wx:key="index" class="video" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/video/bonulituidao.mp4"></video>
+<video wx:for="{{contents}}" wx:key="index" class="video" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/video/yuanli.mp4"></video>

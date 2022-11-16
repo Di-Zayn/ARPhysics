@@ -368,6 +368,45 @@ camera {
 }
 .gif-model {
   width: 90%;
-  margin: 5%;
+  margin-top: 50%;
+  margin-left:5%;
 }
-
+.click-lie {
+  position: relative;
+  left: 70vw;
+  top: 45vh;
+  width: 23vw;
+  height: 5vh;
+}
+.click-stand {
+  position: relative;
+  left: 70vw;
+  top: 45vh;
+  width: 23vw;
+  height: 5vh;
+}
+.click-both {
+  position: relative;
+  left: 15vw;
+  bottom: 8vh;
+  width: 23vw;
+  height: 5vh;
+}
+.click-text-lie {
+  position: relative;
+  left: 56vw;
+  top: 42vh;
+  font-size: small;
+}
+.click-text-stand {
+  position: relative;
+  left: 56vw;
+  top: 42vh;
+  font-size: small;
+}
+.click-text-both {
+  position: relative;
+  left: 25vw;
+  bottom: 13vh;
+  font-size: small;
+}

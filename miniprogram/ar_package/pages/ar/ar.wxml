@@ -77,16 +77,16 @@
         <mp-icon icon="voice" bindtap="playAudio" style="z-index: 9999;"></mp-icon>
         <text>音频讲解:对均匀流管S1=S2，各处流速v1=v2。此时伯努利方程为 p+ρgh...点击下图，查看交互模型:</text>
         </view>
-        <image class="both-model" id="models" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/both-model.png" bindtap="changeStep" data-value="1"></image>
+        <image class="both-model" id="models" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/both-model.png"></image>
+        <image class="click-both" id="click-both" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/click.gif" bindtap="changeStep" data-value="1"></image>
+        <text class="click-text-both">点击此处</text>
         <image class="returnButton" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/back.png" mode="widthFix" bindtap="changeStep" data-value="7"></image>
       </view>
-      <!-- <image class="returnButton" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/back.png" mode="widthFix" bindtap="changeStep" data-value="7"></image> -->
     </scroll-view>
  
     <view wx:if="{{showStep == 4}}" style="display: flex;flex-direction: column;">
-      <image class="gif-model" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/xiaokong.gif">
+      <image class="gif-model" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/Venturi1.gif">
       </image>
-      <text>文字解说</text>
       <image class="returnButton" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/back.png" mode="widthFix" bindtap="goToCamera"></image>
     </view>
     <view wx:if="{{showStep == 5}}" style="display: flex;flex-direction: column;">
@@ -101,8 +101,14 @@
     </view>
 
     <view>
-      <image class="model-pic-stand" id="standModel" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/zhanli-model.png" wx:if="{{showStep==7}}" bindtap="playPicture"></image>
-      <image class="model-pic-lie" id="lieModel" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/tangxia-model.png" wx:if="{{showStep==8}}" bindtap="playPicture"></image>
+      <view >
+        <image class="model-pic-stand" id="standModel" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/stand-model.png" wx:if="{{showStep==7}}"></image>
+        <image class="model-pic-lie" id="lieModel" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/arModel/lie-model.png" wx:if="{{showStep==8}}"></image>
+        <image class="click-lie" id="click-lie" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/click.gif" wx:if="{{showStep==8}}" bindtap="playPicture"></image>
+        <image class="click-stand" id="click-stand" src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/click.gif" wx:if="{{showStep==7}}" bindtap="playPicture"></image>
+        <text class="click-text-lie" wx:if="{{showStep==8}}">点击此处</text>
+        <text class="click-text-stand" wx:if="{{showStep==7}}">点击此处</text>
+      </view>
       <view class="btns" style="display: flex;flex-direction: column;" wx:if="{{showStep == 7 || showStep == 8}}">
         <image src="cloud://cloud1-1g6gf2io118b9a8f.636c-cloud1-1g6gf2io118b9a8f-1314507429/ar/lie.png" mode="widthFix" wx:if="{{showStep == 7}}" bindtap="changeStep"
         data-value="8">
