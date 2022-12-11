@@ -39,7 +39,10 @@ export class CrsClient {
     return new Promise((resolve, reject) => {
       //#4 发送CRS请求
       wx.request({
-        url: `${this.config.clientHost}/search/`,
+        // 使用esayar url:
+        //url: `${this.config.clientHost}/search/`,
+        // 使用自主开发的识别功能
+        url:"http://127.0.0.1:5001/recognize",
         method: "post",
         data: params,
         header: {

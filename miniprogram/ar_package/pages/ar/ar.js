@@ -154,8 +154,13 @@ Page({
           if (!_this.runningCrs)
               return; //避免在停止后仍然触发
           var result = res && res.result;
-          if (!result)
-              return;
+          if (!result) {
+            wx.showToast({
+              title: "系统错误，请重新进入页面",
+              icon:"none"
+            });
+            return;
+          }
           if (result.target) {
             //如果待触发的id列表中存在识别到的这个id，就触发
             if (_this.data.targetIds.find(function (targetId) { return targetId === result.target.targetId; })) {
