@@ -153,6 +153,7 @@ Page({
           .then(function (res) {
           if (!_this.runningCrs)
               return; //避免在停止后仍然触发
+
           var result = res && res.result;
           if (!result) {
             wx.showToast({

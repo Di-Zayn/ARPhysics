@@ -42,7 +42,7 @@ export class CrsClient {
         // 使用esayar url:
         //url: `${this.config.clientHost}/search/`,
         // 使用自主开发的识别功能
-        url:"http://127.0.0.1:5001/recognize",
+        url:"http://106.14.79.15:88/recognize",
         method: "post",
         data: params,
         header: {
